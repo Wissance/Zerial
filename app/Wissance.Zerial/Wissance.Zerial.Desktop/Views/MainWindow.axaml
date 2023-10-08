@@ -8,7 +8,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
-        Title="Zerial is a tool for serial (RS232/COM) device communications">
+        Title="Zerial (Community Edition) - serial (RS232/COM) device communications">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -21,6 +21,7 @@
     </Window.Styles>
     
     <Canvas>
+        <!-- TODO(UMV): Add Menu -->
         <StackPanel Orientation="Vertical">
             <StackPanel Height="100" Margin="5">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
@@ -56,8 +57,8 @@
                                 <ComboBox Name="SyncSelect" Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <TextBox Text="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>
-                                <TextBox Text="Xoff" Background="Aqua"></TextBox>
+                                <TextBox Watermark="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>
+                                <TextBox Watermark="Xoff" Background="Aqua"></TextBox>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -71,7 +72,7 @@
                     </Border>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Height="200" Background="Aquamarine" Margin="5 10 0 0">
+            <StackPanel Height="450" Background="Aquamarine" Margin="5 10 0 0">
                 
             </StackPanel>
         </StackPanel>
