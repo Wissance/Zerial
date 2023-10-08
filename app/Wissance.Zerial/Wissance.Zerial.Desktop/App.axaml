@@ -1,0 +1,33 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Wissance.Zerial.Desktop.App"
+             xmlns:local="using:Wissance.Zerial.Desktop"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+             
+    <Application.Resources>
+        <!-- This gives following Fonts
+             Roboto-Black.ttf - Roboto Black
+             Roboto-BlackItalic.ttf - Roboto Black
+             Roboto-Bold.ttf - Roboto
+             Roboto-BoldItalic.ttf - Roboto
+             Roboto-Italic.ttf - Roboto
+             Roboto-Light.ttf - Roboto Light
+             Roboto-LightItalic.ttf - Roboto Light
+             Roboto-Medium.ttf - Roboto Medium
+             Roboto-MediumItalic.ttf - Roboto Medium
+             Roboto-Regular.ttf - Roboto
+             Roboto-Thin.ttf - Roboto Thin
+             Roboto-ThinItalic.ttf - Roboto Thin
+        -->
+        <FontFamily x:Key="RobotoFonts">avares://Wissance.Zerial.Desktop/Assets/Fonts#Roboto</FontFamily>
+    </Application.Resources>
+</Application>

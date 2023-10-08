@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Wissance.Zerial.Desktop.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="600"
+        x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        FontFamily="{StaticResource RobotoFonts}"
+        Title="Zerial is a tool for serial (RS232/COM) device communications">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <Window.Styles>
+        <StyleInclude Source="/Styles/Theme.axaml" />
+    </Window.Styles>
+    
+    <Canvas>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Height="100" Margin="5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Border Classes="ConnOptGroupBorder">
+                        <StackPanel Orientation="Vertical" Background="Beige">
+                            <StackPanel Orientation="Horizontal" Margin="10" Background="Chartreuse" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
+                                <ComboBox Name="PortsListSelect" Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Label Name="BaudRateListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
+                                <ComboBox Name="BaudRateListSelect" Margin="5 0 0 0" Width="100"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                        <StackPanel Orientation="Vertical" Background="Beige" Margin="0, 0,0,0" >
+                            <StackPanel Orientation="Horizontal" Margin="10" Background="Gold" HorizontalAlignment="Right" 
+                                        VerticalAlignment="Bottom" >
+                                <Label Name="ByteLengthValuesLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
+                                <ComboBox Name="ByteLengthSelect" Margin="5 0 0 0" Width="80"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" Background="Khaki" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Label Name="StopBitsNumberLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
+                                <ComboBox Name="StopBitsSelect" Margin="5 0 0 0" Width="80"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                        <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
+                            <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Label Name="SyncValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Sync type:"/>
+                                <ComboBox Name="SyncSelect" Margin="5 0 0 0" Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <TextBox Text="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>
+                                <TextBox Text="Xoff" Background="Aqua"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                        <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
+                            <!-- Connect && Disconnect button-->
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <Button>Connect</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Height="200" Background="Aquamarine" Margin="5 10 0 0">
+                
+            </StackPanel>
+        </StackPanel>
+    </Canvas>
+    
+
+</Window>
