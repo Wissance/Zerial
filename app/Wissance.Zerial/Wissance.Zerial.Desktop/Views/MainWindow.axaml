@@ -43,12 +43,16 @@
                         <StackPanel Orientation="Vertical" Background="Beige" Margin="0, 0,0,0" >
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Gold" HorizontalAlignment="Right" 
                                         VerticalAlignment="Bottom" >
-                                <Label Name="ByteLengthValuesLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
-                                <ComboBox Name="ByteLengthSelect" Margin="5 0 0 0" Width="80"/>
+                                <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
+                                <ComboBox Name="ByteLengthList" ItemsSource="{Binding ByteLength}"
+                                          SelectedValue="{Binding ByteLength[0]}" SelectedItem="{Binding SelectedByteLength}"
+                                          Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Khaki" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Label Name="StopBitsNumberLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
-                                <ComboBox Name="StopBitsSelect" Margin="5 0 0 0" Width="80"/>
+                                <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
+                                <ComboBox Name="StopBitsList" ItemsSource="{Binding StopBits}"
+                                          SelectedValue="{Binding StopBits[0]}" SelectedItem="{Binding SelectedStopBits}"
+                                          Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -56,7 +60,9 @@
                         <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <Label Name="FlowControlValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
-                                <ComboBox Name="FlowControlSelect" Margin="5 0 0 0" Width="100"/>
+                                <ComboBox Name="FlowControlSelect" ItemsSource="{Binding FlowControls}"
+                                          SelectedValue="{Binding FlowControls[0]}" SelectedItem="{Binding SelectedFlowControl}"
+                                          Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
                                 <TextBox Watermark="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>

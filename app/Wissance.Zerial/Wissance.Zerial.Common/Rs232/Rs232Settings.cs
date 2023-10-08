@@ -38,6 +38,7 @@ namespace Wissance.Zerial.Common.Rs232
         public Rs232BaudRate BaudRate { get; set; }
         public Rs232StopBits StopBits { get; set; }
         public Rs232Parity Parity { get; set; }
+        public int ByteLength { get; set; }
         public Rs232FlowControl FlowControl { get; set; }
         public byte Xon { get; set; }
         public byte Xoff { get; set; }
