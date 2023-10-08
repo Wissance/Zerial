@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.Zerial.Desktop", "Wissance.Zerial.Desktop\Wissance.Zerial.Desktop.csproj", "{0BD3C009-1C54-48A3-A1ED-A9722306E4B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.Zerial.Common", "Wissance.Zerial.Common\Wissance.Zerial.Common.csproj", "{7D078E35-1775-458B-A943-9EA4F8250159}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{0BD3C009-1C54-48A3-A1ED-A9722306E4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BD3C009-1C54-48A3-A1ED-A9722306E4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BD3C009-1C54-48A3-A1ED-A9722306E4B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D078E35-1775-458B-A943-9EA4F8250159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D078E35-1775-458B-A943-9EA4F8250159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D078E35-1775-458B-A943-9EA4F8250159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D078E35-1775-458B-A943-9EA4F8250159}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

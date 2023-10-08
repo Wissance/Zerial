@@ -32,8 +32,10 @@
                                 <ComboBox Name="PortsListSelect" Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Label Name="BaudRateListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
-                                <ComboBox Name="BaudRateListSelect" Margin="5 0 0 0" Width="100"/>
+                                <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
+                                <ComboBox Name="BaudRatesList" ItemsSource="{Binding BaudRates}" 
+                                          SelectedValue="{Binding BaudRates[0] }" SelectedItem="{Binding SelectedBaudRate}"
+                                          Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -53,8 +55,8 @@
                     <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
                         <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                <Label Name="SyncValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Sync type:"/>
-                                <ComboBox Name="SyncSelect" Margin="5 0 0 0" Width="100"/>
+                                <Label Name="FlowControlValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
+                                <ComboBox Name="FlowControlSelect" Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
                                 <TextBox Watermark="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>
@@ -73,7 +75,16 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Height="450" Background="Aquamarine" Margin="5 10 0 0">
-                
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="210" Background="Olive">
+                        <TreeView Width="210" Height="450">
+                            
+                        </TreeView>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Canvas>

@@ -1,11 +1,14 @@
 using Avalonia.Controls;
 
-namespace Wissance.Zerial.Desktop.Views;
-
-public partial class MainWindow : Window
+namespace Wissance.Zerial.Desktop.Views
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+
     }
 }
