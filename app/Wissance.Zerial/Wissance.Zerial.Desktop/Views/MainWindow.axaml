@@ -96,8 +96,15 @@
             <StackPanel Height="450" Background="Aquamarine" Margin="5 10 0 0">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="210" Background="Olive">
-                        <TreeView Width="210" Height="450">
-                            
+                        <TreeView Width="210" Height="450" ItemsSource="{Binding DevicesConfigs}">
+                            <TreeView.ItemTemplate>
+                                <TreeDataTemplate ItemsSource="{Binding PortNumber}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="../Assets/Images/Serial_32x32.png"></Image>
+                                        <TextBlock Text="{Binding Configuration}" FontSize="12" Margin="3 10 0 0"/>
+                                    </StackPanel>
+                                </TreeDataTemplate>
+                            </TreeView.ItemTemplate>
                         </TreeView>
                     </StackPanel>
                 </StackPanel>

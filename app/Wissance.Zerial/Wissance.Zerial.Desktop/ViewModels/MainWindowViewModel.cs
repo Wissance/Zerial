@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Interactivity;
 using DynamicData.Binding;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
+using Wissance.Zerial.Desktop.Data;
 
 namespace Wissance.Zerial.Desktop.ViewModels
 {
@@ -18,13 +20,24 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedParity = _parities.First(p => p.Value == Rs232Parity.Even).Key;
             XonSymbol = "0x11";
             XoffSymbol = "0x13";
-            _isXonXoffEnabled = _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
+            // example ....
+            DevicesConfigs = new ObservableCollection<SerialPortNode>()
+            {
+                 new SerialPortNode(5, "COM5, 115200 b/s, Even, 1 Stop Bit, No Flow Control"),
+                 new SerialPortNode(3, "COM3, 9600 b/s, No, 1 Stop Bit, No Flow Control")
+            };
         }
 
         public void ExecuteConnectAction()
         {
             int a = 1;
         }
+
+        #region RS232TreeConfiguration
+        
+        public ObservableCollection<SerialPortNode> DevicesConfigs { get; set; }
+
+        #endregion
 
         #region RS232ConnOptions
         public IList<string> BaudRates => _baudRates.Keys.ToList();
@@ -58,20 +71,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public bool IsProgrammableFlowControl { get; set; }
         
-        public bool IsXonXoffEnabled()
-        {
-            if (string.IsNullOrEmpty(SelectedFlowControl))
-                    return false;
-            return _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
-        }
-        
         public string XonSymbol { get; set; }
         
         public string XoffSymbol { get; set; }
         #endregion
 
         private string _selectedFlowControl;
-        private bool _isXonXoffEnabled;
         
         private readonly IDictionary<string, Rs232BaudRate> _baudRates = new Dictionary<string, Rs232BaudRate>()
         {
