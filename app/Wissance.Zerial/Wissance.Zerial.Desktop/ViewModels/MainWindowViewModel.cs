@@ -12,8 +12,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedBaudRate = _baudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = _byteLengthBits.First(bl => bl.Value == 8).Key;
             SelectedStopBits = _stopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
-            
             SelectedFlowControl = _flowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
+            SelectedParity = _parities.First(p => p.Value == Rs232Parity.Even).Key;
+            XonSymbol = "0x11";
+            XoffSymbol = "0x13";
         }
 
         public void ExecuteConnectAction()
@@ -32,6 +34,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public IList<string> ByteLength => _byteLengthBits.Keys.ToList();
         
         public string SelectedByteLength { get; set; }
+
+        public IList<string> Parities => _parities.Keys.ToList();
+        
+        public string SelectedParity { get; set; }
 
         public IList<string> FlowControls => _flowControls.Keys.ToList();
         
@@ -74,6 +80,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
             {"6", 6},
             {"7", 7},
             {"8", 8}
+        };
+
+        private readonly IDictionary<string, Rs232Parity> _parities = new Dictionary<string, Rs232Parity>()
+        {
+            {"No parity", Rs232Parity.NoParity},
+            {"Mark", Rs232Parity.Mark},
+            {"Space", Rs232Parity.Space},
+            {"Even", Rs232Parity.Even},
+            {"Odd", Rs232Parity.Odd}
         };
 
         private readonly IDictionary<string, Rs232FlowControl> _flowControls = new Dictionary<string, Rs232FlowControl>()
