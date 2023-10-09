@@ -75,10 +75,10 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
                                 <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl}"
+                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
                                          Margin="0 0 0 20" Background="Aqua"></TextBox>
                                 <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl}" 
+                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}" 
                                          Background="Aqua"></TextBox>
                             </StackPanel>
                         </StackPanel>

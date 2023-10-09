@@ -21,9 +21,9 @@ namespace Wissance.Zerial.Desktop.Views
 
         private void OnFlowControlSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            bool isProgrammable = _context.IsXonXoffEnabled();
+            /*bool isProgrammable = _context.IsXonXoffEnabled();
             XonTextBox.IsEnabled = isProgrammable;
-            XoffTextBox.IsEnabled = isProgrammable;
+            XoffTextBox.IsEnabled = isProgrammable;*/
         }
 
         private readonly MainWindowViewModel _context;

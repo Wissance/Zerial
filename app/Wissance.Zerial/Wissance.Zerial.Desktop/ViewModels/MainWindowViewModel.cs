@@ -2,6 +2,7 @@
 using System.Linq;
 using Avalonia.Interactivity;
 using DynamicData.Binding;
+using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
 
 namespace Wissance.Zerial.Desktop.ViewModels
@@ -17,6 +18,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedParity = _parities.First(p => p.Value == Rs232Parity.Even).Key;
             XonSymbol = "0x11";
             XoffSymbol = "0x13";
+            _isXonXoffEnabled = _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
         }
 
         public void ExecuteConnectAction()
@@ -41,18 +43,20 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string SelectedParity { get; set; }
 
         public IList<string> FlowControls => _flowControls.Keys.ToList();
-        
-        public string SelectedFlowControl { get; set; }
 
-        public bool IsProgrammableFlowControl
+        public string SelectedFlowControl
         {
-            get
+            get { return _selectedFlowControl;}
+            set
             {
-                if (string.IsNullOrEmpty(SelectedFlowControl))
-                    return false;
-                return _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
+                _selectedFlowControl = value;
+                IsProgrammableFlowControl = _flowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
+                // this DO TRICK with props changes apply on View (2Way Binding)
+                this.RaisePropertyChanged("IsProgrammableFlowControl");
             }
         }
+
+        public bool IsProgrammableFlowControl { get; set; }
         
         public bool IsXonXoffEnabled()
         {
@@ -66,6 +70,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string XoffSymbol { get; set; }
         #endregion
 
+        private string _selectedFlowControl;
+        private bool _isXonXoffEnabled;
+        
         private readonly IDictionary<string, Rs232BaudRate> _baudRates = new Dictionary<string, Rs232BaudRate>()
         {
             {"9600", Rs232BaudRate.BaudMode9600},
