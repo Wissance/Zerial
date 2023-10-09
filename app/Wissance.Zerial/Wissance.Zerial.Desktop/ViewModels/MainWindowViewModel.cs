@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Interactivity;
+using DynamicData.Binding;
 using Wissance.Zerial.Common.Rs232;
 
 namespace Wissance.Zerial.Desktop.ViewModels
@@ -51,6 +52,13 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     return false;
                 return _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
             }
+        }
+        
+        public bool IsXonXoffEnabled()
+        {
+            if (string.IsNullOrEmpty(SelectedFlowControl))
+                    return false;
+            return _flowControls[SelectedFlowControl] == Rs232FlowControl.XonXoff;
         }
         
         public string XonSymbol { get; set; }

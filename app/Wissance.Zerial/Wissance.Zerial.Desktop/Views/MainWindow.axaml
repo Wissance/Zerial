@@ -66,18 +66,19 @@
                                               Margin="5 0 0 0" Width="100"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Label Name="FlowControlValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
-                                    <ComboBox Name="FlowControlSelect" ItemsSource="{Binding FlowControls}"
+                                    <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
+                                    <ComboBox Name="FlowControlList" ItemsSource="{Binding FlowControls}"
                                               SelectedItem="{Binding SelectedFlowControl}"
+                                              SelectionChanged="OnFlowControlSelectionChanged"
                                               Margin="5 0 0 0" Width="100"/>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <TextBox Watermark="Xon" Text="{Binding XonSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=OneWay}"
+                                <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
+                                         IsEnabled="{Binding IsProgrammableFlowControl}"
                                          Margin="0 0 0 20" Background="Aqua"></TextBox>
-                                <TextBox Watermark="Xoff" Text="{Binding XoffSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=OneWay}" 
+                                <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
+                                         IsEnabled="{Binding IsProgrammableFlowControl}" 
                                          Background="Aqua"></TextBox>
                             </StackPanel>
                         </StackPanel>
