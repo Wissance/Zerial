@@ -34,7 +34,7 @@
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
                                 <ComboBox Name="BaudRatesList" ItemsSource="{Binding BaudRates}" 
-                                          SelectedValue="{Binding BaudRates[0] }" SelectedItem="{Binding SelectedBaudRate}"
+                                          SelectedItem="{Binding SelectedBaudRate}"
                                           Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                         </StackPanel>
@@ -45,13 +45,13 @@
                                         VerticalAlignment="Bottom" >
                                 <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
                                 <ComboBox Name="ByteLengthList" ItemsSource="{Binding ByteLength}"
-                                          SelectedValue="{Binding ByteLength[0]}" SelectedItem="{Binding SelectedByteLength}"
+                                          SelectedItem="{Binding SelectedByteLength}"
                                           Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Khaki" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
                                 <ComboBox Name="StopBitsList" ItemsSource="{Binding StopBits}"
-                                          SelectedValue="{Binding StopBits[0]}" SelectedItem="{Binding SelectedStopBits}"
+                                          SelectedItem="{Binding SelectedStopBits}"
                                           Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
                         </StackPanel>
@@ -61,12 +61,16 @@
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <Label Name="FlowControlValueLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
                                 <ComboBox Name="FlowControlSelect" ItemsSource="{Binding FlowControls}"
-                                          SelectedValue="{Binding FlowControls[0]}" SelectedItem="{Binding SelectedFlowControl}"
+                                          SelectedItem="{Binding SelectedFlowControl}"
                                           Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <TextBox Watermark="Xon" Margin="0 0 0 20" Background="Aqua"></TextBox>
-                                <TextBox Watermark="Xoff" Background="Aqua"></TextBox>
+                                <TextBox Watermark="Xon" Text="{Binding XonSymbol}"
+                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=OneWay}"
+                                         Margin="0 0 0 20" Background="Aqua"></TextBox>
+                                <TextBox Watermark="Xoff" Text="{Binding XoffSymbol}"
+                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=OneWay}" 
+                                         Background="Aqua"></TextBox>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -74,7 +78,7 @@
                         <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
                             <!-- Connect && Disconnect button-->
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <Button>Connect</Button>
+                                <Button Command="{Binding ExecuteConnectAction}">Connect</Button>
                             </StackPanel>
                         </StackPanel>
                     </Border>
