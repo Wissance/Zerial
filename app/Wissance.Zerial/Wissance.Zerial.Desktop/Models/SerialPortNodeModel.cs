@@ -1,8 +1,8 @@
-namespace Wissance.Zerial.Desktop.Data
+namespace Wissance.Zerial.Desktop.Models
 {
-    public class SerialPortNode
+    public class SerialPortNodeModel
     {
-        public SerialPortNode(int portNumber, string configuration)
+        public SerialPortNodeModel(int portNumber, string configuration)
         {
             PortNumber = portNumber;
             Configuration = configuration;

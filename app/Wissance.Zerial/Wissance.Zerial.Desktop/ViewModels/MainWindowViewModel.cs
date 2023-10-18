@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using DynamicData.Binding;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
-using Wissance.Zerial.Desktop.Data;
+using Wissance.Zerial.Desktop.Models;
 
 namespace Wissance.Zerial.Desktop.ViewModels
 {
@@ -13,18 +13,19 @@ namespace Wissance.Zerial.Desktop.ViewModels
     {
         public MainWindowViewModel()
         {
-            SelectedBaudRate = _baudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
-            SelectedByteLength = _byteLengthBits.First(bl => bl.Value == 8).Key;
-            SelectedStopBits = _stopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
-            SelectedFlowControl = _flowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
-            SelectedParity = _parities.First(p => p.Value == Rs232Parity.Even).Key;
+            SerialOptions = new SerialDefaultsModel();
+            SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
+            SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
+            SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
+            SelectedFlowControl = SerialOptions.FlowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
+            SelectedParity = SerialOptions.Parities.First(p => p.Value == Rs232Parity.Even).Key;
             XonSymbol = "0x11";
             XoffSymbol = "0x13";
             // example ....
-            DevicesConfigs = new ObservableCollection<SerialPortNode>()
+            DevicesConfigs = new ObservableCollection<SerialPortNodeModel>()
             {
-                 new SerialPortNode(5, "COM5, 115200 b/s, Even, 1 Stop Bit, No Flow Control"),
-                 new SerialPortNode(3, "COM3, 9600 b/s, No, 1 Stop Bit, No Flow Control")
+                 new SerialPortNodeModel(5, "COM5, 115200 b/s, Even, 1 Stop Bit, No Flow Control"),
+                 new SerialPortNodeModel(3, "COM3, 9600 b/s, No, 1 Stop Bit, No Flow Control")
             };
         }
 
@@ -34,28 +35,17 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         #region RS232TreeConfiguration
+        public ObservableCollection<SerialPortNodeModel> DevicesConfigs { get; set; }
         
-        public ObservableCollection<SerialPortNode> DevicesConfigs { get; set; }
-
         #endregion
 
-        #region RS232ConnOptions
-        public IList<string> BaudRates => _baudRates.Keys.ToList();
+        #region SerialConnectSettingsOptions
+        
+        public SerialDefaultsModel SerialOptions { get; }
         public string SelectedBaudRate { get; set; }
-
-        public IList<string> StopBits => _stopBits.Keys.ToList();
-        
         public string SelectedStopBits { get; set; }
-
-        public IList<string> ByteLength => _byteLengthBits.Keys.ToList();
-        
         public string SelectedByteLength { get; set; }
-
-        public IList<string> Parities => _parities.Keys.ToList();
-        
         public string SelectedParity { get; set; }
-
-        public IList<string> FlowControls => _flowControls.Keys.ToList();
 
         public string SelectedFlowControl
         {
@@ -63,7 +53,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             set
             {
                 _selectedFlowControl = value;
-                IsProgrammableFlowControl = _flowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
+                IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
                 // this DO TRICK with props changes apply on View (2Way Binding)
                 this.RaisePropertyChanged("IsProgrammableFlowControl");
             }
@@ -77,45 +67,5 @@ namespace Wissance.Zerial.Desktop.ViewModels
         #endregion
 
         private string _selectedFlowControl;
-        
-        private readonly IDictionary<string, Rs232BaudRate> _baudRates = new Dictionary<string, Rs232BaudRate>()
-        {
-            {"9600", Rs232BaudRate.BaudMode9600},
-            {"19200", Rs232BaudRate.BaudMode19200},
-            {"38400", Rs232BaudRate.BaudMode38400},
-            {"57600", Rs232BaudRate.BaudMode57600},
-            {"115200", Rs232BaudRate.BaudMode115200}
-        };
-
-        private readonly IDictionary<string, Rs232StopBits> _stopBits = new Dictionary<string, Rs232StopBits>()
-        {
-            {"One", Rs232StopBits.One},
-            {"One and half", Rs232StopBits.OneAndHalf},
-            {"Two", Rs232StopBits.Two}
-        };
-        
-        private readonly IDictionary<string, int> _byteLengthBits = new Dictionary<string, int>()
-        {
-            {"5", 5},
-            {"6", 6},
-            {"7", 7},
-            {"8", 8}
-        };
-
-        private readonly IDictionary<string, Rs232Parity> _parities = new Dictionary<string, Rs232Parity>()
-        {
-            {"No parity", Rs232Parity.NoParity},
-            {"Mark", Rs232Parity.Mark},
-            {"Space", Rs232Parity.Space},
-            {"Even", Rs232Parity.Even},
-            {"Odd", Rs232Parity.Odd}
-        };
-
-        private readonly IDictionary<string, Rs232FlowControl> _flowControls = new Dictionary<string, Rs232FlowControl>()
-        {
-            {"No", Rs232FlowControl.NoControl},
-            {"RTS/CTS", Rs232FlowControl.RtsCts},
-            {"Xon/Xoff", Rs232FlowControl.XonXoff}
-        };
     }
 }

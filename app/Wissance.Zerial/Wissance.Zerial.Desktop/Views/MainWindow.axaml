@@ -33,7 +33,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
-                                <ComboBox Name="BaudRatesList" ItemsSource="{Binding BaudRates}" 
+                                <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
                                           SelectedItem="{Binding SelectedBaudRate}"
                                           Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
@@ -44,13 +44,13 @@
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Gold" HorizontalAlignment="Right" 
                                         VerticalAlignment="Bottom" >
                                 <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
-                                <ComboBox Name="ByteLengthList" ItemsSource="{Binding ByteLength}"
+                                <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
                                           SelectedItem="{Binding SelectedByteLength}"
                                           Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Khaki" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
-                                <ComboBox Name="StopBitsList" ItemsSource="{Binding StopBits}"
+                                <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
                                           SelectedItem="{Binding SelectedStopBits}"
                                           Margin="5 0 0 0" Width="80"/>
                             </StackPanel>
@@ -61,13 +61,13 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Margin="10" Background="Pink" HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
-                                    <ComboBox Name="ParityList" ItemsSource="{Binding Parities}"
+                                    <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
                                               SelectedItem="{Binding SelectedParity}"
                                               Margin="5 0 0 0" Width="100"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="10" Background="Orchid" HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
-                                    <ComboBox Name="FlowControlList" ItemsSource="{Binding FlowControls}"
+                                    <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
                                               SelectedItem="{Binding SelectedFlowControl}"
                                               SelectionChanged="OnFlowControlSelectionChanged"
                                               Margin="5 0 0 0" Width="100"/>
@@ -95,13 +95,15 @@
             </StackPanel>
             <StackPanel Height="450" Background="Aquamarine" Margin="5 10 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <StackPanel Width="210" Background="Olive">
-                        <TreeView Width="210" Height="450" ItemsSource="{Binding DevicesConfigs}">
+                    <StackPanel Width="210" >
+                        <TreeView Width="210" Height="450" ItemsSource="{Binding DevicesConfigs}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  Background="Beige">
                             <TreeView.ItemTemplate>
                                 <TreeDataTemplate ItemsSource="{Binding PortNumber}">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal" Background="Coral">
                                         <Image Source="../Assets/Images/Serial_32x32.png"></Image>
-                                        <TextBlock Text="{Binding Configuration}" FontSize="12" Margin="3 10 0 0"/>
+                                        <TextBlock Text="{Binding Configuration}" FontSize="10" Margin="3 10 0 0"/>
                                     </StackPanel>
                                 </TreeDataTemplate>
                             </TreeView.ItemTemplate>
