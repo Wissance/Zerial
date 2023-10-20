@@ -6,12 +6,16 @@ namespace Wissance.Zerial.Desktop.Models
 {
     public class SerialDefaultsModel
     {
+        public SerialDefaultsModel()
+        {
+        }
+
         public IDictionary<string, Rs232BaudRate> BaudRates => _baudRates;
         public IDictionary<string, Rs232StopBits> StopBits => _stopBits;
         public IDictionary<string, int> ByteLength => _byteLengthBits;
         public IDictionary<string, Rs232Parity> Parities => _parities;
-        public IDictionary<string, Rs232FlowControl> FlowControls => _flowControls;
         
+        public IDictionary<string, Rs232FlowControl> FlowControls => _flowControls;
         public IList<string> BaudRatesOptions => _baudRates.Keys.ToList();
         public IList<string> StopBitsOptions => _stopBits.Keys.ToList();
         public IList<string> ByteLengthOptions => _byteLengthBits.Keys.ToList();
@@ -57,5 +61,8 @@ namespace Wissance.Zerial.Desktop.Models
             {"RTS/CTS", Rs232FlowControl.RtsCts},
             {"Xon/Xoff", Rs232FlowControl.XonXoff}
         };
+
+        public const string DefaultXon = "Ox11";
+        public const string DefaultXoff = "Ox13";
     }
 }

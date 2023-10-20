@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using DynamicData.Binding;
@@ -19,13 +20,11 @@ namespace Wissance.Zerial.Desktop.Views
             // todo(UMV): think what should we programmatically do with other controls
         }
 
-        private void OnFlowControlSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        private void OnPortNumberListOpened(object? sender, EventArgs e)
         {
-            /*bool isProgrammable = _context.IsXonXoffEnabled();
-            XonTextBox.IsEnabled = isProgrammable;
-            XoffTextBox.IsEnabled = isProgrammable;*/
+            _context.ReEnumeratePorts();
         }
-
+        
         private readonly MainWindowViewModel _context;
     }
 }

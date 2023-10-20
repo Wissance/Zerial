@@ -29,7 +29,10 @@
                         <StackPanel Orientation="Vertical" Background="Beige">
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chartreuse" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
-                                <ComboBox Name="PortsListSelect" Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
+                                <ComboBox Name="PortsListSelect" ItemsSource="{Binding Path=Ports, Mode=TwoWay}"
+                                          SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
+                                          DropDownOpened="OnPortNumberListOpened"
+                                          Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
@@ -69,7 +72,6 @@
                                     <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
                                     <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
                                               SelectedItem="{Binding SelectedFlowControl}"
-                                              SelectionChanged="OnFlowControlSelectionChanged"
                                               Margin="5 0 0 0" Width="100"/>
                                 </StackPanel>
                             </StackPanel>
@@ -102,6 +104,7 @@
                             <TreeView.ItemTemplate>
                                 <TreeDataTemplate ItemsSource="{Binding PortNumber}">
                                     <StackPanel Orientation="Horizontal" Background="Coral">
+                                        <!--<Image Source="../Assets/Images/Device_Is_On_24x24.png"></Image>-->
                                         <Image Source="../Assets/Images/Serial_32x32.png"></Image>
                                         <TextBlock Text="{Binding Configuration}" FontSize="10" Margin="3 10 0 0"/>
                                     </StackPanel>
