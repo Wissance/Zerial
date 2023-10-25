@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using Avalonia.Collections;
 using Avalonia.Interactivity;
 using DynamicData;
 using DynamicData.Binding;
@@ -19,7 +20,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public MainWindowViewModel()
         {
             SerialOptions = new SerialDefaultsModel();
-            _ports = new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts()?.ToList() ?? new List<string>());
+            _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
+                //new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
@@ -42,14 +44,29 @@ namespace Wissance.Zerial.Desktop.ViewModels
             int a = 1;
         }
 
-        public void ReEnumeratePorts()
+        public IList<string> ReEnumeratePorts()
         {
-            this.RaisePropertyChanging("Ports");
-            Ports = new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts());
-            SelectedPortNumber = Ports.Any() ? Ports.First() : null; 
-            this.RaisePropertyChanged("Ports");
-            this.RaisePropertyChanged("SelectedPortNumber");
-            
+            //this.RaisePropertyChanging("Ports");
+            // Ports = new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts());
+            Ports.Clear();
+            IList<string> newPorts = Rs232PortsEnumerator.GetAvailablePorts();
+            Ports.AddRange(newPorts);
+            return newPorts;
+            //Ports = newPorts;
+            //new ObservableCollection<string>(newPorts);
+            /*foreach (string port in newPorts)
+            {
+                Ports.Add(port);
+            }*/
+            //SelectedPortNumber = null;
+            //this.RaisePropertyChanged(nameof(SelectedPortNumber));
+            //this.RaisePropertyChanged(nameof(Ports));
+            //_ports.
+            //this.RaisePropertyChanged(nameof(_ports));
+            //SelectedPortNumber = Ports.Any() ? Ports.First() : null; 
+            //this.RaisePropertyChanged("_ports");
+            //this.RaisePropertyChanged("SelectedPortNumber");
+
             //this..Invoke(this, new PropertyChangedEventArgs(nameof(Ports)));
         }
 
@@ -60,20 +77,29 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         #region SerialConnectSettingsOptions
         
-        public ObservableCollection<string> Ports
+        public IList<string> Ports
+            //ObservableCollection<string> Ports
         {
             get { return _ports; }
             set
             {
-                //_ports.Clear();
-                //_ports.AddRange(value);
-                this.RaiseAndSetIfChanged(ref _ports, value);
+                _ports = value;
+                this.RaisePropertyChanged();
+                // this.RaiseAndSetIfChanged(ref _ports, value);
             }
         }
         
         public SerialDefaultsModel SerialOptions { get; }
-        
-        public string SelectedPortNumber { get; set; }
+
+        public string SelectedPortNumber
+        {
+            get { return _selectedPortName;}
+            set
+            {
+                _selectedPortName = value;
+                this.RaisePropertyChanged("SelectedPortNumber");
+            }
+        }
         public string SelectedBaudRate { get; set; }
         public string SelectedStopBits { get; set; }
         public string SelectedByteLength { get; set; }
@@ -99,6 +125,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
         #endregion
 
         private string _selectedFlowControl;
-        private ObservableCollection<string> _ports;
+        private string _selectedPortName;
+
+        //private ObservableCollection<string> _ports;
+        private IList<string> _ports;
     }
 }

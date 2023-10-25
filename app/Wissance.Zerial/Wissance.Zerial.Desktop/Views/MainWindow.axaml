@@ -16,6 +16,10 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
+    <!--<Window.DataContext>
+        <vm:MainWindowViewModel></vm:MainWindowViewModel>
+    </Window.DataContext>-->
+    
     <Window.Styles>
         <StyleInclude Source="/Styles/Theme.axaml" />
     </Window.Styles>
@@ -29,9 +33,10 @@
                         <StackPanel Orientation="Vertical" Background="Beige">
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chartreuse" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
-                                <ComboBox Name="PortsListSelect" ItemsSource="{Binding Path=Ports, Mode=TwoWay}"
+                                <ComboBox Name="PortsListSelect" 
+                                          ItemsSource="{Binding Path=Ports, Mode=OneWay}"
                                           SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
-                                          DropDownOpened="OnPortNumberListOpened"
+                                          PointerEntered="OnPortsPointerControlMouseOver"
                                           Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
