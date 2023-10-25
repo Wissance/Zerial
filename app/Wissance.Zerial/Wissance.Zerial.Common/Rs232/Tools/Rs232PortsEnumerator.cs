@@ -1,8 +1,6 @@
-
-
 using System.IO.Ports;
 
-namespace Wissance.Zerial.Common.Tools
+namespace Wissance.Zerial.Common.Rs232.Tools
 {
     public static class Rs232PortsEnumerator
     {

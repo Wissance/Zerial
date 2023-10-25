@@ -10,7 +10,8 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
-using Wissance.Zerial.Common.Tools;
+using Wissance.Zerial.Common.Rs232.Settings;
+using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Models;
 
 namespace Wissance.Zerial.Desktop.ViewModels

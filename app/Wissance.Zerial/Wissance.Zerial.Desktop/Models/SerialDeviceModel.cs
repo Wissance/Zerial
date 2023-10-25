@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Wissance.Zerial.Common.Rs232;
+using Wissance.Zerial.Common.Rs232.Settings;
 
 namespace Wissance.Zerial.Desktop.Models
 {
