@@ -21,7 +21,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
-                //new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
@@ -46,28 +45,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public IList<string> ReEnumeratePorts()
         {
-            //this.RaisePropertyChanging("Ports");
-            // Ports = new ObservableCollection<string>(Rs232PortsEnumerator.GetAvailablePorts());
             Ports.Clear();
             IList<string> newPorts = Rs232PortsEnumerator.GetAvailablePorts();
-            Ports.AddRange(newPorts);
+            Ports = newPorts;
             return newPorts;
-            //Ports = newPorts;
-            //new ObservableCollection<string>(newPorts);
-            /*foreach (string port in newPorts)
-            {
-                Ports.Add(port);
-            }*/
-            //SelectedPortNumber = null;
-            //this.RaisePropertyChanged(nameof(SelectedPortNumber));
-            //this.RaisePropertyChanged(nameof(Ports));
-            //_ports.
-            //this.RaisePropertyChanged(nameof(_ports));
-            //SelectedPortNumber = Ports.Any() ? Ports.First() : null; 
-            //this.RaisePropertyChanged("_ports");
-            //this.RaisePropertyChanged("SelectedPortNumber");
-
-            //this..Invoke(this, new PropertyChangedEventArgs(nameof(Ports)));
         }
 
         #region RS232TreeConfiguration
@@ -78,14 +59,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
         #region SerialConnectSettingsOptions
         
         public IList<string> Ports
-            //ObservableCollection<string> Ports
         {
             get { return _ports; }
             set
             {
                 _ports = value;
                 this.RaisePropertyChanged();
-                // this.RaiseAndSetIfChanged(ref _ports, value);
             }
         }
         
@@ -126,8 +105,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private string _selectedFlowControl;
         private string _selectedPortName;
-
-        //private ObservableCollection<string> _ports;
+        
         private IList<string> _ports;
     }
 }
