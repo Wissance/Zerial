@@ -34,6 +34,7 @@ namespace Wissance.Zerial.Desktop.Models
 
         private readonly IDictionary<string, Rs232StopBits> _stopBits = new Dictionary<string, Rs232StopBits>()
         {
+            {"None", Rs232StopBits.None},
             {"One", Rs232StopBits.One},
             {"One and half", Rs232StopBits.OneAndHalf},
             {"Two", Rs232StopBits.Two}

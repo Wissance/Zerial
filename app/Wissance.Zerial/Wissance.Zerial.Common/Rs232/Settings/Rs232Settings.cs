@@ -13,7 +13,8 @@ namespace Wissance.Zerial.Common.Rs232.Settings
     {
         One = 1,
         OneAndHalf = 2,
-        Two = 3
+        Two = 3,
+        None = 4
     }
 
     public enum Rs232Parity
