@@ -12,54 +12,74 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _cancellationSource.Cancel();
+            foreach (KeyValuePair<int,SerialPort> device in _devices)
+            {
+                device.Value.Dispose();
+            }
         }
         
         public async Task<bool> OpenAsync(Rs232Settings settings)
         {
             try
             {
-                // todo(umv): run timeout parallel to open task
-                SerialPort serialPort = new SerialPort()
+                SerialPort serialPort = _devices[settings.PortNumber];
+                
+                if (serialPort == null)
                 {
-                    PortName = $"COM{settings.PortNumber}",
-                    BaudRate = (int)settings.BaudRate,
-                    StopBits = _stopBitsMapping[settings.StopBits],
-                    DataBits = settings.ByteLength,
-                    Parity = _parityMapping[settings.Parity],
-                    ReadBufferSize = 64,
-                    WriteBufferSize = 64,
-                    Handshake = _flowControlMapping[settings.FlowControl]
-                };
+                    // todo(umv): run timeout parallel to open task
+                    serialPort = new SerialPort()
+                    {
+                        PortName = $"COM{settings.PortNumber}",
+                        BaudRate = (int)settings.BaudRate,
+                        StopBits = _stopBitsMapping[settings.StopBits],
+                        DataBits = settings.ByteLength,
+                        Parity = _parityMapping[settings.Parity],
+                        ReadBufferSize = 64,
+                        WriteBufferSize = 64,
+                        Handshake = _flowControlMapping[settings.FlowControl]
+                    };
+
+                    
+                }
                 
                 // todo(UMV): add Xon + Xoff symbols data
-
-                serialPort.Open();
+                
+                _devices[settings.PortNumber] = serialPort;
+                
+                Task openTask = new Task(async _ => { _devices[settings.PortNumber].Open();}, _cancellationSource.Token);
+                Task delayTask = Task.Delay(DefaultOperationTimeout);
+                Task.WaitAny(new Task[] { openTask, delayTask });
+                
+                // todo(UMV): add OnReceive handler
+                
                 return true;
             }
             catch (Exception e)
             {
-                // todo(umv) :add logging
+                // todo(umv): add logging
                 return false;
             }
         }
 
-        public Task<bool> CloseAsync(int portNumber)
+        public async Task<bool> CloseAsync(int portNumber)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> WriteAsync(int portNumber, byte[] data)
+        public async Task<bool> WriteAsync(int portNumber, byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public Task<byte[]> ReadAsync(int portNumber)
+        public async Task<byte[]> ReadAsync(int portNumber)
         {
             throw new NotImplementedException();
         }
 
-        private IDictionary<int, SerialPort> _devices = new ConcurrentDictionary<int, SerialPort>();
+        private const int DefaultOperationTimeout = 2000;
+
+        private readonly IDictionary<int, SerialPort> _devices = new ConcurrentDictionary<int, SerialPort>();
 
         private readonly IDictionary<Rs232StopBits, StopBits> _stopBitsMapping = new Dictionary<Rs232StopBits, StopBits>()
             {
@@ -84,5 +104,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             { Rs232FlowControl.XonXoff , Handshake.XOnXOff },
             { Rs232FlowControl.RtsCts , Handshake.RequestToSend }
         };
+
+        private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
     }
 }
