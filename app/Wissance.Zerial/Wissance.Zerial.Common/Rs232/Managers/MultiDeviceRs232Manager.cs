@@ -23,7 +23,9 @@ namespace Wissance.Zerial.Common.Rs232.Managers
         {
             try
             {
-                SerialPort serialPort = _devices[settings.PortNumber];
+                SerialPort serialPort = null;
+                if (_devices.ContainsKey(settings.PortNumber))
+                    serialPort = _devices[settings.PortNumber];
                 
                 if (serialPort == null)
                 {
@@ -55,7 +57,10 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     _devices[settings.PortNumber].Open();
                 }, 
                     _cancellationSource.Token);
-                Task delayTask = Task.Delay(DefaultOperationTimeout);
+                Task delayTask = Task.Delay(DefaultOperationTimeout); // this task starts automatically
+                
+                openTask.Start(); // we should start it manually
+                
                 Task.WaitAny(new Task[] { openTask, delayTask });
                 
                 // todo(UMV): add OnReceive handler
@@ -88,7 +93,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             throw new NotImplementedException();
         }
 
-        private const int DefaultOperationTimeout = 2000;
+        private const int DefaultOperationTimeout = 5000;
 
         private readonly IDictionary<int, SerialPort> _devices = new ConcurrentDictionary<int, SerialPort>();
 

@@ -42,6 +42,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             };
         }
 
+        // todo(UMV): this should be a common handler 4 Connect/Disconnect
         public async Task ExecuteConnectAction()
         {
             int portNumber = 0;
@@ -59,6 +60,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     // todo(UMV): pass Xon + Xoff bytes
                 };
                 bool openResult = await _deviceManager.OpenAsync(deviceSetting);
+                if (openResult)
+                {
+                    // todo(UMV): add to tree
+                }
             }
         }
 
