@@ -8,7 +8,8 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
-        Title="Zerial (Community Edition) - serial (RS232/COM) device communications">
+        Title="Zerial (Community Edition) - serial (RS232/COM) device communications"
+        Closing="OnWindowClose">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -94,7 +95,8 @@
                         <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
                             <!-- Connect && Disconnect button-->
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <Button Command="{Binding ExecuteConnectAction}">Connect</Button>
+                                <Button IsEnabled="{Binding IsPortSelected}"
+                                        Command="{Binding ExecuteConnectAction}">Connect</Button>
                             </StackPanel>
                         </StackPanel>
                     </Border>

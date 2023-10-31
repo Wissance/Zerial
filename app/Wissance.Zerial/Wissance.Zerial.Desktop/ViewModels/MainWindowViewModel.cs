@@ -4,12 +4,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Interactivity;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
+using Wissance.Zerial.Common.Rs232.Managers;
 using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Models;
@@ -23,6 +25,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
+            _deviceManager = new MultiDeviceRs232Manager();
             
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
@@ -39,9 +42,24 @@ namespace Wissance.Zerial.Desktop.ViewModels
             };
         }
 
-        public void ExecuteConnectAction()
+        public async Task ExecuteConnectAction()
         {
-            int a = 1;
+            int portNumber = 0;
+            bool portParseResult = int.TryParse(SelectedPortNumber.Substring("COM".Length), out portNumber);
+            if (portParseResult)
+            {
+                Rs232Settings deviceSetting = new Rs232Settings()
+                {
+                    PortNumber = portNumber,
+                    BaudRate = SerialOptions.BaudRates[SelectedBaudRate],
+                    ByteLength = SerialOptions.ByteLength[SelectedByteLength],
+                    Parity = SerialOptions.Parities[SelectedParity],
+                    StopBits = SerialOptions.StopBits[SelectedStopBits],
+                    FlowControl = SerialOptions.FlowControls[SelectedFlowControl]
+                    // todo(UMV): pass Xon + Xoff bytes
+                };
+                bool openResult = await _deviceManager.OpenAsync(deviceSetting);
+            }
         }
 
         public IList<string> ReEnumeratePorts()
@@ -52,12 +70,17 @@ namespace Wissance.Zerial.Desktop.ViewModels
             return newPorts;
         }
 
+        public void ResourcesCleanUp()
+        {
+            _deviceManager.Dispose();
+        }
+
         #region RS232TreeConfiguration
         public ObservableCollection<SerialPortNodeModel> DevicesConfigs { get; set; }
         
         #endregion
 
-        #region SerialConnectSettingsOptions
+        #region SerialDeviceSettings
         
         public IList<string> Ports
         {
@@ -77,7 +100,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             set
             {
                 _selectedPortName = value;
-                this.RaisePropertyChanged("SelectedPortNumber");
+                IsPortSelected = !string.IsNullOrEmpty(_selectedPortName);
+                this.RaisePropertyChanged(nameof(IsPortSelected));
             }
         }
         public string SelectedBaudRate { get; set; }
@@ -93,20 +117,21 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 _selectedFlowControl = value;
                 IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
                 // this DO TRICK with props changes apply on View (2Way Binding)
-                this.RaisePropertyChanged("IsProgrammableFlowControl");
+                this.RaisePropertyChanged(nameof(IsProgrammableFlowControl));
             }
         }
 
         public bool IsProgrammableFlowControl { get; set; }
-        
-        public string XonSymbol { get; set; }
-        
-        public string XoffSymbol { get; set; }
-        #endregion
+        public bool IsPortSelected { get; set; }
 
+        public string XonSymbol { get; set; }
+        public string XoffSymbol { get; set; }
+        
         private string _selectedFlowControl;
         private string _selectedPortName;
+        #endregion
         
         private IList<string> _ports;
+        private readonly IRs232DeviceManager _deviceManager;
     }
 }

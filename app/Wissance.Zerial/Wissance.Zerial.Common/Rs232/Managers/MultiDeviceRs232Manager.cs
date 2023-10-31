@@ -39,20 +39,31 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                         WriteBufferSize = 64,
                         Handshake = _flowControlMapping[settings.FlowControl]
                     };
-
                     
                 }
                 
                 // todo(UMV): add Xon + Xoff symbols data
-                
+                if (settings.FlowControl == Rs232FlowControl.XonXoff)
+                {
+                    // ?
+                }
+
                 _devices[settings.PortNumber] = serialPort;
                 
-                Task openTask = new Task(async _ => { _devices[settings.PortNumber].Open();}, _cancellationSource.Token);
+                Task openTask = new Task(async _ =>
+                {
+                    _devices[settings.PortNumber].Open();
+                }, 
+                    _cancellationSource.Token);
                 Task delayTask = Task.Delay(DefaultOperationTimeout);
                 Task.WaitAny(new Task[] { openTask, delayTask });
                 
                 // todo(UMV): add OnReceive handler
-                
+                if (openTask.Status != TaskStatus.RanToCompletion || openTask.Exception != null)
+                {
+                    // todo(UMV): log exception
+                }
+
                 return true;
             }
             catch (Exception e)
@@ -92,10 +103,10 @@ namespace Wissance.Zerial.Common.Rs232.Managers
         private readonly IDictionary<Rs232Parity, Parity> _parityMapping = new Dictionary<Rs232Parity, Parity>()
         {
             { Rs232Parity.NoParity, Parity.None },
-            { Rs232Parity.NoParity, Parity.None },
-            { Rs232Parity.NoParity, Parity.None },
-            { Rs232Parity.NoParity, Parity.None },
-            { Rs232Parity.NoParity, Parity.None }
+            { Rs232Parity.Mark, Parity.Mark },
+            { Rs232Parity.Space, Parity.Space },
+            { Rs232Parity.Even, Parity.Even },
+            { Rs232Parity.Odd, Parity.Odd }
         };
 
         private readonly IDictionary<Rs232FlowControl, Handshake> _flowControlMapping = new Dictionary<Rs232FlowControl, Handshake>()

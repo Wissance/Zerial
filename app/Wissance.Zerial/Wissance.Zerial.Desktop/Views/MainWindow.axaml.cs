@@ -34,6 +34,11 @@ namespace Wissance.Zerial.Desktop.Views
             PortsListSelect.SelectedItem = ports.Any() ? ports [0]: null;
         }
         
+        private void OnWindowClose(object? sender, WindowClosingEventArgs e)
+        {
+            _context.ResourcesCleanUp();
+        }
+        
         private readonly MainWindowViewModel _context;
     }
 }
