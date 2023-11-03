@@ -35,6 +35,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedParity = SerialOptions.Parities.First(p => p.Value == Rs232Parity.Even).Key;
             XonSymbol = SerialDefaultsModel.DefaultXon;
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
+
+            ConnectButtonText = Globals.ConnectButtonConnectText;
+            
             // example ....
             DevicesConfigs = new ObservableCollection<SerialPortNodeModel>()
             {
@@ -80,16 +83,19 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     {
                         // todo(UMV): add to tree
                         // _serialDevices.Add(new SerialDeviceModel(true, ));
+                        ConnectButtonText = Globals.ConnectButtonDisconnectText;
                     }
                 }
                 else
                 {
                     await _deviceManager.CloseAsync(deviceSetting.PortNumber);
                     serialDevice.Connected = false;
+                    ConnectButtonText = Globals.ConnectButtonConnectText;
                 }
                 
                 if (isNewDevice)
                     _serialDevices.Add(serialDevice);
+                this.RaisePropertyChanged(nameof(ConnectButtonText));
             }
         }
 
@@ -122,7 +128,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        
+
+        public string ConnectButtonText { get; set; }
+
         public SerialDefaultsModel SerialOptions { get; }
 
         public string SelectedPortNumber
@@ -160,6 +168,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         private string _selectedFlowControl;
         private string _selectedPortName;
+        //private string _connectButtonText;
         #endregion
         
         private IList<string> _ports;

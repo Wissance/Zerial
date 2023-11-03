@@ -95,8 +95,9 @@
                         <StackPanel Orientation="Horizontal" Background="Beige" Margin="0, 0,0,0" >
                             <!-- Connect && Disconnect button-->
                             <StackPanel Orientation="Vertical" Margin="10">
-                                <Button IsEnabled="{Binding IsPortSelected}"
-                                        Command="{Binding ExecuteConnectAction}">Connect</Button>
+                                <Button Content="{Binding ConnectButtonText}"
+                                        IsEnabled="{Binding IsPortSelected}"
+                                        Command="{Binding ExecuteConnectAction}"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
