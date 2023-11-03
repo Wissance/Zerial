@@ -39,10 +39,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
             ConnectButtonText = Globals.ConnectButtonConnectText;
             
             // example ....
-            DevicesConfigs = new ObservableCollection<SerialPortNodeModel>()
+            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>()
             {
-                 new SerialPortNodeModel(5, "COM5, 115200 b/s, Even, 1 Stop Bit, No Flow Control"),
-                 new SerialPortNodeModel(3, "COM3, 9600 b/s, No, 1 Stop Bit, No Flow Control")
+                 new SerialPortShortInfoModel(5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
+                 new SerialPortShortInfoModel(3, "COM3, 9600 b/s, No, 1 SB, No FC")
             };
         }
 
@@ -81,8 +81,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     serialDevice.Connected = openResult;
                     if (openResult)
                     {
-                        // todo(UMV): add to tree
-                        // _serialDevices.Add(new SerialDeviceModel(true, ));
                         ConnectButtonText = Globals.ConnectButtonDisconnectText;
                     }
                 }
@@ -96,6 +94,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 if (isNewDevice)
                     _serialDevices.Add(serialDevice);
                 this.RaisePropertyChanged(nameof(ConnectButtonText));
+                // todo(UMV): tree add
+                if (DevicesConfigs.All(d => d.PortNumber != deviceSetting.PortNumber))
+                {
+                    DevicesConfigs.Add(serialDevice.ToShortInfo());
+                    this.RaisePropertyChanged(nameof(DevicesConfigs));
+                }
             }
         }
 
@@ -113,7 +117,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         #region RS232TreeConfiguration
-        public ObservableCollection<SerialPortNodeModel> DevicesConfigs { get; set; }
+        public ObservableCollection<SerialPortShortInfoModel> DevicesConfigs { get; set; }
         
         #endregion
 
