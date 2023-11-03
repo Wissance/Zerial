@@ -80,7 +80,18 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         public async Task<bool> CloseAsync(int portNumber)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_devices.ContainsKey(portNumber))
+                {
+                    _devices[portNumber].Close();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> WriteAsync(int portNumber, byte[] data)

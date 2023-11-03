@@ -26,6 +26,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager();
+            _serialDevices = new List<SerialDeviceModel>();
             
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
@@ -57,13 +58,38 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     Parity = SerialOptions.Parities[SelectedParity],
                     StopBits = SerialOptions.StopBits[SelectedStopBits],
                     FlowControl = SerialOptions.FlowControls[SelectedFlowControl]
-                    // todo(UMV): pass Xon + Xoff bytes
+                    // todo(UMV): pass Xon + Xoff bytes as bytes
                 };
-                bool openResult = await _deviceManager.OpenAsync(deviceSetting);
-                if (openResult)
+
+                SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == deviceSetting.PortNumber);
+                bool isNewDevice = serialDevice == null;
+                if (serialDevice == null)
                 {
-                    // todo(UMV): add to tree
+                    serialDevice = new SerialDeviceModel(false, deviceSetting, new List<SerialDeviceMessageModel>() { });
                 }
+                else
+                {
+                    serialDevice.Settings = deviceSetting;
+                }
+
+                if (!serialDevice.Connected)
+                {
+                    bool openResult = await _deviceManager.OpenAsync(deviceSetting);
+                    serialDevice.Connected = openResult;
+                    if (openResult)
+                    {
+                        // todo(UMV): add to tree
+                        // _serialDevices.Add(new SerialDeviceModel(true, ));
+                    }
+                }
+                else
+                {
+                    await _deviceManager.CloseAsync(deviceSetting.PortNumber);
+                    serialDevice.Connected = false;
+                }
+                
+                if (isNewDevice)
+                    _serialDevices.Add(serialDevice);
             }
         }
 
@@ -137,6 +163,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         #endregion
         
         private IList<string> _ports;
+        private readonly IList<SerialDeviceModel> _serialDevices;
         private readonly IRs232DeviceManager _deviceManager;
     }
 }
