@@ -37,13 +37,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
             ConnectButtonText = Globals.ConnectButtonConnectText;
-            
-            // example ....
-            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>()
-            {
+            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>();
+            /*{
                  new SerialPortShortInfoModel(5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
                  new SerialPortShortInfoModel(3, "COM3, 9600 b/s, No, 1 SB, No FC")
-            };
+            };*/
         }
 
         // todo(UMV): this should be a common handler 4 Connect/Disconnect
