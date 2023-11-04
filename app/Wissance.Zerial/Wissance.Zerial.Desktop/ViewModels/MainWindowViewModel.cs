@@ -37,11 +37,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
             ConnectButtonText = Globals.ConnectButtonConnectText;
-            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>();
-            /*{
-                 new SerialPortShortInfoModel(5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
-                 new SerialPortShortInfoModel(3, "COM3, 9600 b/s, No, 1 SB, No FC")
-            };*/
+            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>()
+            {
+                 new SerialPortShortInfoModel(false, 5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
+                 new SerialPortShortInfoModel(true, 3, "COM3, 9600 b/s, No, 1 SB, No FC")
+            };
         }
 
         // todo(UMV): this should be a common handler 4 Connect/Disconnect
@@ -97,6 +97,19 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 {
                     DevicesConfigs.Add(serialDevice.ToShortInfo());
                     this.RaisePropertyChanged(nameof(DevicesConfigs));
+                }
+                else
+                {
+                    SerialPortShortInfoModel info = DevicesConfigs.FirstOrDefault(d => d.PortNumber == deviceSetting.PortNumber);
+                    if (info != null)
+                    {
+                        int index = DevicesConfigs.IndexOf(info);
+                        DevicesConfigs.RemoveAt(index);
+                        info.Connected = serialDevice.Connected;
+                        info.Configuration = serialDevice.ToShortInfo().Configuration;
+                        DevicesConfigs.Insert(index, info);
+                        this.RaisePropertyChanged(nameof(DevicesConfigs));
+                    }
                 }
             }
         }

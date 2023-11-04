@@ -77,7 +77,7 @@ namespace Wissance.Zerial.Desktop.Models
                     break;
             }
 
-            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Settings.PortNumber, infoBuilder.ToString());
+            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.PortNumber, infoBuilder.ToString());
             return info;
         }
 

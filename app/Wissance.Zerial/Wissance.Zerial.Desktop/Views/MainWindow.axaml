@@ -112,7 +112,7 @@
                             <TreeView.ItemTemplate>
                                 <TreeDataTemplate ItemsSource="{Binding PortNumber}">
                                     <StackPanel Orientation="Horizontal" Background="Coral">
-                                        <!--<Image Source="../Assets/Images/Device_Is_On_24x24.png"></Image>-->
+                                        <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
                                         <Image Source="../Assets/Images/Serial_32x32.png"></Image>
                                         <TextBlock Text="{Binding Configuration}" FontSize="10" Margin="3 10 0 0"/>
                                     </StackPanel>
