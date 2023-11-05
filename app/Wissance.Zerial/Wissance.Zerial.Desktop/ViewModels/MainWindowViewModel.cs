@@ -122,6 +122,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
             return newPorts;
         }
 
+        public void ShowSelectedSerialDeviceSetting(int portNumber)
+        {
+            if (portNumber < 0)
+                return;
+            SerialDeviceModel device = _serialDevices.FirstOrDefault(d => d.Settings.PortNumber == portNumber);
+            if (device != null)
+            {
+                SelectedBaudRate = SerialOptions.BaudRates.FirstOrDefault(b => b.Value == device.Settings.BaudRate).Key;
+                this.RaisePropertyChanged(nameof(SelectedBaudRate));
+            }
+        }
+
         public void ResourcesCleanUp()
         {
             _deviceManager.Dispose();

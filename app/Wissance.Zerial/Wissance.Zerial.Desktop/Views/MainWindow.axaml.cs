@@ -9,6 +9,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using DynamicData.Binding;
+using Wissance.Zerial.Common.Utils;
 using Wissance.Zerial.Desktop.ViewModels;
 
 namespace Wissance.Zerial.Desktop.Views
@@ -38,7 +39,28 @@ namespace Wissance.Zerial.Desktop.Views
         {
             _context.ResourcesCleanUp();
         }
-        
+        private void OnTreeItemTapped(object? sender, TappedEventArgs e)
+        {
+            // sender is a TextBlock with Text like = COM4, 9600 b/s, 8b, 1 Sb, Even, No FC
+            // todo(UMV): Load Setting from tapped item to the controls
+            TextBlock treeLineText = sender as TextBlock;
+            if (treeLineText != null)
+            {
+                int portNumber = GetPortNumberFromTreeItemText(treeLineText.Text);
+                _context.ShowSelectedSerialDeviceSetting(portNumber);
+            }
+        }
+
+        private int GetPortNumberFromTreeItemText(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return -1;
+            string[] items = text.Split(",");
+            if (items == null || !items.Any())
+                return -2;
+            return SerialPortNumberExtractor.Extract(items[0]);
+        }
+
         private readonly MainWindowViewModel _context;
     }
 }

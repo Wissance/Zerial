@@ -114,7 +114,9 @@
                                     <StackPanel Orientation="Horizontal" Background="Coral">
                                         <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
                                         <Image Source="../Assets/Images/Serial_32x32.png"></Image>
-                                        <TextBlock Text="{Binding Configuration}" FontSize="10" Margin="3 10 0 0"/>
+                                        <TextBlock Text="{Binding Configuration}"
+                                                   Tapped="OnTreeItemTapped"
+                                                   FontSize="10" Margin="3 10 0 0"/>
                                     </StackPanel>
                                 </TreeDataTemplate>
                             </TreeView.ItemTemplate>
