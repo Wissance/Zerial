@@ -129,8 +129,19 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialDeviceModel device = _serialDevices.FirstOrDefault(d => d.Settings.PortNumber == portNumber);
             if (device != null)
             {
+                SelectedPortNumber = $"COM{portNumber}";
+                this.RaisePropertyChanged(nameof(SelectedPortNumber));
                 SelectedBaudRate = SerialOptions.BaudRates.FirstOrDefault(b => b.Value == device.Settings.BaudRate).Key;
                 this.RaisePropertyChanged(nameof(SelectedBaudRate));
+                SelectedByteLength = SerialOptions.ByteLength.FirstOrDefault(b => b.Value == device.Settings.ByteLength).Key;
+                this.RaisePropertyChanged(nameof(SelectedByteLength));
+                SelectedParity = SerialOptions.Parities.FirstOrDefault(b => b.Value == device.Settings.Parity).Key;
+                this.RaisePropertyChanged(nameof(SelectedParity));
+                SelectedStopBits = SerialOptions.StopBits.FirstOrDefault(b => b.Value == device.Settings.StopBits).Key;
+                this.RaisePropertyChanged(nameof(SelectedStopBits));
+                SelectedFlowControl = SerialOptions.FlowControls.FirstOrDefault(b => b.Value == device.Settings.FlowControl).Key;
+                this.RaisePropertyChanged(nameof(SelectedFlowControl));
+                // todo(UMV): add Xon+Xoff restore
             }
         }
 
