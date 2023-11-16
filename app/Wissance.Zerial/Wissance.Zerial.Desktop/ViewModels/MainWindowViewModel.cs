@@ -43,6 +43,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                  new SerialPortShortInfoModel(false, 5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
                  new SerialPortShortInfoModel(true, 3, "COM3, 9600 b/s, No, 1 SB, No FC")
             };
+
+            SerialDeviceMessages = new ObservableCollection<string>();
         }
 
         // todo(UMV): this should be a common handler 4 Connect/Disconnect
@@ -81,7 +83,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     if (openResult)
                     {
                         ConnectButtonText = Globals.ConnectButtonDisconnectText;
-                        serialDevice.Messages.Add(new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null));
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
+                        serialDevice.Messages.Add(msg);
                     }
                 }
                 else
@@ -89,7 +92,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     await _deviceManager.CloseAsync(deviceSetting.PortNumber);
                     serialDevice.Connected = false;
                     ConnectButtonText = Globals.ConnectButtonConnectText;
-                    serialDevice.Messages.Add(new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null));
+                    SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
+                    serialDevice.Messages.Add(msg);
                 }
                 
                 if (isNewDevice)
@@ -184,6 +188,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 this.RaisePropertyChanged(nameof(IsPortSelected));
             }
         }
+
+        public ObservableCollection<string> SerialDeviceMessages { get; set; }
+
         public string SelectedBaudRate { get; set; }
         public string SelectedStopBits { get; set; }
         public string SelectedByteLength { get; set; }
