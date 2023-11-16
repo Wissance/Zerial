@@ -8,7 +8,9 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using DynamicData.Binding;
+using Avalonia.Media;
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
 using Wissance.Zerial.Common.Utils;
 using Wissance.Zerial.Desktop.ViewModels;
 
@@ -18,16 +20,12 @@ namespace Wissance.Zerial.Desktop.Views
     {
         public MainWindow()
         {
-            InitializeComponent();
             _context = new MainWindowViewModel();
             DataContext = _context;
+            InitializeComponent();
+            InitializeTextEditor();
         }
-        
-        public void OnConnectClick(object sender, RoutedEventArgs e)
-        {
-            // todo(UMV): think what should we programmatically do with other controls
-        }
-        
+
         private void OnPortsPointerControlMouseOver(object? sender, PointerEventArgs e)
         {
             IList<string> ports = _context.ReEnumeratePorts();
@@ -61,6 +59,26 @@ namespace Wissance.Zerial.Desktop.Views
             return SerialPortNumberExtractor.Extract(items[0]);
         }
 
+        private void InitializeTextEditor()
+        {
+            _textEditor = this.FindControl<TextEditor>(TextEditorName);
+            _textEditor.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            _textEditor.Background = Brushes.Transparent;
+            _textEditor.ShowLineNumbers = true;
+            _textEditor.TextArea.Background = this.Background;
+            //_textEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+            //_textEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            _textEditor.Options.ShowBoxForControlCharacters = true;
+            _textEditor.Options.ColumnRulerPositions = new List<int>() { 80, 100 };
+            //_textEditor.TextArea.IndentationStrategy = new Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
+            //_textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+            _textEditor.TextArea.RightClickMovesCaret = true;
+            _textEditor.Document = new TextDocument("Application started!");
+        }
+
+        private const string TextEditorName = "SerialDevicesMessageViewer";
+
         private readonly MainWindowViewModel _context;
+        private TextEditor _textEditor;
     }
 }

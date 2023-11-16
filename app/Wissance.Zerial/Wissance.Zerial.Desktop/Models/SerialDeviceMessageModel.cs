@@ -2,16 +2,25 @@ using System;
 
 namespace Wissance.Zerial.Desktop.Models
 {
-    public enum Direction
+    public enum MessageType
     {
-        In,  // from Device to PC
-        Out  // from PC to Device
+        Connect,
+        Disconnect,
+        Read,  // from Device to PC
+        Write  // from PC to Device
     }
 
     public class SerialDeviceMessageModel
     {
+        public SerialDeviceMessageModel(MessageType messageType, DateTime timestamp, byte[] rawData)
+        {
+            Time = timestamp;
+            MessageType = messageType;
+            RawData = rawData;
+        }
+
         public DateTime Time { get; set; }
-        public Direction Direction { get; set; }
-        public byte[] Message { get; set; }
+        public MessageType MessageType { get; set; }
+        public byte[] RawData { get; set; }
     }
 }

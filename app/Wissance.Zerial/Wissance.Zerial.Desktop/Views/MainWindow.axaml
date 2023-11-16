@@ -3,6 +3,7 @@
         xmlns:vm="using:Wissance.Zerial.Desktop.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:AvalonEdit="using:AvaloniaEdit"
         mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="600"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -121,6 +122,11 @@
                                 </TreeDataTemplate>
                             </TreeView.ItemTemplate>
                         </TreeView>
+                    </StackPanel>
+                    <StackPanel Margin="10">
+                        <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
+                                               Width="600" Height="300"
+                                               IsReadOnly="True" ShowLineNumbers="True"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

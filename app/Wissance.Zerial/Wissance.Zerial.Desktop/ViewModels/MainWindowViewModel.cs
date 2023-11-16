@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Interactivity;
@@ -80,6 +81,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     if (openResult)
                     {
                         ConnectButtonText = Globals.ConnectButtonDisconnectText;
+                        serialDevice.Messages.Add(new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null));
                     }
                 }
                 else
@@ -87,6 +89,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     await _deviceManager.CloseAsync(deviceSetting.PortNumber);
                     serialDevice.Connected = false;
                     ConnectButtonText = Globals.ConnectButtonConnectText;
+                    serialDevice.Messages.Add(new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null));
                 }
                 
                 if (isNewDevice)
@@ -206,7 +209,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         private string _selectedFlowControl;
         private string _selectedPortName;
-        //private string _connectButtonText;
         #endregion
         
         private IList<string> _ports;
