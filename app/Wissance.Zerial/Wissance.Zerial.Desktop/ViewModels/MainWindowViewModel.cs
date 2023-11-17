@@ -85,6 +85,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         ConnectButtonText = Globals.ConnectButtonDisconnectText;
                         SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
                         serialDevice.Messages.Add(msg);
+                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
                     }
                 }
                 else
@@ -94,6 +95,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     ConnectButtonText = Globals.ConnectButtonConnectText;
                     SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
                     serialDevice.Messages.Add(msg);
+                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
                 }
                 
                 if (isNewDevice)

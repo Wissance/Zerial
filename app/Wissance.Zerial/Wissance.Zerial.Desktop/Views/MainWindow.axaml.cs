@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -22,6 +23,16 @@ namespace Wissance.Zerial.Desktop.Views
         {
             _context = new MainWindowViewModel();
             DataContext = _context;
+            _context.SerialDeviceMessages.CollectionChanged += (sender, args) =>
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (string message in _context.SerialDeviceMessages)
+                {
+                    builder.Append(message);
+                    builder.Append(Environment.NewLine);
+                }
+                _textEditor.Document = new TextDocument(builder.ToString());
+            };
             InitializeComponent();
             InitializeTextEditor();
         }

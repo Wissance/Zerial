@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Text;
 
 namespace Wissance.Zerial.Desktop.Models
 {
@@ -23,18 +25,30 @@ namespace Wissance.Zerial.Desktop.Models
         {
             if (MessageType == MessageType.Connect || MessageType == MessageType.Disconnect)
             {
-                return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"),
+                return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
                     MessageType == MessageType.Connect ? "Connected" : "Disconnected");
             }
 
-            return "";
+            StringBuilder dataAsStr = new StringBuilder();
+            if (RawData != null && RawData.Any())
+            {
+                foreach (byte b in RawData)
+                {
+                    if (dataAsStr.Length > 0)
+                        dataAsStr.Append(" ");
+                    dataAsStr.Append(string.Format("0x:{0:b}", b));
+                }
+            }
+
+            return string.Format(IoMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
+                MessageType == MessageType.Read ? "Read" : "Write", dataAsStr);
         }
 
         public DateTime Time { get; set; }
         public MessageType MessageType { get; set; }
         public byte[] RawData { get; set; }
 
-        private const string StatusMessageTemplate = "[{0}] : {1}";
-        private const string IoMessageTemplate = "[{0}] : {1} : {2}";
+        private const string StatusMessageTemplate = "[{0}] : COM{1} : {2}";
+        private const string IoMessageTemplate = "[{0}] : COM{1} : {2} : {3}";
     }
 }
