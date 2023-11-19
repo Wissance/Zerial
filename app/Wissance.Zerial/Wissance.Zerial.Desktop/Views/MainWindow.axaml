@@ -126,11 +126,11 @@
                                                    IsReadOnly="True" ShowLineNumbers="True"/>
                         </StackPanel>
                         <StackPanel Margin="10" Orientation="Horizontal" Background="Plum" Width="600" Height="100">
-                            <StackPanel Orientation="Vertical" Width="500"  HorizontalAlignment="Left">
-                                <TextBox Text="eee" Height="100"/>
+                            <StackPanel Orientation="Vertical" Width="500" Height="100">
+                                <TextBox Height="100" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Width="100" Height="100" Background="Tomato">
-                                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom">Send</Button>
+                            <StackPanel Orientation="Vertical" Width="100" Height="100" Background="Tomato">
+                                <Button HorizontalAlignment="Center" VerticalAlignment="Center">Send</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
