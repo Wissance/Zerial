@@ -164,7 +164,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #endregion
 
-        #region SerialDeviceSettings
+        #region RS232DeviceConfiguration
         
         public IList<string> Ports
         {
@@ -191,8 +191,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
         }
 
-        public ObservableCollection<string> SerialDeviceMessages { get; set; }
-
         public string SelectedBaudRate { get; set; }
         public string SelectedStopBits { get; set; }
         public string SelectedByteLength { get; set; }
@@ -216,12 +214,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string XonSymbol { get; set; }
         public string XoffSymbol { get; set; }
         
-        private string _selectedFlowControl;
-        private string _selectedPortName;
+        #endregion
+
+        #region RS232Messages
+        public ObservableCollection<string> SerialDeviceMessages { get; set; }
+        public string SerialDeviceMessageToSend { get; set; }
+
         #endregion
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;
         private readonly IRs232DeviceManager _deviceManager;
+        private string _selectedFlowControl;
+        private string _selectedPortName;
     }
 }

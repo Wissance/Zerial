@@ -69,6 +69,42 @@ namespace Wissance.Zerial.Desktop.Views
                 return -2;
             return SerialPortNumberExtractor.Extract(items[0]);
         }
+        
+        private void OnInputSymbolKeyDown(object? sender, KeyEventArgs e)
+        {
+            // e.Key only 0-9 && A-F
+            // int keyCode = (int)e.Key;
+            if ((e.Key >= Key.A && e.Key <= Key.F) || (e.Key >= Key.D0 && e.Key <= Key.D9))
+            {
+                if (_inputNibbleCounter % 2 == 1 /*&&  _inputNibbleCounter > 1*/)
+                {
+                    // get last and replace last with string 0x{Prev}{Current}
+                    string prevNibble = _inputMessage[^1].ToString();
+                    string currentNibble = _keyStrings[e.Key];
+                    string byteRepresentation = $" 0x{prevNibble}{currentNibble}";
+                    _inputMessage.Remove(_inputMessage.Length - 1, 1);
+                    _inputMessage.Append(byteRepresentation);
+                }
+                else
+                {
+                    _inputMessage.Append(_keyStrings[e.Key]);
+                }
+
+                _inputNibbleCounter++;
+            }
+            // we should replace content in OnKeyUp or OnTextChanged ...
+        }
+        
+        
+        private void OnTextChanged(object? sender, TextChangedEventArgs e)
+        {
+            // update text if there are differences
+            if (!string.Equals(SerialDeviceSendMessageTextBox.Text, _inputMessage.ToString()))
+            {
+                SerialDeviceSendMessageTextBox.Text = _inputMessage.ToString();
+                SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length;
+            }
+        }
 
         private void InitializeTextEditor()
         {
@@ -89,7 +125,30 @@ namespace Wissance.Zerial.Desktop.Views
 
         private const string TextEditorName = "SerialDevicesMessageViewer";
 
+        private readonly IDictionary<Key, string> _keyStrings = new Dictionary<Key, string>()
+        {
+            {Key.D0, "0"},
+            {Key.D1, "1"},
+            {Key.D2, "2"},
+            {Key.D3, "3"},
+            {Key.D4, "4"},
+            {Key.D5, "5"},
+            {Key.D6, "6"},
+            {Key.D7, "7"},
+            {Key.D8, "8"},
+            {Key.D9, "9"},
+            
+            {Key.A, "A"},
+            {Key.B, "B"},
+            {Key.C, "C"},
+            {Key.D, "D"},
+            {Key.E, "E"},
+            {Key.F, "F"}
+        };
+        
         private readonly MainWindowViewModel _context;
-        private TextEditor _textEditor;
+        private TextEditor _textEditor; 
+        private int _inputNibbleCounter = 0;
+        private StringBuilder _inputMessage = new StringBuilder();
     }
 }

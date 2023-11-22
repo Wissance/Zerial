@@ -127,7 +127,9 @@
                         </StackPanel>
                         <StackPanel Margin="10" Orientation="Horizontal" Background="Plum" Width="600" Height="100">
                             <StackPanel Orientation="Vertical" Width="500" Height="100" Background="DarkSeaGreen">
-                                <TextBox Height="100" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                                <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
+                                         KeyDown="OnInputSymbolKeyDown" TextChanged="OnTextChanged"
+                                         ScrollViewer.VerticalScrollBarVisibility="Visible"/>
                             </StackPanel>
                             <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="90" Height="100" Background="Tomato">
                                 <!-- VerticalAlignment = Center is not working here ... -->
