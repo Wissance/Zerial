@@ -82,7 +82,7 @@ namespace Wissance.Zerial.Desktop.Views
                     string prevNibble = _inputMessage[^1].ToString();
                     string currentNibble = _keyStrings[e.Key];
                     string byteRepresentation = $" 0x{prevNibble}{currentNibble}";
-                    _inputMessage.Remove(_inputMessage.Length - 1, 1);
+                    _inputMessage = _inputMessage.Remove(_inputMessage.Length - 1, 1);
                     _inputMessage.Append(byteRepresentation);
                 }
                 else
@@ -96,7 +96,37 @@ namespace Wissance.Zerial.Desktop.Views
         }
         
         
+        private void OnInputSymbolKeyUp(object? sender, KeyEventArgs e)
+        {
+            const int symbolsPerByte = 5;
+            if (e.Key == Key.Back)
+            {
+                if (_inputNibbleCounter >= 1)
+                {
+                    if (_inputNibbleCounter % 2 == 0)
+                    {
+                        string byteRepresentation = _inputMessage.ToString().Substring(_inputMessage.Length - symbolsPerByte, symbolsPerByte);
+                        _inputMessage = _inputMessage.Remove(_inputMessage.Length - symbolsPerByte, symbolsPerByte);
+                        _inputMessage.Append(byteRepresentation[symbolsPerByte - 2]);
+                        _inputNibbleCounter--;
+                    }
+                    else
+                    {
+                        _inputMessage = _inputMessage.Remove(_inputMessage.Length - 1, 1);
+                        _inputNibbleCounter--;
+                    }
+                }
+            }
+            UpdateInputMessageText();
+        }
+        
+        
         private void OnTextChanged(object? sender, TextChangedEventArgs e)
+        {
+            UpdateInputMessageText();
+        }
+
+        private void UpdateInputMessageText()
         {
             // update text if there are differences
             if (!string.Equals(SerialDeviceSendMessageTextBox.Text, _inputMessage.ToString()))
