@@ -134,7 +134,8 @@
                             </StackPanel>
                             <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="90" Height="100" Background="Tomato">
                                 <!-- VerticalAlignment = Center is not working here ... -->
-                                <Button Margin="0 35 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30">Send</Button>
+                                <Button Margin="0 35 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30"
+                                        Click="OnSendMessageClick">Send</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

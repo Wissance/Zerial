@@ -135,6 +135,13 @@ namespace Wissance.Zerial.Desktop.Views
                 SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length;
             }
         }
+        
+        private void OnSendMessageClick(object? sender, RoutedEventArgs e)
+        {
+            _inputMessage.Clear();
+            _inputNibbleCounter = 0;
+            UpdateInputMessageText();
+        }
 
         private void InitializeTextEditor()
         {
