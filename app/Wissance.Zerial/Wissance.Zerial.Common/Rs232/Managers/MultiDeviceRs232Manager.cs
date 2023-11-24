@@ -6,7 +6,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 {
     public class MultiDeviceRs232Manager : IRs232DeviceManager, IDisposable
     {
-        public MultiDeviceRs232Manager(/*LoggerFactory loggerFactory*/)
+        public MultiDeviceRs232Manager(/*ILoggerFactory loggerFactory*/)
         {
         }
 
@@ -90,18 +90,51 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
+                // todo(umv): add logging
                 return false;
             }
         }
 
         public async Task<bool> WriteAsync(int portNumber, byte[] data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_devices.ContainsKey(portNumber))
+                {
+                    SerialPort serialDevice = _devices[portNumber];
+                    serialDevice.Write(data, 0, data.Length);
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                // todo(umv): add logging
+                return false;
+            }
         }
 
         public async Task<byte[]> ReadAsync(int portNumber)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_devices.ContainsKey(portNumber))
+                {
+                    SerialPort serialDevice = _devices[portNumber];
+                    byte[] buffer = new byte[4096];
+                    int bytesRead = serialDevice.Read(buffer, 0, buffer.Length);
+                    Array.Resize(ref buffer, bytesRead);
+                    return buffer;
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                // todo(umv): add logging
+                return null;
+            }
         }
 
         private const int DefaultOperationTimeout = 5000;
