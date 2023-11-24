@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -48,7 +49,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         // todo(UMV): this should be a common handler 4 Connect/Disconnect
-        public async Task ExecuteConnectAction()
+        public async Task ExecuteConnectActionAsync()
         {
             int portNumber = 0;
             bool portParseResult = int.TryParse(SelectedPortNumber.Substring("COM".Length), out portNumber);
@@ -120,6 +121,41 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         this.RaisePropertyChanged(nameof(DevicesConfigs));
                     }
                 }
+            }
+        }
+
+        public async Task ExecuteMessageSendAsync()
+        {
+            int portNumber = 0;
+            bool portParseResult = int.TryParse(SelectedPortNumber.Substring("COM".Length), out portNumber);
+            if (portParseResult)
+            {
+                // 1. Get actual serial device
+                SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
+                // 2. Get text
+                string[] bytesStr = SerialDeviceMessageToSend.Split(" ").Where(p => !string.IsNullOrEmpty(p)).ToArray();
+                IList<byte> bytes = new List<byte>();
+                // 3. Split it
+                IFormatProvider provider = new NumberFormatInfo();
+                foreach (string byteStr in bytesStr)
+                {
+                    //byteStr is a 0x{Upper}{Lower}
+                    string rawByte = byteStr.Substring(2);
+                    byte raw;
+                    bool res = byte.TryParse(rawByte, NumberStyles.HexNumber, provider, out raw);
+                    if (!res)
+                    {
+                        // log here
+                        return;
+                    }
+
+                    bytes.Add(raw);
+                }
+                // 4 Send
+                bool sendResult = await _deviceManager.WriteAsync(portNumber, bytes.ToArray());
+                // todo(umv): append logs either to serial device and to TextEditor
+                SerialDeviceMessageToSend = "";
+                this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
             }
         }
 

@@ -140,7 +140,7 @@ namespace Wissance.Zerial.Desktop.Views
         {
             _inputMessage.Clear();
             _inputNibbleCounter = 0;
-            UpdateInputMessageText();
+            // UpdateInputMessageText();
         }
 
         private void InitializeTextEditor()
