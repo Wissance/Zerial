@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO.Ports;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -181,8 +182,28 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
         }
 
-        private void OnSerialDeviceDataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private void OnSerialDeviceDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if (e.EventType == SerialData.Chars)
+            {
+                // find a proper COM port number, probably convert sender to SerialPort
+                SerialPort p = sender as SerialPort;
+                if (p != null)
+                {
+                    int portNumber;
+                    bool portParseResult = int.TryParse(p.PortName.Substring("COM".Length), out portNumber);
+                    if (portParseResult)
+                    {
+                        Task<byte[]> readResTask = _deviceManager.ReadAsync(portNumber);
+                        readResTask.Wait();
+                        byte[] receivedData = readResTask.Result;
+                        SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Write, DateTime.Now, receivedData);
+                        serialDevice.Messages.Add(msg);
+                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
+                    }
+                }
+            }
         }
         
         public IList<string> ReEnumeratePorts()
