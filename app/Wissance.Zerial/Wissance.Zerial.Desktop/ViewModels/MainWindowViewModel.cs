@@ -27,7 +27,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
-            _deviceManager = new MultiDeviceRs232Manager();
+            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived);
             _serialDevices = new List<SerialDeviceModel>();
             
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
@@ -48,7 +48,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialDeviceMessages = new ObservableCollection<string>();
         }
 
-        // todo(UMV): this should be a common handler 4 Connect/Disconnect
+        #region HardwareOperationsWithSerialDevices
+
         public async Task ExecuteConnectActionAsync()
         {
             int portNumber = 0;
@@ -132,6 +133,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             {
                 // 1. Get actual serial device
                 SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
+                if (serialDevice == null)
+                    return;
                 // 2. Get text
                 string[] bytesStr = SerialDeviceMessageToSend.Split(" ").Where(p => !string.IsNullOrEmpty(p)).ToArray();
                 IList<byte> bytes = new List<byte>();
@@ -146,6 +149,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     if (!res)
                     {
                         // log here
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
+                            "Unable to send data to COM device, due to it can't be converted into bytes");
+                        serialDevice.Messages.Add(msg);
+                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
                         return;
                     }
 
@@ -153,12 +160,31 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 }
                 // 4 Send
                 bool sendResult = await _deviceManager.WriteAsync(portNumber, bytes.ToArray());
+                if (sendResult)
+                {
+                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Write, DateTime.Now, bytes.ToArray());
+                    serialDevice.Messages.Add(msg);
+                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
+                }
+                else
+                {
+                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
+                        "Data wasn't send to device");
+                    serialDevice.Messages.Add(msg);
+                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
+                    return;
+                }
+
                 // todo(umv): append logs either to serial device and to TextEditor
                 SerialDeviceMessageToSend = "";
                 this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
             }
         }
 
+        private void OnSerialDeviceDataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+        }
+        
         public IList<string> ReEnumeratePorts()
         {
             Ports.Clear();
@@ -166,7 +192,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Ports = newPorts;
             return newPorts;
         }
-
+        
+        #endregion
+        
         public void ShowSelectedSerialDeviceSetting(int portNumber)
         {
             if (portNumber < 0)

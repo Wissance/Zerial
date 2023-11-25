@@ -6,6 +6,7 @@ namespace Wissance.Zerial.Desktop.Models
 {
     public enum MessageType
     {
+        Special = 1,
         Connect,
         Disconnect,
         Read,  // from Device to PC
@@ -14,19 +15,26 @@ namespace Wissance.Zerial.Desktop.Models
     
     public class SerialDeviceMessageModel
     {
-        public SerialDeviceMessageModel(MessageType messageType, DateTime timestamp, byte[] rawData)
+        public SerialDeviceMessageModel(MessageType messageType, DateTime timestamp, byte[] rawData = null, string preFormedMsg = "")
         {
             Time = timestamp;
             MessageType = messageType;
             RawData = rawData;
+            PreFormedMessage = preFormedMsg;
         }
 
         public string ToString(int portNumber)
         {
+            if (MessageType == MessageType.Special)
+            {
+                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
+                    MessageType == MessageType.Connect ? "Connected" : "Disconnected");
+            }
+
             if (MessageType == MessageType.Connect || MessageType == MessageType.Disconnect)
             {
                 return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
-                    MessageType == MessageType.Connect ? "Connected" : "Disconnected");
+                    PreFormedMessage);
             }
 
             StringBuilder dataAsStr = new StringBuilder();
@@ -44,10 +52,12 @@ namespace Wissance.Zerial.Desktop.Models
                 MessageType == MessageType.Read ? "Read" : "Write", dataAsStr);
         }
 
-        public DateTime Time { get; set; }
-        public MessageType MessageType { get; set; }
-        public byte[] RawData { get; set; }
+        public string PreFormedMessage { get; }
+        public DateTime Time { get; }
+        public MessageType MessageType { get; }
+        public byte[] RawData { get; }
 
+        private const string SpecialMessageTemplate = "[{0}] : COM{1} : {2}";
         private const string StatusMessageTemplate = "[{0}] : COM{1} : {2}";
         private const string IoMessageTemplate = "[{0}] : COM{1} : {2} : {3}";
     }

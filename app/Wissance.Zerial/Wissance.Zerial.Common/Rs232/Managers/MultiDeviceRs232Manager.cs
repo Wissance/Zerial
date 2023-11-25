@@ -6,8 +6,9 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 {
     public class MultiDeviceRs232Manager : IRs232DeviceManager, IDisposable
     {
-        public MultiDeviceRs232Manager(/*ILoggerFactory loggerFactory*/)
+        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler /*ILoggerFactory loggerFactory*/)
         {
+            _onDataReceivedHandler = onDataReceivedHandler;
         }
 
         public void Dispose()
@@ -69,6 +70,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     // todo(UMV): log exception
                 }
 
+                serialPort.DataReceived += _onDataReceivedHandler;
+                    
                 return true;
             }
             catch (Exception e)
@@ -166,5 +169,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
         };
 
         private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+        private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
     }
 }
