@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -198,14 +199,20 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         readResTask.Wait();
                         byte[] receivedData = readResTask.Result;
                         SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
-                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Write, DateTime.Now, receivedData);
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
                         serialDevice.Messages.Add(msg);
-                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
+                        string boxMsg = msg.ToString(serialDevice.Settings.PortNumber);
+                        _ = Task.Run(() => UpdateMessagesFromAnotherThread(boxMsg));
                     }
                 }
             }
         }
-        
+
+        private async void UpdateMessagesFromAnotherThread(string msg)
+        {
+            Dispatcher.UIThread.Post(() =>SerialDeviceMessages.Add(msg));
+        }
+
         public IList<string> ReEnumeratePorts()
         {
             Ports.Clear();

@@ -44,7 +44,7 @@ namespace Wissance.Zerial.Desktop.Models
                 {
                     if (dataAsStr.Length > 0)
                         dataAsStr.Append(" ");
-                    dataAsStr.Append(string.Format("0x:{0:b}", b));
+                    dataAsStr.Append(string.Format("0x{0}", b.ToString("X")));
                 }
             }
 
