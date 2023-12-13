@@ -27,14 +27,13 @@ namespace Wissance.Zerial.Desktop.Models
         {
             if (MessageType == MessageType.Special)
             {
-                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
-                    MessageType == MessageType.Connect ? "Connected" : "Disconnected");
+                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber, PreFormedMessage);
             }
 
             if (MessageType == MessageType.Connect || MessageType == MessageType.Disconnect)
             {
                 return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
-                    PreFormedMessage);
+                    MessageType == MessageType.Connect ? "Connected" : "Disconnected");
             }
 
             StringBuilder dataAsStr = new StringBuilder();
