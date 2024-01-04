@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Wissance.Zerial.Desktop.App"
              xmlns:local="using:Wissance.Zerial.Desktop"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -10,7 +10,23 @@
     </Application.DataTemplates>
   
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <!-- see: https://theme.xaml.live/ -->
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" 
+                                       Accent="#ff2ccf73" 
+                                       AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" 
+                                       BaseHigh="Black" BaseLow="#ffcccccc" BaseMedium="#ff898989" BaseMediumHigh="#ff5d5d5d" BaseMediumLow="#ff737373" 
+                                       ChromeAltLow="#ff5d5d5d" ChromeBlackHigh="Black" ChromeBlackLow="#ffcccccc" ChromeBlackMedium="#ff5d5d5d" ChromeBlackMediumLow="#ff898989" ChromeDisabledHigh="#ffcccccc" ChromeDisabledLow="#ff898989" ChromeGray="#ff737373" ChromeHigh="#ffcccccc" ChromeLow="#ffececec" ChromeMedium="#ffe6e6e6" ChromeMediumLow="#ffececec" ChromeWhite="White" 
+                                       ListLow="#ffe6e6e6" ListMedium="#ffcccccc" RegionColor="White" />
+                <ColorPaletteResources x:Key="Dark" 
+                                       Accent="#ff2ccf73" 
+                                       AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" 
+                                       BaseHigh="White" BaseLow="#53774f7a" BaseMedium="#ddc1a5c3" BaseMediumHigh="#ffd3bbd5" BaseMediumLow="#989c7a9e" 
+                                       ChromeAltLow="#ffd3bbd5" ChromeBlackHigh="Black" ChromeBlackLow="#ffd3bbd5" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#53774f7a" ChromeDisabledLow="#ddc1a5c3" ChromeGray="#baae90b1" ChromeHigh="#baae90b1" ChromeLow="#dd411846" ChromeMedium="#ba4e2653" ChromeMediumLow="#7569416d" ChromeWhite="White" 
+                                       ListLow="#ba4e2653" ListMedium="#53774f7a" RegionColor="Black" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
              
