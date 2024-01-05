@@ -109,7 +109,7 @@
                                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                 <TreeView.ItemTemplate>
                                     <TreeDataTemplate ItemsSource="{Binding PortNumber}">
-                                        <StackPanel Orientation="Horizontal" Background="Coral">
+                                        <StackPanel Orientation="Horizontal">
                                             <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
                                             <Image Source="../Assets/Images/Serial_32x32.png"></Image>
                                             <TextBlock Text="{Binding Configuration}"
@@ -128,18 +128,20 @@
                                                        Width="590" Height="300"
                                                        IsReadOnly="True" ShowLineNumbers="True"/>
                             </StackPanel>
-                            <StackPanel Margin="10" Orientation="Horizontal" Background="Plum" Width="600" Height="100">
+                            <StackPanel Margin="10" Orientation="Horizontal" Width="580" Height="100">
                                 <StackPanel Orientation="Vertical" Width="500" Height="100" Background="DarkSeaGreen">
                                     <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
                                              KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                                     </TextBox>
                                 </StackPanel>
-                                <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="90" Height="100" Background="Tomato">
+                                <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="80" Height="100">
                                     <!-- VerticalAlignment = Center is not working here ... -->
-                                    <Button Margin="0 35 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30"
+                                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"
                                             Command="{Binding ExecuteMessageSendAsync}"
                                             Click="OnSendMessageClick">Send</Button>
+                                    <!-- TODO(UMV): Add clear handle -->
+                                    <Button Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30">Clear</Button>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
