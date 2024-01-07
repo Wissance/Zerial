@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Settings;
@@ -84,5 +85,37 @@ namespace Wissance.Zerial.Desktop.Models
         public bool Connected { get; set; }
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
+        public string Status { get; set; }
+
+        public string BytesSend
+        {
+            get
+            {
+                long totalBytesSent = 0;
+                IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == MessageType.Write).ToList();
+                sentMessages.Aggregate(totalBytesSent, (t, m) =>
+                {
+                    return t += m.RawData.Length;
+                });
+                return string.Format(BytesSentTemplate, totalBytesSent);
+            }
+        }
+
+        public string BytesReceived
+        {
+            get
+            {
+                long totalBytesReceived = 0;
+                IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == MessageType.Read).ToList();
+                sentMessages.Aggregate(totalBytesReceived, (t, m) =>
+                {
+                    return t += m.RawData.Length;
+                });
+                return string.Format(BytesReceivedTemplate, totalBytesReceived);
+            }
+        }
+
+        private const string BytesSentTemplate = "Bytes sent: {0}";
+        private const string BytesReceivedTemplate = "Bytes received: {0}";
     }
 }

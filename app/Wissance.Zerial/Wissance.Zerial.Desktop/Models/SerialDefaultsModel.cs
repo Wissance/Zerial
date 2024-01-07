@@ -5,6 +5,9 @@ using Wissance.Zerial.Common.Rs232.Settings;
 
 namespace Wissance.Zerial.Desktop.Models
 {
+    /// <summary>
+    ///   SerialDefaultsModel is a class that holds RS232 Connect Options to any Serial (RS232) Device / Port 
+    /// </summary>
     public class SerialDefaultsModel
     {
         public SerialDefaultsModel()

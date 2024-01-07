@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvalonEdit="using:AvaloniaEdit"
-        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="770"
+        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="660"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
-        Closing="OnWindowClose" Width="840" Height="650">
+        Closing="OnWindowClose" Width="840" Height="660">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -28,13 +28,15 @@
                 <Menu>
                     <!-- TODO(UMV): Add Menu action handler-->
                     <MenuItem Header="_File">
+                        <MenuItem Header="Coming soon ..."></MenuItem>
                     </MenuItem>
                     <MenuItem Header="_Help">
                         <MenuItem Header="_About"></MenuItem>
+                        <MenuItem Header="_Support"></MenuItem>
                     </MenuItem>
                 </Menu>
             </StackPanel>
-            <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="2" />
+            <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />
             <StackPanel Orientation="Vertical" Margin="0 0 0 0">
                 <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerPanel">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectPanel">
@@ -92,10 +94,11 @@
                                 <StackPanel Orientation="Vertical" Margin="10">
                                     <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
                                              IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
-                                             Margin="0 0 0 20" Background="Aqua"></TextBox>
+                                             Margin="0 0 0 20">
+                                    </TextBox>
                                     <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
-                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}" 
-                                             Background="Aqua"></TextBox>
+                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}">
+                                    </TextBox>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -161,8 +164,18 @@
             </StackPanel>
             
             <StackPanel Margin="0 10 0 0">
-                <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="2" />
+                <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />
                 <!-- TODO(UMV): add custom status bar here -->
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="StatusBlock">Status: Started </TextBlock>
+                    <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="SelectedPortBlock">Selected port: </TextBlock>
+                    <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesSendBlock">Bytes sent: 0</TextBlock>
+                    <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesReceivedBlock">Bytes sent: 0</TextBlock>
+                    <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Canvas>
