@@ -48,6 +48,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
             };
 
             SerialDeviceMessages = new ObservableCollection<string>();
+            // StatusBar
+            Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "Application started");
+            Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, string.Empty);
+            Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
+            Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
         }
 
         #region HardwareOperationsWithSerialDevices
@@ -124,6 +129,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         this.RaisePropertyChanged(nameof(DevicesConfigs));
                     }
                 }
+                
+                UpdateStatusbar(serialDevice);
             }
         }
 
@@ -180,6 +187,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 // todo(umv): append logs either to serial device and to TextEditor
                 SerialDeviceMessageToSend = "";
                 this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
+                UpdateStatusbar(serialDevice);
             }
         }
 
@@ -202,7 +210,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
                         serialDevice.Messages.Add(msg);
                         string boxMsg = msg.ToString(serialDevice.Settings.PortNumber);
-                        _ = Task.Run(() => UpdateMessagesFromAnotherThread(boxMsg));
+                        _ = Task.Run(() =>
+                        {
+                            UpdateMessagesFromAnotherThread(boxMsg);
+                            UpdateStatusbar(serialDevice);
+                        });
                     }
                 }
             }
@@ -243,6 +255,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 SelectedFlowControl = SerialOptions.FlowControls.FirstOrDefault(b => b.Value == device.Settings.FlowControl).Key;
                 this.RaisePropertyChanged(nameof(SelectedFlowControl));
                 // todo(UMV): add Xon+Xoff restore
+                UpdateStatusbar(device);
             }
         }
 
@@ -284,6 +297,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         public string SelectedBaudRate { get; set; }
+        
         public string SelectedStopBits { get; set; }
         public string SelectedByteLength { get; set; }
         public string SelectedParity { get; set; }
@@ -313,6 +327,30 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string SerialDeviceMessageToSend { get; set; }
 
         #endregion
+
+        #region Rs232StatusBar
+
+        private void UpdateStatusbar(SerialDeviceModel device)
+        {
+            Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, SelectedPortNumber);
+            this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
+            string strStatus = device.Connected ? "Connected" : "Disconnected";
+            Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, strStatus);
+            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
+            Rs232SelectedDeviceBytesReceived = device.BytesReceived;
+            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
+            Rs232SelectedDeviceBytesSent = device.BytesSend;
+            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
+        }
+
+        public string Rs232SelectedDeviceStatus { get; set; }
+        public string Rs232SelectedDevicePort { get; set; }
+        public string Rs232SelectedDeviceBytesSent { get; set; }
+        public string Rs232SelectedDeviceBytesReceived { get; set; }
+        #endregion
+
+        private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
+        private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

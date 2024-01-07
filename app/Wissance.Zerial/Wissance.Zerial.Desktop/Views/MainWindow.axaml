@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvalonEdit="using:AvaloniaEdit"
-        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="660"
+        mc:Ignorable="d" d:DesignWidth="880" d:DesignHeight="660"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
-        Closing="OnWindowClose" Width="840" Height="660">
+        Closing="OnWindowClose" Width="880" Height="660">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -106,7 +106,8 @@
                             <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
                                 <!-- Connect && Disconnect button-->
                                 <StackPanel Orientation="Vertical" Margin="10">
-                                    <Button Content="{Binding ConnectButtonText}"
+                                    <Button Width = "100" HorizontalContentAlignment="Center"
+                                            Content="{Binding ConnectButtonText}"
                                             IsEnabled="{Binding IsPortSelected}"
                                             Command="{Binding ExecuteConnectActionAsync}"/>
                                 </StackPanel>
@@ -135,14 +136,14 @@
                             </StackPanel>
                         </Border>
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                            <StackPanel Orientation="Vertical" Width="603">
+                            <StackPanel Orientation="Vertical" Width="633">
                                 <StackPanel Margin="10" Orientation="Horizontal">
                                     <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
-                                                           Width="590" Height="300"
+                                                           Width="620" Height="300"
                                                            IsReadOnly="True" ShowLineNumbers="True"/>
                                 </StackPanel>
                                 <StackPanel Margin="10" Orientation="Horizontal" Width="580" Height="100">
-                                    <StackPanel Orientation="Vertical" Width="500" Height="100" Background="DarkSeaGreen">
+                                    <StackPanel Orientation="Vertical" Width="520" Height="100" Background="DarkSeaGreen">
                                         <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
                                                  KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -164,16 +165,20 @@
             </StackPanel>
             
             <StackPanel Margin="0 10 0 0">
+                <!-- TODO(UMV): place StatusBar to user controls -->
                 <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />
-                <!-- TODO(UMV): add custom status bar here -->
                 <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="StatusBlock">Status: Started </TextBlock>
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="StatusBlock"
+                               Text="{Binding Rs232SelectedDeviceStatus}"/>
                     <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
-                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="SelectedPortBlock">Selected port: </TextBlock>
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="SelectedPortBlock" 
+                               Text="{Binding Rs232SelectedDevicePort}"/>
                     <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
-                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesSendBlock">Bytes sent: 0</TextBlock>
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesSendBlock" 
+                               Text="{Binding Rs232SelectedDeviceBytesSent}"/>
                     <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
-                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesReceivedBlock">Bytes sent: 0</TextBlock>
+                    <TextBlock FontSize="11" Margin="10 0 10 0" FontWeight="Bold" Name="BytesReceivedBlock" 
+                               Text="{Binding Rs232SelectedDeviceBytesReceived}"/>
                     <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Width="1" />
                 </StackPanel>
             </StackPanel>

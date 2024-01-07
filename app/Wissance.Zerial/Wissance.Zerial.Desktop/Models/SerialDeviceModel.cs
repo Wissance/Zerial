@@ -85,19 +85,12 @@ namespace Wissance.Zerial.Desktop.Models
         public bool Connected { get; set; }
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
-        public string Status { get; set; }
 
         public string BytesSend
         {
             get
             {
-                long totalBytesSent = 0;
-                IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == MessageType.Write).ToList();
-                sentMessages.Aggregate(totalBytesSent, (t, m) =>
-                {
-                    return t += m.RawData.Length;
-                });
-                return string.Format(BytesSentTemplate, totalBytesSent);
+                return GetNumberOfBytesMessage(MessageType.Write, BytesSentTemplate);
             }
         }
 
@@ -105,17 +98,22 @@ namespace Wissance.Zerial.Desktop.Models
         {
             get
             {
-                long totalBytesReceived = 0;
-                IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == MessageType.Read).ToList();
-                sentMessages.Aggregate(totalBytesReceived, (t, m) =>
-                {
-                    return t += m.RawData.Length;
-                });
-                return string.Format(BytesReceivedTemplate, totalBytesReceived);
+                return GetNumberOfBytesMessage(MessageType.Read, BytesReceivedTemplate);
             }
         }
 
-        private const string BytesSentTemplate = "Bytes sent: {0}";
-        private const string BytesReceivedTemplate = "Bytes received: {0}";
+        private string GetNumberOfBytesMessage(MessageType type, string template)
+        {
+            long totalBytesReceived = 0;
+            IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == type).ToList();
+            sentMessages.Aggregate(totalBytesReceived, (t, m) =>
+            {
+                return t += m.RawData.Length;
+            });
+            return string.Format(template, totalBytesReceived);
+        }
+
+        public const string BytesSentTemplate = "Bytes sent: {0}";
+        public const string BytesReceivedTemplate = "Bytes received: {0}";
     }
 }
