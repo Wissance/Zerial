@@ -32,6 +32,11 @@ namespace Wissance.Zerial.Desktop.Views
                     builder.Append(Environment.NewLine);
                 }
                 _textEditor.Document = new TextDocument(builder.ToString());
+                
+                if (_context.SerialDeviceMessages.Count > LinesPerEditorViewMin)
+                {
+                    _textEditor.ScrollToLine(_context.SerialDeviceMessages.Count - LinesPerEditorViewMin + 1);
+                }
             };
             InitializeComponent();
             InitializeTextEditor();
@@ -132,7 +137,8 @@ namespace Wissance.Zerial.Desktop.Views
             if (!string.Equals(SerialDeviceSendMessageTextBox.Text, _inputMessage.ToString()))
             {
                 SerialDeviceSendMessageTextBox.Text = _inputMessage.ToString();
-                SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length;
+                SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length - 1;
+                
             }
         }
         
@@ -150,12 +156,8 @@ namespace Wissance.Zerial.Desktop.Views
             _textEditor.Background = Brushes.Transparent;
             _textEditor.ShowLineNumbers = true;
             _textEditor.TextArea.Background = this.Background;
-            //_textEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
-            //_textEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
             _textEditor.Options.ShowBoxForControlCharacters = true;
             _textEditor.Options.ColumnRulerPositions = new List<int>() { 80, 100 };
-            //_textEditor.TextArea.IndentationStrategy = new Indentation.CSharp.CSharpIndentationStrategy(_textEditor.Options);
-            //_textEditor.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             _textEditor.TextArea.RightClickMovesCaret = true;
             _textEditor.Document = new TextDocument("Application started!");
         }
@@ -182,6 +184,8 @@ namespace Wissance.Zerial.Desktop.Views
             {Key.E, "E"},
             {Key.F, "F"}
         };
+
+        private const int LinesPerEditorViewMin = 16;
         
         private readonly MainWindowViewModel _context;
         private TextEditor _textEditor; 
