@@ -257,6 +257,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 // todo(UMV): add Xon+Xoff restore
                 UpdateStatusbar(device);
             }
+            else
+            {
+                UpdateStatusbar(null);
+            }
         }
 
         public void ResourcesCleanUp()
@@ -332,15 +336,29 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private void UpdateStatusbar(SerialDeviceModel device)
         {
-            Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, SelectedPortNumber);
-            this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
-            string strStatus = device.Connected ? "Connected" : "Disconnected";
-            Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, strStatus);
-            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
-            Rs232SelectedDeviceBytesReceived = device.BytesReceived;
-            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
-            Rs232SelectedDeviceBytesSent = device.BytesSend;
-            this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
+            if (device != null)
+            {
+                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, SelectedPortNumber);
+                this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
+                string strStatus = device.Connected ? "Connected" : "Disconnected";
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, strStatus);
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
+                Rs232SelectedDeviceBytesReceived = device.BytesReceived;
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
+                Rs232SelectedDeviceBytesSent = device.BytesSend;
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
+            }
+            else
+            {
+                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, "Device does not exists");
+                this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "???");
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
+                Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
+                Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
+                this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
+            }
         }
 
         public string Rs232SelectedDeviceStatus { get; set; }
