@@ -106,10 +106,7 @@ namespace Wissance.Zerial.Desktop.Models
         {
             long totalBytesReceived = 0;
             IList<SerialDeviceMessageModel> sentMessages = Messages.Where(m => m.MessageType == type).ToList();
-            sentMessages.Aggregate(totalBytesReceived, (t, m) =>
-            {
-                return t += m.RawData.Length;
-            });
+            totalBytesReceived = sentMessages.Aggregate(0, (t, m) => t + m.RawData.Length);
             return string.Format(template, totalBytesReceived);
         }
 
