@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvalonEdit="using:AvaloniaEdit"
-        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="700"
+        mc:Ignorable="d" d:DesignWidth="840" d:DesignHeight="770"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
-        Closing="OnWindowClose" Width="840" Height="600">
+        Closing="OnWindowClose" Width="840" Height="700">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -23,133 +23,145 @@
     </Window.Styles>
     
     <Canvas>
-        <!-- TODO(UMV): Add Menu -->
         <StackPanel Orientation="Vertical">
-            <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerPanel">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectPanel">
-                    <Border Classes="ConnOptGroupBorder">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
-                                <ComboBox Name="PortsListSelect" 
-                                          ItemsSource="{Binding Path=Ports, Mode=OneWay}"
-                                          SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
-                                          PointerEntered="OnPortsPointerControlMouseOver"
-                                          Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="10" Background="Chocolate" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
-                                <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
-                                          SelectedItem="{Binding SelectedBaudRate}"
-                                          Margin="5 0 0 0" Width="100"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                        <StackPanel Orientation="Vertical" Margin="0, 0,0,0" >
-                            <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
-                                        VerticalAlignment="Bottom" >
-                                <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
-                                <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
-                                          SelectedItem="{Binding SelectedByteLength}"
-                                          Margin="5 0 0 0" Width="80"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
-                                <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
-                                          SelectedItem="{Binding SelectedStopBits}"
-                                          Margin="5 0 0 0" Width="80"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                        <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
+            <StackPanel>
+                <Menu>
+                    <!-- TODO(UMV): Add Menu action handler-->
+                    <MenuItem Header="_File">
+                    </MenuItem>
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="_About"></MenuItem>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+            <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="2" />
+            <StackPanel Orientation="Vertical" Margin="0 0 0 0">
+                <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerPanel">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectPanel">
+                        <Border Classes="ConnOptGroupBorder">
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
-                                    <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
-                                              SelectedItem="{Binding SelectedParity}"
+                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                    <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
+                                    <ComboBox Name="PortsListSelect" 
+                                              ItemsSource="{Binding Path=Ports, Mode=OneWay}"
+                                              SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
+                                              PointerEntered="OnPortsPointerControlMouseOver"
+                                              Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                    <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
+                                    <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
+                                              SelectedItem="{Binding SelectedBaudRate}"
                                               Margin="5 0 0 0" Width="100"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
-                                    <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
-                                              SelectedItem="{Binding SelectedFlowControl}"
-                                              Margin="5 0 0 0" Width="100"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                            <StackPanel Orientation="Vertical" Margin="0, 0,0,0" >
+                                <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
+                                            VerticalAlignment="Bottom" >
+                                    <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
+                                    <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
+                                              SelectedItem="{Binding SelectedByteLength}"
+                                              Margin="5 0 0 0" Width="80"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                    <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
+                                    <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
+                                              SelectedItem="{Binding SelectedStopBits}"
+                                              Margin="5 0 0 0" Width="80"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="10">
-                                <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
-                                         Margin="0 0 0 20" Background="Aqua"></TextBox>
-                                <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
-                                         IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}" 
-                                         Background="Aqua"></TextBox>
+                        </Border>
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                            <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
+                                        <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
+                                                  SelectedItem="{Binding SelectedParity}"
+                                                  Margin="5 0 0 0" Width="100"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
+                                        <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
+                                                  SelectedItem="{Binding SelectedFlowControl}"
+                                                  Margin="5 0 0 0" Width="100"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="10">
+                                    <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
+                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
+                                             Margin="0 0 0 20" Background="Aqua"></TextBox>
+                                    <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
+                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}" 
+                                             Background="Aqua"></TextBox>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                        <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
-                            <!-- Connect && Disconnect button-->
-                            <StackPanel Orientation="Vertical" Margin="10">
-                                <Button Content="{Binding ConnectButtonText}"
-                                        IsEnabled="{Binding IsPortSelected}"
-                                        Command="{Binding ExecuteConnectActionAsync}"/>
+                        </Border>
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                            <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
+                                <!-- Connect && Disconnect button-->
+                                <StackPanel Orientation="Vertical" Margin="10">
+                                    <Button Content="{Binding ConnectButtonText}"
+                                            IsEnabled="{Binding IsPortSelected}"
+                                            Command="{Binding ExecuteConnectActionAsync}"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </Border>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Height="450" Margin="5 10 0 0" Name="SerialDeviceManagementPanel" HorizontalAlignment="Left">
-                <!--Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">-->
-                <StackPanel Orientation="Horizontal">
-                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                        <StackPanel Width="197" Orientation="Vertical">
-                            <TreeView Width="190" Height="450" ItemsSource="{Binding DevicesConfigs}"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                <TreeView.ItemTemplate>
-                                    <TreeDataTemplate ItemsSource="{Binding PortNumber}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
-                                            <Image Source="../Assets/Images/Serial_32x32.png"></Image>
-                                            <TextBlock Text="{Binding Configuration}"
-                                                       Tapped="OnTreeItemTapped"
-                                                       FontSize="10" Margin="3 10 0 0"/>
-                                        </StackPanel>
-                                    </TreeDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                        <StackPanel Orientation="Vertical" Width="603">
-                            <StackPanel Margin="10" Orientation="Horizontal">
-                                <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
-                                                       Width="590" Height="300"
-                                                       IsReadOnly="True" ShowLineNumbers="True"/>
+                <StackPanel Height="450" Margin="5 10 0 0" Name="SerialDeviceManagementPanel" HorizontalAlignment="Left">
+                    <!--Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">-->
+                    <StackPanel Orientation="Horizontal">
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                            <StackPanel Width="197" Orientation="Vertical">
+                                <TreeView Width="190" Height="450" ItemsSource="{Binding DevicesConfigs}"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                    <TreeView.ItemTemplate>
+                                        <TreeDataTemplate ItemsSource="{Binding PortNumber}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
+                                                <Image Source="../Assets/Images/Serial_32x32.png"></Image>
+                                                <TextBlock Text="{Binding Configuration}"
+                                                           Tapped="OnTreeItemTapped"
+                                                           FontSize="10" Margin="3 10 0 0"/>
+                                            </StackPanel>
+                                        </TreeDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
                             </StackPanel>
-                            <StackPanel Margin="10" Orientation="Horizontal" Width="580" Height="100">
-                                <StackPanel Orientation="Vertical" Width="500" Height="100" Background="DarkSeaGreen">
-                                    <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
-                                             KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
-                                             ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                    </TextBox>
+                        </Border>
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                            <StackPanel Orientation="Vertical" Width="603">
+                                <StackPanel Margin="10" Orientation="Horizontal">
+                                    <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
+                                                           Width="590" Height="300"
+                                                           IsReadOnly="True" ShowLineNumbers="True"/>
                                 </StackPanel>
-                                <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="80" Height="100">
-                                    <!-- VerticalAlignment = Center is not working here ... -->
-                                    <Button HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"
-                                            Command="{Binding ExecuteMessageSendAsync}"
-                                            Click="OnSendMessageClick">Send</Button>
-                                    <!-- TODO(UMV): Add clear handle -->
-                                    <Button Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30">Clear</Button>
+                                <StackPanel Margin="10" Orientation="Horizontal" Width="580" Height="100">
+                                    <StackPanel Orientation="Vertical" Width="500" Height="100" Background="DarkSeaGreen">
+                                        <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
+                                                 KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="80" Height="100">
+                                        <!-- VerticalAlignment = Center is not working here ... -->
+                                        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"
+                                                Command="{Binding ExecuteMessageSendAsync}"
+                                                Click="OnSendMessageClick">Send</Button>
+                                        <!-- TODO(UMV): Add clear handle -->
+                                        <Button Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30">Clear</Button>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </Border>
+                        </Border>
+                    </StackPanel>
+                    <!--</Border>-->
                 </StackPanel>
-                <!--</Border>-->
+                    
             </StackPanel>
-                
         </StackPanel>
     </Canvas>
     
