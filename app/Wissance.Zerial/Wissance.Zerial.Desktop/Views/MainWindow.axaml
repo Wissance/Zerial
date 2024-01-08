@@ -40,8 +40,10 @@
             </StackPanel>
             <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />
             <StackPanel Orientation="Vertical" Margin="0 0 0 0">
+                <!-- This panel Height is Fixed and is equal to 100 -->
                 <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerTopPanel">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectOptionsPanel">
+                        <!-- RS232 Settings selection: Port number && Baud Rate -->
                         <StackPanel Orientation="Vertical" Name="SerialDevicePortAnsSpeedOptionsPanel">
                             <Border Classes="ConnOptGroupBorder">
                                 <StackPanel>
@@ -62,51 +64,56 @@
                                 </StackPanel>
                             </Border>    
                         </StackPanel>
-                        
-                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                            <StackPanel Orientation="Vertical" Margin="0, 0,0,0" >
-                                <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
-                                            VerticalAlignment="Bottom" >
-                                    <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
-                                    <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
-                                              SelectedItem="{Binding SelectedByteLength}"
-                                              Margin="5 0 0 0" Width="80"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                    <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
-                                    <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
-                                              SelectedItem="{Binding SelectedStopBits}"
-                                              Margin="5 0 0 0" Width="80"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                            <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
-                                <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                        <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
-                                        <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
-                                                  SelectedItem="{Binding SelectedParity}"
-                                                  Margin="5 0 0 0" Width="100"/>
+                        <!-- RS232 Settings selection: Byte Length && Stop Bits -->
+                        <StackPanel Orientation="Vertical" Margin="0, 0,0,0" Name="SerialDeviceByteLengthAndStopBitsOptionsPanel">
+                            <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
+                                                VerticalAlignment="Bottom" >
+                                        <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
+                                        <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
+                                                  SelectedItem="{Binding SelectedByteLength}"
+                                                  Margin="5 0 0 0" Width="80"/>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Top">
-                                        <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
-                                        <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
-                                                  SelectedItem="{Binding SelectedFlowControl}"
-                                                  Margin="5 0 0 0" Width="100"/>
+                                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
+                                        <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
+                                                  SelectedItem="{Binding SelectedStopBits}"
+                                                  Margin="5 0 0 0" Width="80"/>
                                     </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Vertical" Margin="10">
-                                    <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
-                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
-                                             Margin="0 0 0 20">
-                                    </TextBox>
-                                    <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
-                                             IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}">
-                                    </TextBox>
+                            </Border>
+                        </StackPanel>
+                        <!-- RS232 Settings selection: Parity && Flow Control -->
+                        <StackPanel>
+                            <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                                <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceParityAndFlowControlOptionsPanel">
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                            <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
+                                            <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
+                                                      SelectedItem="{Binding SelectedParity}"
+                                                      Margin="5 0 0 0" Width="100"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Top">
+                                            <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
+                                            <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
+                                                      SelectedItem="{Binding SelectedFlowControl}"
+                                                      Margin="5 0 0 0" Width="100"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" Margin="10">
+                                        <TextBox Name="XonTextBox" Watermark="Xon" Text="{Binding XonSymbol}"
+                                                 IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}"
+                                                 Margin="0 0 0 20">
+                                        </TextBox>
+                                        <TextBox Name="XoffTextBox" Watermark="Xoff" Text="{Binding XoffSymbol}"
+                                                 IsEnabled="{Binding IsProgrammableFlowControl, Mode=TwoWay}">
+                                        </TextBox>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Border>
+                            </Border>
+                        </StackPanel>
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
                             <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
                                 <!-- Connect && Disconnect button-->
