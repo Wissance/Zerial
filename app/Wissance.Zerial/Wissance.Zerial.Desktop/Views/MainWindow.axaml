@@ -137,7 +137,7 @@
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
                             <StackPanel Width="197" Orientation="Vertical">
                                 <TreeView Width="190" Height="450" ItemsSource="{Binding DevicesConfigs}"
-                                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                          ScrollViewer.HorizontalScrollBarVisibility="Auto" Name="SerialDevicesTree">
                                     <TreeView.ItemTemplate>
                                         <TreeDataTemplate ItemsSource="{Binding PortNumber}">
                                             <StackPanel Orientation="Horizontal">
@@ -160,21 +160,24 @@
                                                            IsReadOnly="True" ShowLineNumbers="True"/>
                                 </StackPanel>
                                 <StackPanel Margin="10" Orientation="Horizontal" Height="100">
-                                    <StackPanel Orientation="Vertical" Width="520" Height="100" Name="SendMessageTextBoxContainerPanel">
+                                    <StackPanel Orientation="Vertical" Width="520" Name="SendMessageTextBoxContainerPanel">
                                         <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
                                                  KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
                                         </TextBox>
                                     </StackPanel>
-                                    <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="80" Height="100">
-                                        <!-- VerticalAlignment = Center is not working here ... -->
-                                        <Button HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"
-                                                Command="{Binding ExecuteMessageSendAsync}"
-                                                Click="OnSendMessageClick">Send</Button>
-                                        <!-- TODO(UMV): Add clear handle -->
-                                        <Button Margin="0 40 0 0" HorizontalAlignment="Center"
-                                                Command="{Binding ExecuteClearMessageAsync}"
-                                                VerticalAlignment="Bottom" Height="30" Click="OnSendMessageClear">Clear</Button>
+                                    <StackPanel Margin="5 0 0 5" Orientation="Vertical" Width="100" Height="100">
+                                        
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Button Height="30" Command="{Binding ExecuteMessageSendAsync}"
+                                                    Click="OnSendMessageClick">Send</Button>
+                                        </StackPanel>
+                                        <!-- VerticalAlignment = Center/Bottom is not working here ... -->
+                                        <StackPanel Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                            <Button VerticalAlignment="Stretch"
+                                                    Command="{Binding ExecuteClearMessageAsync}"
+                                                    Height="30" Click="OnSendMessageClear">Clear</Button>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>

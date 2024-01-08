@@ -177,7 +177,7 @@ namespace Wissance.Zerial.Desktop.Views
             double heightDelta = e.ClientSize.Height - _previousHeight;
             _previousWidth = e.ClientSize.Width;
             _previousHeight = e.ClientSize.Height;
-            // 1. Resize Header, how ?
+            // 1. Resize Header
             // 1.1 Connect button panel size
             SerialDeviceBtnConnOptionsBtnContainerPanel.Width += widthDelta;
             // 1.2 Connect Button X position is automatically calculates ... (due to button is stretched to StackPanel)
@@ -191,7 +191,8 @@ namespace Wissance.Zerial.Desktop.Views
             // 2.3 Resize Message input area
             SendMessageTextBoxContainerPanel.Width += widthDelta;
             SerialDeviceSendMessageTextBox.Width += widthDelta;
-
+            // 2.4 Resize Tree
+            SerialDevicesTree.Height += heightDelta;
         }
 
         private const string TextEditorName = "SerialDevicesMessageViewer";
