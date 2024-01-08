@@ -173,26 +173,22 @@ namespace Wissance.Zerial.Desktop.Views
         {
             // todo(UMV): actual Width && Height of control should be LESS
             // Height and Width are swapped and actually e.ClientSize.Width is a Height, e.ClientSize.Height is a Width
-            double widthScaleCoefficient = e.ClientSize.Width / _previousWidth;
+            double widthDelta = e.ClientSize.Width - _previousWidth;
             double heightScaleCoefficient = e.ClientSize.Height / _previousHeight;
             _previousWidth = e.ClientSize.Width;
             _previousHeight = e.ClientSize.Height;
             // 1. Resize Header, how ?
-            // SerialDeviceConnectContainerPanel.Width *= widthScaleCoefficient;
-            //ConnOptionContainerBorder.Width *= widthScaleCoefficient;
-            //ConnOptionContainerPanel.Width *= widthScaleCoefficient;
-            //SerialDeviceConnectContainerPanel.Width *= widthScaleCoefficient;
-            // ParityGroupContainerPanel.InvalidateVisual();
+            SerialDeviceBtnConnOptionsBtnContainerPanel.Width += widthDelta;
             // 2. Resize TextEditor
             // 2.1 Resize Container (StackPanel)
-            TextEditorContainerPanel.Width *= widthScaleCoefficient;
+            TextEditorContainerPanel.Width += widthDelta;
             TextEditorContainerPanel.Height *= heightScaleCoefficient;
             // 2.2 Resize TextEditor itself
-            _textEditor.Width *= widthScaleCoefficient;
+            _textEditor.Width += widthDelta;
             _textEditor.Height *= heightScaleCoefficient;
             // 2.3 Resize Message input area
-            SendMessageTextBoxContainerPanel.Width *= widthScaleCoefficient;
-            SerialDeviceSendMessageTextBox.Width *= widthScaleCoefficient;
+            SendMessageTextBoxContainerPanel.Width += widthDelta;
+            SerialDeviceSendMessageTextBox.Width += widthDelta;
 
         }
 

@@ -114,19 +114,20 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                            <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" >
-                                <!-- Connect && Disconnect button-->
-                                <StackPanel Orientation="Vertical" Margin="10">
+                        <!-- Connect && Disconnect button -->
+                        <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceBtnConnOptionsPanel">
+                            <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                                <StackPanel Orientation="Vertical" Margin="10" Width="100" Name="SerialDeviceBtnConnOptionsBtnContainerPanel">
                                     <Button Width = "100" HorizontalContentAlignment="Center"
                                             Content="{Binding ConnectButtonText}"
                                             IsEnabled="{Binding IsPortSelected}"
                                             Command="{Binding ExecuteConnectActionAsync}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
+                                </StackPanel> 
+                            </Border>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
+                <!-- Main part of Windows : Central Part (TreeView && TextEditor) && Footer -->
                 <StackPanel  Margin="5 10 0 0" Name="SerialDeviceManagementPanel" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
