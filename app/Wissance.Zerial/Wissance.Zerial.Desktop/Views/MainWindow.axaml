@@ -9,8 +9,10 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         FontFamily="{StaticResource RobotoFonts}"
+        Resized="OnWindowResized"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
-        Closing="OnWindowClose" Width="880" Height="660">
+        Closing="OnWindowClose" 
+        Height="660" Width="880" MinHeight="660" MinWidth="880">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -136,14 +138,14 @@
                             </StackPanel>
                         </Border>
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                            <StackPanel Orientation="Vertical" Width="633">
-                                <StackPanel Margin="10" Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" Width="633" Name="TextEditorContainerPanel">
+                                <StackPanel Margin="10" Orientation="Horizontal" >
                                     <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
                                                            Width="620" Height="300"
                                                            IsReadOnly="True" ShowLineNumbers="True"/>
                                 </StackPanel>
-                                <StackPanel Margin="10" Orientation="Horizontal" Width="580" Height="100">
-                                    <StackPanel Orientation="Vertical" Width="520" Height="100" Background="DarkSeaGreen">
+                                <StackPanel Margin="10" Orientation="Horizontal" Height="100">
+                                    <StackPanel Orientation="Vertical" Width="520" Height="100" Name="SendMessageTextBoxContainerPanel">
                                         <TextBox Name="SerialDeviceSendMessageTextBox" Text="{Binding SerialDeviceMessageToSend}" Height="100" TextWrapping="Wrap"
                                                  KeyDown="OnInputSymbolKeyDown" KeyUp="OnInputSymbolKeyUp" TextChanged="OnTextChanged"
                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">

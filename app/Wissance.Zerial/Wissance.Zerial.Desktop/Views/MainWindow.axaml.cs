@@ -38,6 +38,9 @@ namespace Wissance.Zerial.Desktop.Views
                     _textEditor.ScrollToLine(_context.SerialDeviceMessages.Count - LinesPerEditorViewMin + 1);
                 }
             };
+            _previousWidth = 880;
+            _previousHeight = 660;
+            
             InitializeComponent();
             InitializeTextEditor();
         }
@@ -138,7 +141,6 @@ namespace Wissance.Zerial.Desktop.Views
             {
                 SerialDeviceSendMessageTextBox.Text = _inputMessage.ToString();
                 SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length;
-                
             }
         }
         
@@ -165,6 +167,28 @@ namespace Wissance.Zerial.Desktop.Views
             _textEditor.Options.ColumnRulerPositions = new List<int>() { 80, 100 };
             _textEditor.TextArea.RightClickMovesCaret = true;
             _textEditor.Document = new TextDocument("Application started!");
+        }
+        
+        private void OnWindowResized(object? sender, WindowResizedEventArgs e)
+        {
+            // todo(UMV): actual Width && Height of control should be LESS
+            // Height and Width are swapped and actually e.ClientSize.Width is a Height, e.ClientSize.Height is a Width
+            double widthScaleCoefficient = e.ClientSize.Width / _previousWidth;
+            double heightScaleCoefficient = e.ClientSize.Height / _previousHeight;
+            _previousWidth = e.ClientSize.Width;
+            _previousHeight = e.ClientSize.Height;
+            // 1. Resize Header, how ?
+            // 2. Resize TextEditor
+            // 2.1 Resize Container (StackPanel)
+            TextEditorContainerPanel.Width *= widthScaleCoefficient;
+            TextEditorContainerPanel.Height *= heightScaleCoefficient;
+            // 2.2 Resize TextEditor itself
+            _textEditor.Width *= widthScaleCoefficient;
+            _textEditor.Height *= heightScaleCoefficient;
+            // 2.3 Resize Message input area
+            SendMessageTextBoxContainerPanel.Width *= widthScaleCoefficient;
+            SerialDeviceSendMessageTextBox.Width *= widthScaleCoefficient;
+
         }
 
         private const string TextEditorName = "SerialDevicesMessageViewer";
@@ -196,5 +220,7 @@ namespace Wissance.Zerial.Desktop.Views
         private TextEditor _textEditor; 
         private int _inputNibbleCounter = 0;
         private StringBuilder _inputMessage = new StringBuilder();
+        private double _previousWidth;
+        private double _previousHeight;
     }
 }
