@@ -7,11 +7,11 @@
         mc:Ignorable="d" d:DesignWidth="880" d:DesignHeight="660"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Images/Zerial_64x64.png"
         FontFamily="{StaticResource RobotoFonts}"
         Resized="OnWindowResized"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
-        Closing="OnWindowClose" 
+        Closing="OnWindowClose"
         Height="660" Width="880" MinHeight="660" MinWidth="880">
 
     <Design.DataContext>
