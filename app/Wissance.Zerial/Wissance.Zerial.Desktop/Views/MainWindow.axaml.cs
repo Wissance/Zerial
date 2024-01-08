@@ -178,6 +178,11 @@ namespace Wissance.Zerial.Desktop.Views
             _previousWidth = e.ClientSize.Width;
             _previousHeight = e.ClientSize.Height;
             // 1. Resize Header, how ?
+            // SerialDeviceConnectContainerPanel.Width *= widthScaleCoefficient;
+            //ConnOptionContainerBorder.Width *= widthScaleCoefficient;
+            //ConnOptionContainerPanel.Width *= widthScaleCoefficient;
+            //SerialDeviceConnectContainerPanel.Width *= widthScaleCoefficient;
+            // ParityGroupContainerPanel.InvalidateVisual();
             // 2. Resize TextEditor
             // 2.1 Resize Container (StackPanel)
             TextEditorContainerPanel.Width *= widthScaleCoefficient;

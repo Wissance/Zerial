@@ -40,26 +40,29 @@
             </StackPanel>
             <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />
             <StackPanel Orientation="Vertical" Margin="0 0 0 0">
-                <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerPanel">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectPanel">
-                        <Border Classes="ConnOptGroupBorder">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                    <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
-                                    <ComboBox Name="PortsListSelect" 
-                                              ItemsSource="{Binding Path=Ports, Mode=OneWay}"
-                                              SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
-                                              PointerEntered="OnPortsPointerControlMouseOver"
-                                              Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
+                <StackPanel Height="100" Margin="5" Name="SerialDeviceConnectContainerTopPanel">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Name="SerialDeviceConnectOptionsPanel">
+                        <StackPanel Orientation="Vertical" Name="SerialDevicePortAnsSpeedOptionsPanel">
+                            <Border Classes="ConnOptGroupBorder">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
+                                        <ComboBox Name="PortsListSelect" 
+                                                  ItemsSource="{Binding Path=Ports, Mode=OneWay}"
+                                                  SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
+                                                  PointerEntered="OnPortsPointerControlMouseOver"
+                                                  Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
+                                        <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
+                                                  SelectedItem="{Binding SelectedBaudRate}"
+                                                  Margin="5 0 0 0" Width="100"/>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                    <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
-                                    <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
-                                              SelectedItem="{Binding SelectedBaudRate}"
-                                              Margin="5 0 0 0" Width="100"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
+                            </Border>    
+                        </StackPanel>
+                        
                         <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
                             <StackPanel Orientation="Vertical" Margin="0, 0,0,0" >
                                 <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
