@@ -174,18 +174,20 @@ namespace Wissance.Zerial.Desktop.Views
             // todo(UMV): actual Width && Height of control should be LESS
             // Height and Width are swapped and actually e.ClientSize.Width is a Height, e.ClientSize.Height is a Width
             double widthDelta = e.ClientSize.Width - _previousWidth;
-            double heightScaleCoefficient = e.ClientSize.Height / _previousHeight;
+            double heightDelta = e.ClientSize.Height - _previousHeight;
             _previousWidth = e.ClientSize.Width;
             _previousHeight = e.ClientSize.Height;
             // 1. Resize Header, how ?
+            // 1.1 Connect button panel size
             SerialDeviceBtnConnOptionsBtnContainerPanel.Width += widthDelta;
+            // 1.2 Connect Button X position
             // 2. Resize TextEditor
             // 2.1 Resize Container (StackPanel)
             TextEditorContainerPanel.Width += widthDelta;
-            TextEditorContainerPanel.Height *= heightScaleCoefficient;
+            TextEditorContainerPanel.Height += heightDelta;
             // 2.2 Resize TextEditor itself
             _textEditor.Width += widthDelta;
-            _textEditor.Height *= heightScaleCoefficient;
+            _textEditor.Height += heightDelta;
             // 2.3 Resize Message input area
             SendMessageTextBoxContainerPanel.Width += widthDelta;
             SerialDeviceSendMessageTextBox.Width += widthDelta;
