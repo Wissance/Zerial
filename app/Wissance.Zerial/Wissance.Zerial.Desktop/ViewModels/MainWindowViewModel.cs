@@ -191,6 +191,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
         }
 
+        public async Task ExecuteClearMessageAsync()
+        {
+            SerialDeviceMessageToSend = "";
+            this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
+        }
+
         private void OnSerialDeviceDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             if (e.EventType == SerialData.Chars)

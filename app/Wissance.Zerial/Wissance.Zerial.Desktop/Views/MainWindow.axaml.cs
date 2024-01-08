@@ -81,7 +81,7 @@ namespace Wissance.Zerial.Desktop.Views
             // int keyCode = (int)e.Key;
             if ((e.Key >= Key.A && e.Key <= Key.F) || (e.Key >= Key.D0 && e.Key <= Key.D9))
             {
-                if (_inputNibbleCounter % 2 == 1 /*&&  _inputNibbleCounter > 1*/)
+                if (_inputNibbleCounter % 2 == 1)
                 {
                     // get last and replace last with string 0x{Prev}{Current}
                     string prevNibble = _inputMessage[^1].ToString();
@@ -137,7 +137,7 @@ namespace Wissance.Zerial.Desktop.Views
             if (!string.Equals(SerialDeviceSendMessageTextBox.Text, _inputMessage.ToString()))
             {
                 SerialDeviceSendMessageTextBox.Text = _inputMessage.ToString();
-                SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length - 1;
+                SerialDeviceSendMessageTextBox.CaretIndex = _inputMessage.Length;
                 
             }
         }
@@ -146,7 +146,12 @@ namespace Wissance.Zerial.Desktop.Views
         {
             _inputMessage.Clear();
             _inputNibbleCounter = 0;
-            // UpdateInputMessageText();
+        }
+        
+        private void OnSendMessageClear(object? sender, RoutedEventArgs e)
+        {
+            _inputMessage.Clear();
+            _inputNibbleCounter = 0;
         }
 
         private void InitializeTextEditor()

@@ -155,7 +155,9 @@
                                                 Command="{Binding ExecuteMessageSendAsync}"
                                                 Click="OnSendMessageClick">Send</Button>
                                         <!-- TODO(UMV): Add clear handle -->
-                                        <Button Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30">Clear</Button>
+                                        <Button Margin="0 40 0 0" HorizontalAlignment="Center"
+                                                Command="{Binding ExecuteClearMessageAsync}"
+                                                VerticalAlignment="Bottom" Height="30" Click="OnSendMessageClear">Clear</Button>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
