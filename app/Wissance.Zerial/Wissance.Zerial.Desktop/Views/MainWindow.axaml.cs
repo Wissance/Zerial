@@ -180,7 +180,7 @@ namespace Wissance.Zerial.Desktop.Views
             // 1. Resize Header, how ?
             // 1.1 Connect button panel size
             SerialDeviceBtnConnOptionsBtnContainerPanel.Width += widthDelta;
-            // 1.2 Connect Button X position
+            // 1.2 Connect Button X position is automatically calculates ... (due to button is stretched to StackPanel)
             // 2. Resize TextEditor
             // 2.1 Resize Container (StackPanel)
             TextEditorContainerPanel.Width += widthDelta;

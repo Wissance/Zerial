@@ -118,10 +118,14 @@
                         <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceBtnConnOptionsPanel">
                             <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
                                 <StackPanel Orientation="Vertical" Margin="10" Width="100" Name="SerialDeviceBtnConnOptionsBtnContainerPanel">
-                                    <Button Width = "100" HorizontalContentAlignment="Center"
-                                            Content="{Binding ConnectButtonText}"
-                                            IsEnabled="{Binding IsPortSelected}"
-                                            Command="{Binding ExecuteConnectActionAsync}"/>
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Button Width = "100" HorizontalContentAlignment="Center"
+                                                HorizontalAlignment="Stretch"
+                                                Name="ConnectButton"
+                                                Content="{Binding ConnectButtonText}"
+                                                IsEnabled="{Binding IsPortSelected}"
+                                                Command="{Binding ExecuteConnectActionAsync}"/>
+                                    </StackPanel>
                                 </StackPanel> 
                             </Border>
                         </StackPanel>
