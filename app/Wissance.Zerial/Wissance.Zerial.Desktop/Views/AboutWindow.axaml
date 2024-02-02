@@ -19,7 +19,21 @@
     </Window.Styles>
     
     <Canvas>
-        <StackPanel Orientation="Vertical">
+        <StackPanel>
+            <StackPanel Orientation="Vertical" Margin="50 50 0 0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="Version:"></Label>
+                    <TextBlock> 1.0</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="Authors:"></Label>
+                    <TextBlock>Ushakov M.V.</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="Owner:"></Label>
+                    <TextBlock> Wissance LLC (https://wissance.com/en</TextBlock>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Canvas>
 </Window>
