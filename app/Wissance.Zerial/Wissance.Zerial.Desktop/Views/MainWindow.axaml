@@ -33,7 +33,7 @@
                         <MenuItem Header="Coming soon ..."></MenuItem>
                     </MenuItem>
                     <MenuItem Header="_Help">
-                        <MenuItem Header="_About"></MenuItem>
+                        <MenuItem Header="_About" Command="{Binding ExecuteStartAboutWindowCommandAsync}"></MenuItem>
                         <MenuItem Header="_Support"></MenuItem>
                     </MenuItem>
                 </Menu>

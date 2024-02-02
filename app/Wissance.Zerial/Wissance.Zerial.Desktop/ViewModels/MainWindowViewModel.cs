@@ -19,6 +19,7 @@ using Wissance.Zerial.Common.Rs232.Managers;
 using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Models;
+using Wissance.Zerial.Desktop.Views;
 
 namespace Wissance.Zerial.Desktop.ViewModels
 {
@@ -54,6 +55,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
             Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
         }
+
+        #region WindowAndDialogManagement
+        public async Task ExecuteStartAboutWindowCommandAsync()
+        {
+            AboutWindow window = new AboutWindow();
+            window.Show();
+        }
+        #endregion
 
         #region HardwareOperationsWithSerialDevices
 
