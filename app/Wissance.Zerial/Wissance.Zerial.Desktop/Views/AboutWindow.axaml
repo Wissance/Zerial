@@ -38,7 +38,7 @@
                     <Label VerticalAlignment="Center" FontWeight="Bold" Content="Owner:"></Label>
                     <TextBlock VerticalAlignment="Center" Text="{Binding Model.Company}"/> 
                     <TextBlock VerticalAlignment="Center" FontStyle="Normal" Foreground="BlueViolet" 
-                               PointerEntered="OnMouseOver" PointerExited="OnMouseLeave">
+                               Name="WissanceWebSiteTextBlock" PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" KeyUp="OnClick">
                         <Underline>https://wissance.com/en</Underline>
                     </TextBlock>
                 </StackPanel>

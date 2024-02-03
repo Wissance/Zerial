@@ -29,4 +29,9 @@ public partial class AboutWindow : Window
     {
         Cursor = new Cursor(StandardCursorType.Arrow);
     }
+
+    private void OnClick(object? sender, KeyEventArgs e)
+    {
+        System.Diagnostics.Process.Start(WissanceWebSiteTextBlock.Text);
+    }
 }
