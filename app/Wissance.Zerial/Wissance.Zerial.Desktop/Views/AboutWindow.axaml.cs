@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -12,7 +14,8 @@ public partial class AboutWindow : Window
     public AboutWindow(AppVersionModel model)
         :this()
     {
-        DataContext = new AboutWindowViewModel(model);
+        _context = new AboutWindowViewModel(model);
+        DataContext = _context;
     }
     
     public AboutWindow()
@@ -32,6 +35,18 @@ public partial class AboutWindow : Window
     
     private void  OnClick(object? sender, PointerPressedEventArgs e)
     {
-        System.Diagnostics.Process.Start(WissanceWebSiteTextBlock.Text);
+        try
+        {
+            string url = _context.Model.CompanyWebSite; // Unfortunately can't get text in Underline within a TextBlock
+            var psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = url;
+            Process.Start(psi);
+        }
+        catch (Exception exception)
+        {
+        }
     }
+
+    private AboutWindowViewModel _context;
 }
