@@ -5,13 +5,18 @@
         xmlns:viewModels="clr-namespace:Wissance.Zerial.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="300"
         x:Class="Wissance.Zerial.Desktop.Views.AboutWindow"
+        x:CompileBindings="False"
         Title="About Zerial community version software"
+        FontFamily="{StaticResource RobotoFonts}"
         Icon="/Assets/Images/Zerial_64x64.png"
         Height="300" Width="500" MinHeight="300" MinWidth="500" MaxHeight="300" MaxWidth="500">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <viewModels:AboutWindowViewModel/>
+        <viewModels:AboutWindowViewModel>
+            
+        </viewModels:AboutWindowViewModel>
+        
     </Design.DataContext>
     
     <Window.Styles>
@@ -20,18 +25,22 @@
     
     <Canvas>
         <StackPanel>
-            <StackPanel Orientation="Vertical" Margin="50 50 0 0">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Label Content="Version:"></Label>
-                    <TextBlock> 1.0</TextBlock>
+            <StackPanel Orientation="Vertical" Margin="60 50 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Version:"></Label>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Model.Version}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Label Content="Authors:"></Label>
-                    <TextBlock>Ushakov M.V.</TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Authors:"></Label>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Model.Author}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Label Content="Owner:"></Label>
-                    <TextBlock> Wissance LLC (https://wissance.com/en</TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Owner:"></Label>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Model.Company}"/> 
+                    <TextBlock VerticalAlignment="Center" FontStyle="Normal" Foreground="BlueViolet" 
+                               PointerEntered="OnMouseOver" PointerExited="OnMouseLeave">
+                        <Underline>https://wissance.com/en</Underline>
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

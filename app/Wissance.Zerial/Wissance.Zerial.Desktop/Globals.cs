@@ -4,5 +4,7 @@ namespace Wissance.Zerial.Desktop
     {
         public const string ConnectButtonConnectText = "Connect";
         public const string ConnectButtonDisconnectText = "Disconnect";
+
+        public const string AppVersion = "1.0";
     }
 }

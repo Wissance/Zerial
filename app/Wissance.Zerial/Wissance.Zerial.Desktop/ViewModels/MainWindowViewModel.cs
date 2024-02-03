@@ -54,12 +54,20 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, string.Empty);
             Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
             Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
+
+            _appVersionModel = new AppVersionModel()
+            {
+                Author = "Ushakov M.V.",
+                Company = "Wissance LLC (ООО \"Висанс\")",
+                CompanyWebSite = "https://wissance.com/en",
+                Version = Globals.AppVersion
+            };
         }
 
         #region WindowAndDialogManagement
         public async Task ExecuteStartAboutWindowCommandAsync()
         {
-            AboutWindow window = new AboutWindow();
+            AboutWindow window = new AboutWindow(_appVersionModel);
             window.Show();
         }
         #endregion
@@ -390,5 +398,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private readonly IRs232DeviceManager _deviceManager;
         private string _selectedFlowControl;
         private string _selectedPortName;
+        private readonly AppVersionModel _appVersionModel;
     }
 }
