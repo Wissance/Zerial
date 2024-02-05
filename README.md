@@ -2,7 +2,7 @@
 
 ### 1. Key Feautes
 Zerial is:
-1. Fast like a lighting (Z means lighting):
+1. Fast like a lighting and a low resources consumption utility:
   * fast start, warm start < `3s`
   * **low memory consumption** < `100 Mb`
   * close to 0 `CPU` consumption (with a **properly working COM devices**) 
