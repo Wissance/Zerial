@@ -15,4 +15,4 @@ If you are not from `Russia` you could make a donation in one of the following w
 2. ПО `QR-коду` (через СБП)
 ![payment_qr](img/payment/payment_qr.png)
 
-3. Через Сервис `Boosty`
+3. Через [Наш Boosty](boosty.to/wissance/single-payment/donation/536291/target)
