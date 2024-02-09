@@ -9,5 +9,5 @@
         WindowStartupLocation="CenterScreen" SystemDecorations="None" Topmost="True"
         Title="Zerial is a Most convenient tool for interact with RS232 devices"
         Height="300" Width="500" MinHeight="300" MinWidth="500" MaxHeight="300" MaxWidth="500">
-    Welcome to Avalonia!
+    Zerial (Community Edition) - serial (RS232/COM) device communications utility
 </Window>
