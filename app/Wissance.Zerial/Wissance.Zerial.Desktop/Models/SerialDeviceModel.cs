@@ -21,6 +21,42 @@ namespace Wissance.Zerial.Desktop.Models
             Messages = messages;
         }
 
+        public SerialDeviceModel(string deviceConfiguration)
+        {
+            // parse back from string to device
+            Settings = new Rs232Settings();
+            Connected = false;
+            Messages = new List<SerialDeviceMessageModel>();
+            // device configuration has format - "COM3, 115200 b/s, 8b, 1 Sb, Even, No FC"
+            string[] parts = deviceConfiguration.Split(",");
+            string portStr = parts.FirstOrDefault(p => p.Trim().ToLower().StartsWith("COM"));
+            if (portStr != null)
+            {
+                string number = portStr.Remove(0, 3);
+                int portNumber;
+                if (int.TryParse(number, out portNumber))
+                {
+                    Settings.PortNumber = portNumber;
+                }
+            }
+            
+            // baud rate
+            string baudRateStr = parts.FirstOrDefault(p => p.Contains("b/s"));
+            if (baudRateStr != null)
+            {
+                string[] baudRateParts = baudRateStr.Split(' ');
+                int baudRate;
+                if (int.TryParse(baudRateParts[0].Trim(), out baudRate))
+                {
+                    Settings.BaudRate = (Rs232BaudRate)baudRate;
+                }
+            }
+            // byte len
+            // stop bits
+            // parity
+            // flow control
+        }
+
         public SerialPortShortInfoModel ToShortInfo()
         {
             StringBuilder infoBuilder = new StringBuilder();
