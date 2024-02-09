@@ -5,7 +5,7 @@ Wissabce LLC (ООО "Висанс") is a [Russian software and hardware company
 
 #### 1. En
 If you are not from `Russia` you could make a donation in one of the following way:
-
+* will be added later;
 
 #### 2. Ru
 Если вы из России и хотите нас отблагодарить, то это можно сделать одним из следующих способов. Данная поддержка является полностью добровольной и не обязывает нас (ООО "Висанс") ни к чему. Существуют следующие способы:

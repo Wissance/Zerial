@@ -12,3 +12,6 @@ Zerial is:
   * Support **multiple platforms** where Net6 could be installed (Avalonia is a Cross-Platform WPF)
 
 ![Main window](img/MainWindow.png)
+
+### 2. Support
+You could find **why and how to support us** [here](Support.md)
