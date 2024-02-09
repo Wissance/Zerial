@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using Avalonia.Media.Imaging;
 using Wissance.Zerial.Desktop.Helpers;
 
@@ -13,8 +14,10 @@ namespace Wissance.Zerial.Desktop.Models
             Configuration = configuration;
         }
 
+        [JsonIgnore]
         public bool Connected { get; set; }
 
+        [JsonIgnore]
         public Bitmap? ConnectStateImage
         {
             get

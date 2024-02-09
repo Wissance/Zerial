@@ -33,7 +33,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived);
             _serialDevices = new List<SerialDeviceModel>();
-            
+            _configurationManager = new DeviceConfigurationManager("devices.json");
+            DevicesConfigs = _configurationManager.Load();
+            // these init depends on loaded configuration
+            // todo(UMV): set values from DevicesConfigs ...
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
             SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
@@ -43,8 +46,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
             ConnectButtonText = Globals.ConnectButtonConnectText;
-            _configurationManager = new DeviceConfigurationManager("devices.json");
-            DevicesConfigs = _configurationManager.Load();
 
             SerialDeviceMessages = new ObservableCollection<string>();
             // StatusBar
