@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -12,6 +13,8 @@ namespace Wissance.Zerial.Desktop.Managers
     {
         public DeviceConfigurationManager(string configFile)
         {
+            if (!File.Exists(configFile))
+                File.Create(configFile).Dispose();
             _configFile = Path.GetFullPath(configFile);
         }
 

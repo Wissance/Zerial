@@ -18,6 +18,7 @@ using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Managers;
 using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
+using Wissance.Zerial.Desktop.Managers;
 using Wissance.Zerial.Desktop.Models;
 using Wissance.Zerial.Desktop.Views;
 
@@ -42,11 +43,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
             ConnectButtonText = Globals.ConnectButtonConnectText;
-            DevicesConfigs = new ObservableCollection<SerialPortShortInfoModel>()
-            {
-                 new SerialPortShortInfoModel(false, 5, "COM5, 115200 b/s, Even, 1 SB, No FC"),
-                 new SerialPortShortInfoModel(true, 3, "COM3, 9600 b/s, No, 1 SB, No FC")
-            };
+            _configurationManager = new DeviceConfigurationManager("devices.json");
+            DevicesConfigs = _configurationManager.Load();
 
             SerialDeviceMessages = new ObservableCollection<string>();
             // StatusBar
@@ -288,6 +286,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public void ResourcesCleanUp()
         {
+            _configurationManager.Save(DevicesConfigs);
             _deviceManager.Dispose();
         }
 
@@ -399,5 +398,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private string _selectedFlowControl;
         private string _selectedPortName;
         private readonly AppVersionModel _appVersionModel;
+        private readonly DeviceConfigurationManager _configurationManager;
     }
 }
