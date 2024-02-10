@@ -52,7 +52,24 @@ namespace Wissance.Zerial.Desktop.Models
                 }
             }
             // byte len
+            string byteLengthStr = parts.FirstOrDefault(p => p.Contains("b,"));
+            if (byteLengthStr != null)
+            {
+                string byteLengthValueStr = byteLengthStr.Trim().Substring(0, 1);
+                int byteLength;
+                if (int.TryParse(byteLengthValueStr, out byteLength))
+                {
+                    Settings.ByteLength = byteLength;
+                }
+            }
             // stop bits
+            string stopBitsStr = parts.FirstOrDefault(p => p.Contains("Sb"));
+            if (stopBitsStr != null)
+            {
+                stopBitsStr = stopBitsStr.Trim();
+                if (_stopBitsOptions.ContainsKey(stopBitsStr))
+                    Settings.StopBits = _stopBitsOptions[stopBitsStr];
+            }
             // parity
             // flow control
         }
@@ -148,5 +165,18 @@ namespace Wissance.Zerial.Desktop.Models
 
         public const string BytesSentTemplate = "Bytes sent: {0}";
         public const string BytesReceivedTemplate = "Bytes received: {0}";
+
+        private readonly IDictionary<string, Rs232StopBits> _stopBitsOptions = new Dictionary<string, Rs232StopBits>()
+        {
+            {"No Sb", Rs232StopBits.None},
+            {"1 Sb", Rs232StopBits.One},
+            {"1.5 Sb", Rs232StopBits.OneAndHalf},
+            {"2 Sb", Rs232StopBits.Two}
+        };
+
+        private readonly IDictionary<string, Rs232Parity> _parityOptions = new Dictionary<string, Rs232Parity>()
+        {
+            
+        };
     }
 }
