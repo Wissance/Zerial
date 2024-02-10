@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
@@ -73,6 +74,23 @@ namespace Wissance.Zerial.Desktop.ViewModels
             AboutWindow window = new AboutWindow(_appVersionModel);
             window.Show();
         }
+
+        public async Task ExecuteNavigateToSupportPageAsync()
+        {
+            try
+            {
+                //todo(UMV): replace with master branch
+                string url = "https://github.com/Wissance/Zerial/blob/finalization2/Support.md";
+                var psi = new ProcessStartInfo();
+                psi.UseShellExecute = true;
+                psi.FileName = url;
+                Process.Start(psi);
+            }
+            catch (Exception exception)
+            {
+            }
+        }
+
         #endregion
 
         #region HardwareOperationsWithSerialDevices
