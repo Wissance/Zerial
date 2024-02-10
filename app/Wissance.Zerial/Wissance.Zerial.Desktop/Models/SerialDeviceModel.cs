@@ -27,9 +27,9 @@ namespace Wissance.Zerial.Desktop.Models
             Settings = new Rs232Settings();
             Connected = false;
             Messages = new List<SerialDeviceMessageModel>();
-            // device configuration has format - "COM3, 115200 b/s, 8b, 1 Sb, Even, No FC"
+            // device configuration has format - "COM3, 115200 b/s, 8bit, 1 Sb, Even, No FC"
             string[] parts = deviceConfiguration.Split(",");
-            string portStr = parts.FirstOrDefault(p => p.Trim().ToLower().StartsWith("COM"));
+            string portStr = parts.FirstOrDefault(p => p.Trim().StartsWith("COM"));
             if (portStr != null)
             {
                 string number = portStr.Remove(0, 3);
@@ -44,7 +44,7 @@ namespace Wissance.Zerial.Desktop.Models
             string baudRateStr = parts.FirstOrDefault(p => p.Contains("b/s"));
             if (baudRateStr != null)
             {
-                string[] baudRateParts = baudRateStr.Split(' ');
+                string[] baudRateParts = baudRateStr.Trim().Split(' ');
                 int baudRate;
                 if (int.TryParse(baudRateParts[0].Trim(), out baudRate))
                 {
@@ -52,7 +52,7 @@ namespace Wissance.Zerial.Desktop.Models
                 }
             }
             // byte len
-            string byteLengthStr = parts.FirstOrDefault(p => p.Contains("b,"));
+            string byteLengthStr = parts.FirstOrDefault(p => p.Contains("bit"));
             if (byteLengthStr != null)
             {
                 string byteLengthValueStr = byteLengthStr.Trim().Substring(0, 1);
@@ -89,7 +89,7 @@ namespace Wissance.Zerial.Desktop.Models
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.Append($"COM{Settings.PortNumber}, ");
             infoBuilder.Append($"{(int)Settings.BaudRate} b/s, ");
-            infoBuilder.Append($"{Settings.ByteLength}b, ");
+            infoBuilder.Append($"{Settings.ByteLength}bit, ");
 
             // todo(UMV): use dictionary
             switch (Settings.StopBits)

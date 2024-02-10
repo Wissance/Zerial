@@ -226,5 +226,6 @@ namespace Wissance.Zerial.Desktop.Views
         private StringBuilder _inputMessage = new StringBuilder();
         private double _previousWidth;
         private double _previousHeight;
+
     }
 }
