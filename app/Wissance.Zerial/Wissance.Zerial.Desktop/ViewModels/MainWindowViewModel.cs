@@ -80,7 +80,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             try
             {
                 //todo(UMV): replace with master branch
-                string url = "https://github.com/Wissance/Zerial/blob/finalization2/Support.md";
+                string url = "https://github.com/Wissance/Zerial/blob/master/Support.md";
                 var psi = new ProcessStartInfo();
                 psi.UseShellExecute = true;
                 psi.FileName = url;
