@@ -71,9 +71,19 @@ namespace Wissance.Zerial.Desktop.Models
                     Settings.StopBits = _stopBitsOptions[stopBitsStr];
             }
             // parity
+            string parityStr = parts.FirstOrDefault(p => _parityOptions.Keys.Contains(p.Trim()));
+            if (parityStr != null)
+            {
+                Settings.Parity = _parityOptions[parityStr.Trim()];
+            }
             // flow control
+            string flowControlStr = parts.FirstOrDefault(p => _flowControlOptions.Keys.Contains(p.Trim()));
+            if (flowControlStr != null)
+            {
+                Settings.FlowControl = _flowControlOptions[flowControlStr.Trim()];
+            }
         }
-
+        
         public SerialPortShortInfoModel ToShortInfo()
         {
             StringBuilder infoBuilder = new StringBuilder();
@@ -81,6 +91,7 @@ namespace Wissance.Zerial.Desktop.Models
             infoBuilder.Append($"{(int)Settings.BaudRate} b/s, ");
             infoBuilder.Append($"{Settings.ByteLength}b, ");
 
+            // todo(UMV): use dictionary
             switch (Settings.StopBits)
             {
                 case Rs232StopBits.None:
@@ -98,6 +109,7 @@ namespace Wissance.Zerial.Desktop.Models
             }
             infoBuilder.Append(", ");
 
+            // todo(UMV): use dictionary
             switch (Settings.Parity)
             {
                 case Rs232Parity.NoParity:
@@ -118,6 +130,7 @@ namespace Wissance.Zerial.Desktop.Models
             }
             infoBuilder.Append(", ");
 
+            // todo(UMV): use dictionary
             switch (Settings.FlowControl)
             {
                 case Rs232FlowControl.NoControl:
@@ -176,7 +189,18 @@ namespace Wissance.Zerial.Desktop.Models
 
         private readonly IDictionary<string, Rs232Parity> _parityOptions = new Dictionary<string, Rs232Parity>()
         {
-            
+            {"No P", Rs232Parity.NoParity},
+            {"Mark", Rs232Parity.Mark},
+            {"Space", Rs232Parity.Space},
+            {"Even", Rs232Parity.Even},
+            {"Odd", Rs232Parity.Odd}
+        };
+
+        private readonly IDictionary<string, Rs232FlowControl> _flowControlOptions = new Dictionary<string, Rs232FlowControl>()
+        {
+            {"No FC", Rs232FlowControl.NoControl},
+            {"Xon/Xoff", Rs232FlowControl.XonXoff},
+            {"Rts/Cts", Rs232FlowControl.RtsCts}
         };
     }
 }

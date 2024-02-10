@@ -36,7 +36,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
             _configurationManager = new DeviceConfigurationManager("devices.json");
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
-            // todo(UMV): set values from DevicesConfigs ...
+            foreach (SerialPortShortInfoModel config in DevicesConfigs)
+            {
+                _serialDevices.Add(new SerialDeviceModel(config.Configuration));
+            }
+            
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
             SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
