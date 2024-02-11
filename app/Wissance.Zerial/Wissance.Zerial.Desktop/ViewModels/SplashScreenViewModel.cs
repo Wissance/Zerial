@@ -14,7 +14,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public SplashScreenViewModel(SplashScreenWindow window, AppVersionModel model)
         {
             _window = window;
-            _model = model;
+            Model = model;
             SecondsToStart = DefaultWait;
             // TODO(UMV): ADD 1sec Timer
             TimerCallback tm = new TimerCallback(CountToStart);
@@ -56,15 +56,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
         }
         
+        public AppVersionModel Model { get; set; }
         
         public int SecondsToStart { get; set; }
-            
-
+        
         private const int YearOfWorksStarted = 2023;
         private const int DefaultWait = 6; // this time start parallel to Window drawing
 
         private readonly Timer _timer;
         private readonly SplashScreenWindow _window;
-        private readonly AppVersionModel _model;
+        
     }
 }
