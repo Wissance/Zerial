@@ -2,12 +2,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Wissance.Zerial.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="300"
         x:Class="Wissance.Zerial.Desktop.Views.SplashScreenWindow"
         FontFamily="{StaticResource RobotoFonts}"
         Icon="/Assets/Images/Zerial_64x64.png"
         WindowStartupLocation="CenterScreen" SystemDecorations="None" Topmost="True"
-        Title="Zerial is a Most convenient tool for interact with RS232 devices"
+        Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility>"
         Height="300" Width="500" MinHeight="300" MinWidth="500" MaxHeight="300" MaxWidth="500">
-    Zerial (Community Edition) - serial (RS232/COM) device communications utility
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <viewModels:SplashScreenViewModel>
+            
+        </viewModels:SplashScreenViewModel>
+        
+    </Design.DataContext>
+    
+    <Window.Styles>
+        <StyleInclude Source="/Styles/Theme.axaml" />
+    </Window.Styles>
+    
+    <Canvas>
+        <StackPanel>
+        </StackPanel>
+    </Canvas>
 </Window>
