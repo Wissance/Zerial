@@ -59,26 +59,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, string.Empty);
             Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
             Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
-
-            _appVersionModel = new AppVersionModel()
-            {
-                Author = "Ushakov M.V.",
-                Company = "Wissance LLC (ООО \"Висанс\")",
-                CompanyWebSite = "https://wissance.com/en",
-                Version = Globals.AppVersion
-            };
         }
 
         #region WindowAndDialogManagement
         public async Task ExecuteStartAboutWindowCommandAsync()
         {
-            AboutWindow window = new AboutWindow(_appVersionModel);
+            AboutWindow window = new AboutWindow(Globals.CurrentAppVersion);
             window.Show();
         }
 
         public async Task ExecuteNavigateToSupportPageAsync()
         {
-            LinkNavigator.Navigate(SupportUrl);
+            LinkNavigator.Navigate(Globals.SupportUrl);
         }
 
         #endregion
@@ -404,14 +396,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
         private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
-        private const string SupportUrl = "https://github.com/Wissance/Zerial/blob/master/Support.md";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;
         private readonly IRs232DeviceManager _deviceManager;
         private string _selectedFlowControl;
         private string _selectedPortName;
-        private readonly AppVersionModel _appVersionModel;
         private readonly DeviceConfigurationManager _configurationManager;
     }
 }

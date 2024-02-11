@@ -4,42 +4,45 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Wissance.Zerial.Desktop.Utils;
+using Wissance.Zerial.Desktop.ViewModels;
 
-namespace Wissance.Zerial.Desktop.Views;
-
-public partial class SplashScreenWindow : Window
+namespace Wissance.Zerial.Desktop.Views
 {
-    public SplashScreenWindow()
+    public partial class SplashScreenWindow : Window
     {
-        InitializeComponent();
-    }
-    
-    private void OnWissanceClick(object? sender, PointerPressedEventArgs e)
-    {
-        LinkNavigator.Navigate(WissanceWebSiteUrl);
-    }
-    
-    private void OnMVUClick(object? sender, PointerPressedEventArgs e)
-    {
-        LinkNavigator.Navigate(MVUGithubUrl);
-    }
-    
-    private void OnSupportClick(object? sender, PointerPressedEventArgs e)
-    {
-        LinkNavigator.Navigate(SupportUrl);
-    }
-    
-    private void OnMouseOver(object? sender, PointerEventArgs e)
-    {
-        Cursor = new Cursor(StandardCursorType.Hand);
-    }
+        public SplashScreenWindow()
+        {
+            _context = new SplashScreenViewModel(this, Globals.CurrentAppVersion);
+            DataContext = _context;
+            InitializeComponent();
+        }
 
-    private void OnMouseLeave(object? sender, PointerEventArgs e)
-    {
-        Cursor = new Cursor(StandardCursorType.Arrow);
-    }
+        private void OnWissanceClick(object? sender, PointerPressedEventArgs e)
+        {
+            LinkNavigator.Navigate(Globals.WissanceWebSiteUrl);
+        }
 
-    private const string WissanceWebSiteUrl = "https://wissance.com/en"; //todo(use from model)
-    private const string MVUGithubUrl = "https://github.com/EvilLord666";
-    private const string SupportUrl = "https://github.com/Wissance/Zerial/blob/master/Support.md";
+        private void OnMVUClick(object? sender, PointerPressedEventArgs e)
+        {
+            LinkNavigator.Navigate(Globals.MVUGithubUrl);
+        }
+
+        private void OnSupportClick(object? sender, PointerPressedEventArgs e)
+        {
+            LinkNavigator.Navigate(Globals.SupportUrl);
+        }
+
+        private void OnMouseOver(object? sender, PointerEventArgs e)
+        {
+            Cursor = new Cursor(StandardCursorType.Hand);
+        }
+
+        private void OnMouseLeave(object? sender, PointerEventArgs e)
+        {
+            Cursor = new Cursor(StandardCursorType.Arrow);
+        }
+
+        private readonly SplashScreenViewModel _context;
+    }
+    
 }
