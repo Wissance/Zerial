@@ -54,6 +54,10 @@
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <TextBlock Text="{Binding Years}"></TextBlock>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 7 0 0">
+                        <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding SecondsToStart}"></TextBlock> 
+                        <TextBlock FontSize="18" FontWeight="Bold" Text=" seconds to start ..."></TextBlock> 
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
