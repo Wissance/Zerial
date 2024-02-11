@@ -10,7 +10,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             get
             {
                 int currentYear = DateTime.Now.Year;
-                return currentYear > YearOfWorksStarted ? $"{currentYear}-2023" : "2024-2023";
+                return currentYear > YearOfWorksStarted ? $"2023-{currentYear}" : "2023-2024";
             }
         }
 

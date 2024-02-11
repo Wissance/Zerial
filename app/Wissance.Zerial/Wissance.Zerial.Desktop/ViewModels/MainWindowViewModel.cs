@@ -21,6 +21,7 @@ using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Managers;
 using Wissance.Zerial.Desktop.Models;
+using Wissance.Zerial.Desktop.Utils;
 using Wissance.Zerial.Desktop.Views;
 
 namespace Wissance.Zerial.Desktop.ViewModels
@@ -77,18 +78,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteNavigateToSupportPageAsync()
         {
-            try
-            {
-                //todo(UMV): replace with master branch
-                string url = "https://github.com/Wissance/Zerial/blob/master/Support.md";
-                var psi = new ProcessStartInfo();
-                psi.UseShellExecute = true;
-                psi.FileName = url;
-                Process.Start(psi);
-            }
-            catch (Exception exception)
-            {
-            }
+            LinkNavigator.Navigate(SupportUrl);
         }
 
         #endregion
@@ -414,6 +404,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
         private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
+        private const string SupportUrl = "https://github.com/Wissance/Zerial/blob/master/Support.md";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

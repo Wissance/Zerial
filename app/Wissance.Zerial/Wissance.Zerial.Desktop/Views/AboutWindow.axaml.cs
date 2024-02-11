@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Wissance.Zerial.Desktop.Models;
+using Wissance.Zerial.Desktop.Utils;
 using Wissance.Zerial.Desktop.ViewModels;
 
 namespace Wissance.Zerial.Desktop.Views;
@@ -35,18 +36,8 @@ public partial class AboutWindow : Window
     
     private void  OnClick(object? sender, PointerPressedEventArgs e)
     {
-        try
-        {
-            string url = _context.Model.CompanyWebSite; // Unfortunately can't get text in Underline within a TextBlock
-            var psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = url;
-            Process.Start(psi);
-        }
-        catch (Exception exception)
-        {
-        }
+        LinkNavigator.Navigate(_context.Model.CompanyWebSite);
     }
 
-    private AboutWindowViewModel _context;
+    private readonly AboutWindowViewModel _context;
 }
