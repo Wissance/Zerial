@@ -34,7 +34,7 @@ public partial class AboutWindow : Window
         Cursor = new Cursor(StandardCursorType.Arrow);
     }
     
-    private void  OnClick(object? sender, PointerPressedEventArgs e)
+    private void OnClick(object? sender, PointerPressedEventArgs e)
     {
         LinkNavigator.Navigate(_context.Model.CompanyWebSite);
     }

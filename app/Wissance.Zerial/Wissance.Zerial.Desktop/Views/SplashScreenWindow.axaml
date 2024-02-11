@@ -34,11 +34,13 @@
                 <StackPanel Orientation="Vertical" Margin="10 0 0 0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Software designed By "/>
-                        <TextBlock Foreground="BlueViolet"><Underline>Wissance LLC (ООО Висанс)</Underline></TextBlock>
+                        <TextBlock Foreground="BlueViolet" PointerPressed="OnWissanceClick"
+                                   PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" ><Underline>Wissance LLC (ООО Висанс)</Underline></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <TextBlock Text="Authors: "></TextBlock>
-                        <TextBlock Foreground="BlueViolet"><Underline>M.V.Ushakov</Underline></TextBlock>
+                        <TextBlock Foreground="BlueViolet" PointerPressed="OnMVUClick"
+                                   PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" ><Underline>M.V.Ushakov</Underline></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <TextBlock Text="Version: "></TextBlock>
@@ -46,7 +48,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <TextBlock Text="Support Us: "></TextBlock>
-                        <TextBlock Foreground="BlueViolet"><Underline>See ways ...</Underline></TextBlock>
+                        <TextBlock Foreground="BlueViolet" PointerPressed="OnSupportClick"
+                                   PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" ><Underline>See ways ...</Underline></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <TextBlock Text="{Binding Years}"></TextBlock>
