@@ -8,6 +8,7 @@
         FontFamily="{StaticResource RobotoFonts}"
         Icon="/Assets/Images/Zerial_64x64.png"
         WindowStartupLocation="CenterScreen" SystemDecorations="None" Topmost="True"
+        x:CompileBindings="False"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility>"
         Height="200" Width="500" MinHeight="200" MinWidth="500" MaxHeight="200" MaxWidth="500">
     
@@ -31,8 +32,24 @@
                     <Image Source="/Assets/Images/Wissance.png"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10 0 0 0">
-                    <StackPanel>
-                        <TextBlock Text="Software designed By Wissance LLC (ООО Висанс)"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Software designed By "/>
+                        <TextBlock Foreground="BlueViolet"><Underline>Wissance LLC (ООО Висанс)</Underline></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <TextBlock Text="Authors: "></TextBlock>
+                        <TextBlock Foreground="BlueViolet"><Underline>M.V.Ushakov</Underline></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <TextBlock Text="Version: "></TextBlock>
+                        <TextBlock Text="1.0"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <TextBlock Text="Support Us: "></TextBlock>
+                        <TextBlock Foreground="BlueViolet"><Underline>See ways ...</Underline></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <TextBlock Text="{Binding Years}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
