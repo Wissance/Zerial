@@ -9,7 +9,7 @@
         Icon="/Assets/Images/Zerial_64x64.png"
         WindowStartupLocation="CenterScreen" SystemDecorations="None" Topmost="True"
         Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility>"
-        Height="300" Width="500" MinHeight="300" MinWidth="500" MaxHeight="300" MaxWidth="500">
+        Height="200" Width="500" MinHeight="200" MinWidth="500" MaxHeight="200" MaxWidth="500">
     
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -26,6 +26,16 @@
     
     <Canvas>
         <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="30 25 0 0">
+                <StackPanel >
+                    <Image Source="/Assets/Images/Wissance.png"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="10 0 0 0">
+                    <StackPanel>
+                        <TextBlock Text="Software designed By Wissance LLC (ООО Висанс)"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Canvas>
 </Window>
