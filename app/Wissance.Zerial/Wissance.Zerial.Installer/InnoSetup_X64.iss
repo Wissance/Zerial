@@ -34,12 +34,12 @@ Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.
 Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Desktop.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Desktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "..\Wissance.Zerial.Desktop\Assets\Images\Zerial_64x64.png"; DestDir: "{app}"
+Source: "..\Wissance.Zerial.Desktop\Assets\Images\Zerial_64x64.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.png"
-Name: "{commondesktop}\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.png"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.png"; Tasks: quicklaunchicon
+Name: "{group}\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.ico"; IconIndex: 0
+Name: "{commondesktop}\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.ico"; IconIndex: 0; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.ico"; IconIndex: 0; Tasks: quicklaunchicon
 
 [Run]
 Filename: "{app}\Wissance.Zerial.Desktop.exe"; Description: "{cm:LaunchProgram,Wissance.Zerial}"; Flags: nowait postinstall skipifsilent
