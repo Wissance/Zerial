@@ -24,8 +24,7 @@ namespace Wissance.Zerial.Desktop.Models
         public SerialDeviceModel(string deviceConfiguration)
         {
             // parse back from string to device
-            Settings = new Rs232Settings();
-            Connected = false;
+            Settings = new Rs232Settings();            Connected = false;
             Messages = new List<SerialDeviceMessageModel>();
             // device configuration has format - "COM3, 115200 b/s, 8bit, 1 Sb, Even, No FC"
             string[] parts = deviceConfiguration.Split(",");
