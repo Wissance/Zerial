@@ -1,0 +1,23 @@
+name: wissance-zerial
+version: '1.0'
+grade: stable
+summary: Utility for interaction with multiple RS232 (COM) devices
+description: |
+  Fast and convenient utility to communicate with any RS232 device, useful especially for hardware developers.
+
+base: core22
+
+confinement: strict
+
+parts:
+  wissance-zerial:
+    plugin: dotnet
+    dotnet-build-configuration: Release
+    dotnet-self-contained-runtime-identifier: linux-x64
+    source: ./app/Wissance.Zerial/Wissance.Zerial.Desktop
+    build-packages:
+      - dotnet-sdk-6.0
+
+apps:
+  wissance-zerial:
+    command: Zerial
