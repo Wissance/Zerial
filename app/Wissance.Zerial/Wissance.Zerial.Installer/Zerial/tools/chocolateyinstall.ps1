@@ -15,8 +15,8 @@ $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 #$fileLocation = '\\SHARE_LOCATION\to\INSTALLER_FILE'
 # Community Repo: Use official urls for non-redist binaries or redist where total package size is over 200MB
 # Internal/Organization: Download from internal location (internet sources are unreliable)
-$url        = 'https://github.com/Wissance/Zerial/blob/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.Win.X86.exe' # download url, HTTPS preferred
-$url64      = 'https://github.com/Wissance/Zerial/blob/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.Win.X64.exe' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
+$url        = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.Win.X86.exe' # download url, HTTPS preferred
+$url64      = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.Win.X64.exe' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -51,12 +51,13 @@ $packageArgs = @{
   #silentArgs   = '-q'           # Install4j
   #silentArgs   = '-s'           # Ghost
   # Note that some installers, in addition to the silentArgs above, may also need assistance of AHK to achieve silence.
-  #silentArgs   = ''             # none; make silent with input macro script like AutoHotKey (AHK)
+  # silentArgs   = ''             # none; make silent with input macro script like AutoHotKey (AHK)
                                  #       https://chocolatey.org/packages/autohotkey.portable
   #validExitCodes= @(0) #please insert other valid exit codes here
+  ignoreChecksums='true'
 }
 
-Install-ChocolateyPackage @packageArgs # https://chocolatey.org/docs/helpers-install-chocolatey-package
+Install-ChocolateyPackage @packageArgs --ignore-checksums# https://chocolatey.org/docs/helpers-install-chocolatey-package
 #Install-ChocolateyZipPackage @packageArgs # https://chocolatey.org/docs/helpers-install-chocolatey-zip-package
 ## If you are making your own internal packages (organizations), you can embed the installer or 
 ## put on internal file share and use the following instead (you'll need to add $file to the above)
