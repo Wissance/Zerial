@@ -21,4 +21,6 @@ $packageArgs = @{
   validExitCodes= @(0, 3010, 1641)
 }
 
+choco install dotnet-6.0-runtime -y
+
 Install-ChocolateyPackage @packageArgs
