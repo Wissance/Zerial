@@ -9,15 +9,16 @@ namespace Wissance.Zerial.WinInstaller.Bootstrap
             // 1. Download .exe installer depends on OS/CPU architecture
             string installerUrl = Environment.Is64BitOperatingSystem ? WinX64Installer : WinX86Installer;
             string fileName = "Wissance.Zerial.Installer.exe";
-            string fullFilePath = Path.GetFullPath(".", fileName);
-            
+            string fullFilePath = Path.Combine(Path.GetFullPath("."), fileName);
+            Console.WriteLine("******** 1. Prepare to Get Installer ********");
             using (HttpClient client = new HttpClient())
             {
                 await client.DownloadFileTaskAsync(new Uri(installerUrl), fullFilePath);
             }
             
+            Console.WriteLine("******** 2. Run installer Silently ********");
             // 2. Run installer silently
-            Process installerProcess = Process.Start(fullFilePath, @"\SILENT");
+            Process installerProcess = Process.Start(fullFilePath, "/SILENT");
             installerProcess.Close();
             installerProcess.Dispose();
             
