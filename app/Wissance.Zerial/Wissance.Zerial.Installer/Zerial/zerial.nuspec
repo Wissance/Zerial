@@ -9,9 +9,9 @@
     <title>Zerial (Comunity Edition)</title>
     <authors>M.V.Ushakov (Wissance LLC)</authors>
     <projectUrl>https://wissance.github.io/Zerial/</projectUrl>
-    <iconUrl>https://github.com/Wissance/Zerial/blob/master/app/Wissance.Zerial/Wissance.Zerial.Desktop/Assets/Images/Zerial_Big.png</iconUrl>
+    <iconUrl>https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Desktop/Assets/Images/Zerial_Big.png</iconUrl>
     <copyright>2023-2024 Wissance LLC (ООО Висанс)</copyright>
-    <licenseUrl>https://github.com/Wissance/Zerial/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/Wissance/Zerial/raw/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/Wissance/Zerial</projectSourceUrl>
     <tags>Zerial RS-232 RS232 COM Hardware</tags>

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Wissance.Zerial.WinInstaller.Bootstrap
 {
@@ -17,11 +18,18 @@ namespace Wissance.Zerial.WinInstaller.Bootstrap
             }
             
             Console.WriteLine("******** 2. Run installer Silently ********");
-            // 2. Run installer silently
-            Process installerProcess = Process.Start(fullFilePath, "/SILENT");
-            installerProcess.Close();
-            installerProcess.Dispose();
-            
+
+            Process p = new Process();
+            p.StartInfo.FileName = $"{fullFilePath} ";
+            p.StartInfo.Arguments = @"/VERYSILENT /SP- /SUPPRESSMSGBOXES";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.Verb = "runas";
+            // p.StartInfo.UserName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            p.Start();
+            p.WaitForExit();
         }
 
         private const string WinX64Installer = "https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.Win.X64.exe";

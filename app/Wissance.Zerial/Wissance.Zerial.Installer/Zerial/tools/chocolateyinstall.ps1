@@ -12,15 +12,15 @@ $packageArgs = @{
 
   softwareName  = 'Zerial'
 
-  checksum      = 'D4ACDFABEA3210D5EA103E9D2DE284C2271E575C141A6F11E53E546C38B5A81B'
+  checksum      = 'C1E2E9A5B7EEF3C64894B8247E539B6E5F6DE0EE47B4C18DC1A9B6BB032F8B18'
   checksumType  = 'sha256'
-  checksum64    = '3490E64CFA63AA767B55D78F63B3BE10A7C4900F3D0E486B3207BBBB1EB31129'
+  checksum64    = '3EA0AB7BBCA0A19A885316306D2A95EC7A6DC3416E40188C637A07D72908E8FC'
   checksumType64= 'sha256'
 
   silentArgs    = "/SILENT /qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`"" # ALLUSERS=1 DISABLEDESKTOPSHORTCUT=1 ADDDESKTOPICON=0 ADDSTARTMENU=0
   validExitCodes= @(0, 3010, 1641)
 }
 
-choco install dotnet-6.0-runtime -y
+Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile "$env:temp/dotnet-install.ps1"; powershell -executionpolicy bypass "$env:temp/dotnet-install.ps1"
 
 Install-ChocolateyPackage @packageArgs
