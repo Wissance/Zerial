@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>wissance-zerial</id>
+    <id>zerial-rs232</id>
     <version>1.0</version>
     <packageSourceUrl>https://github.com/Wissance/Zerial</packageSourceUrl>
     <title>Zerial (Comunity Edition)</title>
