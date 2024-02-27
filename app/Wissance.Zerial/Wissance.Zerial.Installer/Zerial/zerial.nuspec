@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>zerial</id>
+    <id>wissance-zerial</id>
     <version>1.0</version>
     <packageSourceUrl>https://github.com/Wissance/Zerial</packageSourceUrl>
-    <owners>M.V.Ushakov (Wissance LLC)</owners>
-
     <title>Zerial (Comunity Edition)</title>
-    <authors>M.V.Ushakov (Wissance LLC)</authors>
+    <authors>M.V.Ushakov (EvilLord666)</authors>
     <projectUrl>https://wissance.github.io/Zerial/</projectUrl>
     <iconUrl>https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Desktop/Assets/Images/Zerial_Big.png</iconUrl>
     <copyright>2023-2024 Wissance LLC (ООО Висанс)</copyright>
