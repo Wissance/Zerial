@@ -7,7 +7,7 @@ description: |
 
 base: core22
 
-confinement: devmode
+confinement: strict
 
 parts:
   wissance-zerial:
