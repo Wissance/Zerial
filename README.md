@@ -22,3 +22,9 @@ You could find **why and how to support us** [here](Support.md)
 
 #### 3.2 Linux
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/wissance-zerial)
+
+### 4. Contributors
+
+<a href="https://github.com/Wissance/Zerial/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Wissance/Zerial" />
+</a>
