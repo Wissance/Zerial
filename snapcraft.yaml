@@ -7,17 +7,31 @@ description: |
 
 base: core22
 
-confinement: strict
+confinement: devmode
 
 parts:
   wissance-zerial:
     plugin: dotnet
     dotnet-build-configuration: Release
     dotnet-self-contained-runtime-identifier: linux-x64
-    source: ./app/Wissance.Zerial/Wissance.Zerial.Desktop
+    source: ./app/Wissance.Zerial
     build-packages:
-      - dotnet-sdk-6.0
+      - dotnet-sdk-8.0
+    stage-packages:
+      - libfontconfig
+      - libicu70
+      - libx11-6
+      - libstdc++5
+      - libice6
+      - libsm6
+    override-build: |
+      dotnet build -c Release
+      dotnet publish -r linux-x64 -c Release -p:PublishSingleFile=true -p:PublishReadyToRun=true --self-contained true -o $SNAPCRAFT_PART_INSTALL ./Wissance.Zerial.Desktop/Wissance.Zerial.Desktop.csproj
+      chmod 0755 $SNAPCRAFT_PART_INSTALL
 
 apps:
   wissance-zerial:
-    command: Zerial
+    plugs:
+      - desktop
+      - desktop-legacy
+    command: ./Wissance.Zerial.Desktop
