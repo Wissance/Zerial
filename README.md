@@ -15,3 +15,10 @@ Zerial is:
 
 ### 2. Support
 You could find **why and how to support us** [here](Support.md)
+
+### 3. Install
+
+#### 3.1 Windows
+
+#### 3.2 Linux
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/wissance-zerial)
