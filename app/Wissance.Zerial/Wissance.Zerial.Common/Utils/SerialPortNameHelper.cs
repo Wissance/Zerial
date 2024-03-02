@@ -17,13 +17,39 @@ namespace Wissance.Zerial.Common.Utils
         {
             if (OperatingSystem.IsWindows())
                 return string.Format(WindowsComPortNamePattern, number);
-            string deviceName = string.Format(isUsbDevice ? LinuxUsbDeviceNamePattern : LinuxPureSerialDeviceNamePattern, number);
-            return string.Format(LinuxPureSerialDeviceNamePattern, deviceName);
+            if (OperatingSystem.IsLinux())
+            {
+                string deviceName = string.Format(isUsbDevice ? LinuxUsbDeviceNamePattern : LinuxComDeviceNamePattern, number);
+                return string.Format(LinuxSerialDeviceNamePattern, deviceName);
+            }
+
+            return null;
+        }
+
+        public static int GetSerialDeviceNumber(string deviceName)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                int portNumber = 0;
+                bool portParseResult = int.TryParse(deviceName.Substring("COM".Length), out portNumber);
+                if (portParseResult)
+                    return portNumber;
+                return -1;
+            }
+
+            if (OperatingSystem.IsLinux())
+            {
+                if (deviceName.Contains("USB"))
+                {
+                }
+            }
+
+            return -1;
         }
 
         private const string WindowsComPortNamePattern = "COM{0}";
         private const string LinuxSerialDeviceNamePattern = "/dev/{0}";
-        private const string LinuxPureSerialDeviceNamePattern = "tty{0}";
+        private const string LinuxComDeviceNamePattern = "tty{0}";
         private const string LinuxUsbDeviceNamePattern = "ttyUSB{0}";
     }
 }
