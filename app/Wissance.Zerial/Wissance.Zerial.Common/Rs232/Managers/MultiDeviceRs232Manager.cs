@@ -1,12 +1,14 @@
 using System.Collections.Concurrent;
 using System.IO.Ports;
+using Microsoft.Extensions.Logging;
 using Wissance.Zerial.Common.Rs232.Settings;
 
 namespace Wissance.Zerial.Common.Rs232.Managers
 {
     public class MultiDeviceRs232Manager : IRs232DeviceManager, IDisposable
     {
-        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler /*ILoggerFactory loggerFactory*/)
+        
+        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler, ILoggerFactory loggerFactory)
         {
             _onDataReceivedHandler = onDataReceivedHandler;
         }

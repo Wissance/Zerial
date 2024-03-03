@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using DynamicData;
 using DynamicData.Binding;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Managers;
@@ -33,7 +34,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
-            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived);
+            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
             _serialDevices = new List<SerialDeviceModel>();
             _configurationManager = new DeviceConfigurationManager("devices.json");
             DevicesConfigs = _configurationManager.Load();

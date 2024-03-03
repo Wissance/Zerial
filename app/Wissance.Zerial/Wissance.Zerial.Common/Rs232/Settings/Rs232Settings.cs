@@ -35,7 +35,9 @@ namespace Wissance.Zerial.Common.Rs232.Settings
 
     public class Rs232Settings
     {
+        [Obsolete("Should be used DeviceName instead of PortNumber")]
         public int PortNumber { get; set; }
+        public string DeviceName { get; set; }
         public Rs232BaudRate BaudRate { get; set; }
         public Rs232StopBits StopBits { get; set; }
         public Rs232Parity Parity { get; set; }
