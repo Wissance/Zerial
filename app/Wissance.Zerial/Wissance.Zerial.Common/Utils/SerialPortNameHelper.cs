@@ -59,8 +59,7 @@ namespace Wissance.Zerial.Common.Utils
                     }
                     
                     int portNumber = 0;
-                    bool portParseResult = int.TryParse(deviceName.Substring(WindowsComDeviceNameSign.Length),
-                        out portNumber);
+                    bool portParseResult = int.TryParse(deviceNumber,  out portNumber);
                     if (portParseResult)
                         return portNumber;
                     return -1;
