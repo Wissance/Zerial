@@ -80,136 +80,129 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteConnectActionAsync()
         {
-            int portNumber = 0;
-            bool portParseResult = int.TryParse(SelectedPortNumber.Substring("COM".Length), out portNumber);
-            if (portParseResult)
+            Rs232Settings deviceSetting = new Rs232Settings()
             {
-                Rs232Settings deviceSetting = new Rs232Settings()
-                {
-                    PortNumber = portNumber,
-                    BaudRate = SerialOptions.BaudRates[SelectedBaudRate],
-                    ByteLength = SerialOptions.ByteLength[SelectedByteLength],
-                    Parity = SerialOptions.Parities[SelectedParity],
-                    StopBits = SerialOptions.StopBits[SelectedStopBits],
-                    FlowControl = SerialOptions.FlowControls[SelectedFlowControl]
-                    // todo(UMV): pass Xon + Xoff bytes as bytes
-                };
+                DeviceName = SelectedPortNumber,
+                BaudRate = SerialOptions.BaudRates[SelectedBaudRate],
+                ByteLength = SerialOptions.ByteLength[SelectedByteLength],
+                Parity = SerialOptions.Parities[SelectedParity],
+                StopBits = SerialOptions.StopBits[SelectedStopBits],
+                FlowControl = SerialOptions.FlowControls[SelectedFlowControl]
+                // todo(UMV): pass Xon + Xoff bytes as bytes
+            };
 
-                SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == deviceSetting.PortNumber);
-                bool isNewDevice = serialDevice == null;
-                if (serialDevice == null)
-                {
-                    serialDevice = new SerialDeviceModel(false, deviceSetting, new List<SerialDeviceMessageModel>() { });
-                }
-                else
-                {
-                    serialDevice.Settings = deviceSetting;
-                }
-
-                if (!serialDevice.Connected)
-                {
-                    bool openResult = await _deviceManager.OpenAsync(deviceSetting);
-                    serialDevice.Connected = openResult;
-                    if (openResult)
-                    {
-                        ConnectButtonText = Globals.ConnectButtonDisconnectText;
-                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
-                        serialDevice.Messages.Add(msg);
-                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
-                    }
-                }
-                else
-                {
-                    await _deviceManager.CloseAsync(deviceSetting.PortNumber);
-                    serialDevice.Connected = false;
-                    ConnectButtonText = Globals.ConnectButtonConnectText;
-                    SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
-                    serialDevice.Messages.Add(msg);
-                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
-                }
-                
-                if (isNewDevice)
-                    _serialDevices.Add(serialDevice);
-                this.RaisePropertyChanged(nameof(ConnectButtonText));
-                // todo(UMV): tree add
-                if (DevicesConfigs.All(d => d.PortNumber != deviceSetting.PortNumber))
-                {
-                    DevicesConfigs.Add(serialDevice.ToShortInfo());
-                    this.RaisePropertyChanged(nameof(DevicesConfigs));
-                }
-                else
-                {
-                    SerialPortShortInfoModel info = DevicesConfigs.FirstOrDefault(d => d.PortNumber == deviceSetting.PortNumber);
-                    if (info != null)
-                    {
-                        int index = DevicesConfigs.IndexOf(info);
-                        DevicesConfigs.RemoveAt(index);
-                        info.Connected = serialDevice.Connected;
-                        info.Configuration = serialDevice.ToShortInfo().Configuration;
-                        DevicesConfigs.Insert(index, info);
-                        this.RaisePropertyChanged(nameof(DevicesConfigs));
-                    }
-                }
-                
-                UpdateStatusbar(serialDevice);
+            SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == deviceSetting.PortNumber);
+            bool isNewDevice = serialDevice == null;
+            if (serialDevice == null)
+            {
+                serialDevice = new SerialDeviceModel(false, deviceSetting, new List<SerialDeviceMessageModel>() { });
             }
+            else
+            {
+                serialDevice.Settings = deviceSetting;
+            }
+
+            if (!serialDevice.Connected)
+            {
+                bool openResult = await _deviceManager.OpenAsync(deviceSetting);
+                serialDevice.Connected = openResult;
+                if (openResult)
+                {
+                    ConnectButtonText = Globals.ConnectButtonDisconnectText;
+                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
+                    serialDevice.Messages.Add(msg);
+                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
+                }
+            }
+            else
+            {
+                await _deviceManager.CloseAsync(deviceSetting.DeviceName);
+                serialDevice.Connected = false;
+                ConnectButtonText = Globals.ConnectButtonConnectText;
+                SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
+                serialDevice.Messages.Add(msg);
+                SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
+            }
+                
+            if (isNewDevice)
+                _serialDevices.Add(serialDevice);
+            this.RaisePropertyChanged(nameof(ConnectButtonText));
+            // add device to tree
+            if (DevicesConfigs.All(d => d.PortNumber != deviceSetting.PortNumber))
+            {
+                DevicesConfigs.Add(serialDevice.ToShortInfo());
+                this.RaisePropertyChanged(nameof(DevicesConfigs));
+            }
+            else
+            {
+                SerialPortShortInfoModel info = DevicesConfigs.FirstOrDefault(d => d.PortNumber == deviceSetting.PortNumber);
+                if (info != null)
+                {
+                    int index = DevicesConfigs.IndexOf(info);
+                    DevicesConfigs.RemoveAt(index);
+                    info.Connected = serialDevice.Connected;
+                    info.Configuration = serialDevice.ToShortInfo().Configuration;
+                    DevicesConfigs.Insert(index, info);
+                    this.RaisePropertyChanged(nameof(DevicesConfigs));
+                } 
+            }
+                
+            UpdateStatusbar(serialDevice);
         }
 
         public async Task ExecuteMessageSendAsync()
         {
-            int portNumber = 0;
-            bool portParseResult = int.TryParse(SelectedPortNumber.Substring("COM".Length), out portNumber);
-            if (portParseResult)
+            // 1. Get actual serial device
+            SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, SelectedPortNumber));
+            if (serialDevice == null)
+                return;
+            // 2. Get text
+            string[] bytesStr = SerialDeviceMessageToSend.Split(" ").Where(p => !string.IsNullOrEmpty(p)).ToArray();
+            IList<byte> bytes = new List<byte>();
+            // 3. Split it
+            IFormatProvider provider = new NumberFormatInfo();
+            foreach (string byteStr in bytesStr)
             {
-                // 1. Get actual serial device
-                SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
-                if (serialDevice == null)
-                    return;
-                // 2. Get text
-                string[] bytesStr = SerialDeviceMessageToSend.Split(" ").Where(p => !string.IsNullOrEmpty(p)).ToArray();
-                IList<byte> bytes = new List<byte>();
-                // 3. Split it
-                IFormatProvider provider = new NumberFormatInfo();
-                foreach (string byteStr in bytesStr)
+                //byteStr is a 0x{Upper}{Lower}
+                string rawByte = byteStr.Substring(2);
+                byte raw;
+                bool res = byte.TryParse(rawByte, NumberStyles.HexNumber, provider, out raw);
+                if (!res)
                 {
-                    //byteStr is a 0x{Upper}{Lower}
-                    string rawByte = byteStr.Substring(2);
-                    byte raw;
-                    bool res = byte.TryParse(rawByte, NumberStyles.HexNumber, provider, out raw);
-                    if (!res)
-                    {
-                        // log here
-                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                            "Unable to send data to COM device, due to it can't be converted into bytes");
-                        serialDevice.Messages.Add(msg);
-                        SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
-                        return;
-                    }
-
-                    bytes.Add(raw);
-                }
-                // 4 Send
-                bool sendResult = await _deviceManager.WriteAsync(portNumber, bytes.ToArray());
-                if (sendResult)
-                {
-                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Write, DateTime.Now, bytes.ToArray());
-                    serialDevice.Messages.Add(msg);
-                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
-                }
-                else
-                {
+                    // log here
                     SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                        "Data wasn't send to device");
+                        "Unable to send data to Serial (COM, USB-COM) device, due to it can't be converted into bytes");
                     serialDevice.Messages.Add(msg);
-                    SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.PortNumber));
+                    SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
                     return;
                 }
 
-                // todo(umv): append logs either to serial device and to TextEditor
-                SerialDeviceMessageToSend = "";
-                this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
-                UpdateStatusbar(serialDevice);
+                bytes.Add(raw);
             }
+
+            // 4 Send
+            bool sendResult = await _deviceManager.WriteAsync( SelectedPortNumber, bytes.ToArray());
+            if (sendResult)
+            {
+                SerialDeviceMessageModel msg =
+                    new SerialDeviceMessageModel(MessageType.Write, DateTime.Now, bytes.ToArray());
+                serialDevice.Messages.Add(msg);
+                SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
+            }
+            else
+            {
+                SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
+                    "Data wasn't send to device");
+                serialDevice.Messages.Add(msg);
+                SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
+                return;
+            }
+
+            // todo(umv): append logs either to serial device and to TextEditor
+            SerialDeviceMessageToSend = "";
+            this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
+            UpdateStatusbar(serialDevice);
+
         }
 
         public async Task ExecuteClearMessageAsync()
@@ -222,27 +215,21 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             if (e.EventType == SerialData.Chars)
             {
-                // find a proper COM port number, probably convert sender to SerialPort
                 SerialPort p = sender as SerialPort;
                 if (p != null)
                 {
-                    int portNumber;
-                    bool portParseResult = int.TryParse(p.PortName.Substring("COM".Length), out portNumber);
-                    if (portParseResult)
+                    Task<byte[]> readResTask = _deviceManager.ReadAsync(p.PortName);
+                    readResTask.Wait();
+                    byte[] receivedData = readResTask.Result;
+                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
+                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
+                    serialDevice.Messages.Add(msg);
+                    string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
+                    _ = Task.Run(() =>
                     {
-                        Task<byte[]> readResTask = _deviceManager.ReadAsync(portNumber);
-                        readResTask.Wait();
-                        byte[] receivedData = readResTask.Result;
-                        SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == portNumber);
-                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
-                        serialDevice.Messages.Add(msg);
-                        string boxMsg = msg.ToString(serialDevice.Settings.PortNumber);
-                        _ = Task.Run(() =>
-                        {
-                            UpdateMessagesFromAnotherThread(boxMsg);
-                            UpdateStatusbar(serialDevice);
-                        });
-                    }
+                        UpdateMessagesFromAnotherThread(boxMsg);
+                        UpdateStatusbar(serialDevice);
+                    });
                 }
             }
         }
@@ -262,14 +249,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #endregion
         
-        public void ShowSelectedSerialDeviceSetting(int portNumber)
+        public void ShowSelectedSerialDeviceSetting(string deviceName)
         {
-            if (portNumber < 0)
+            if (string.IsNullOrEmpty(deviceName))
                 return;
-            SerialDeviceModel device = _serialDevices.FirstOrDefault(d => d.Settings.PortNumber == portNumber);
+            SerialDeviceModel device = _serialDevices.FirstOrDefault(d => string.Equals(d.Settings.DeviceName, deviceName));
             if (device != null)
             {
-                SelectedPortNumber = $"COM{portNumber}";
+                SelectedPortNumber = deviceName;
                 this.RaisePropertyChanged(nameof(SelectedPortNumber));
                 SelectedBaudRate = SerialOptions.BaudRates.FirstOrDefault(b => b.Value == device.Settings.BaudRate).Key;
                 this.RaisePropertyChanged(nameof(SelectedBaudRate));

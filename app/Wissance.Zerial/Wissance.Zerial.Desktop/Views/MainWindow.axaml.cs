@@ -3,16 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
-using Wissance.Zerial.Common.Utils;
 using Wissance.Zerial.Desktop.ViewModels;
 
 namespace Wissance.Zerial.Desktop.Views
@@ -63,19 +59,19 @@ namespace Wissance.Zerial.Desktop.Views
             TextBlock treeLineText = sender as TextBlock;
             if (treeLineText != null)
             {
-                int portNumber = GetPortNumberFromTreeItemText(treeLineText.Text);
-                _context.ShowSelectedSerialDeviceSetting(portNumber);
+                string deviceName = GetPortNumberFromTreeItemText(treeLineText.Text);
+                _context.ShowSelectedSerialDeviceSetting(deviceName);
             }
         }
 
-        private int GetPortNumberFromTreeItemText(string text)
+        private string GetPortNumberFromTreeItemText(string text)
         {
             if (string.IsNullOrEmpty(text))
-                return -1;
+                return "";
             string[] items = text.Split(",");
-            if (items == null || !items.Any())
-                return -2;
-            return SerialPortNumberExtractor.Extract(items[0]);
+            if (!items.Any())
+                return "";
+            return items[0];
         }
         
         private void OnInputSymbolKeyDown(object? sender, KeyEventArgs e)
