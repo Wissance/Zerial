@@ -1,20 +1,24 @@
 using System.Collections.Concurrent;
 using System.IO.Ports;
+using Microsoft.Extensions.Logging;
 using Wissance.Zerial.Common.Rs232.Settings;
+using Wissance.Zerial.Common.Utils;
 
 namespace Wissance.Zerial.Common.Rs232.Managers
 {
-    public class MultiDeviceRs232Manager : IRs232DeviceManager, IDisposable
+    public class MultiDeviceRs232Manager : IRs232DeviceManager
     {
-        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler /*ILoggerFactory loggerFactory*/)
+        
+        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler, ILoggerFactory loggerFactory)
         {
             _onDataReceivedHandler = onDataReceivedHandler;
+            _logger = loggerFactory.CreateLogger<MultiDeviceRs232Manager>();
         }
 
         public void Dispose()
         {
             _cancellationSource.Cancel();
-            foreach (KeyValuePair<int,SerialPort> device in _devices)
+            foreach (KeyValuePair<string,SerialPort> device in _devices)
             {
                 device.Value.Dispose();
             }
@@ -24,16 +28,21 @@ namespace Wissance.Zerial.Common.Rs232.Managers
         {
             try
             {
+                // 1. if setting has prepared device name, use it, otherwise we constructing Device name from port number
+                if (string.IsNullOrEmpty(settings.DeviceName))
+                    return false;
+                string portName = settings.DeviceName;
+                
                 SerialPort serialPort = null;
-                if (_devices.ContainsKey(settings.PortNumber))
-                    serialPort = _devices[settings.PortNumber];
+                if (_devices.ContainsKey(portName))
+                    serialPort = _devices[portName];
                 
                 if (serialPort == null)
                 {
                     // todo(umv): run timeout parallel to open task
                     serialPort = new SerialPort()
                     {
-                        PortName = $"COM{settings.PortNumber}",
+                        PortName = portName,
                         BaudRate = (int)settings.BaudRate,
                         StopBits = _stopBitsMapping[settings.StopBits],
                         DataBits = settings.ByteLength,
@@ -51,11 +60,11 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     // ?
                 }
 
-                _devices[settings.PortNumber] = serialPort;
+                _devices[portName] = serialPort;
                 
                 Task openTask = new Task(async _ =>
                 {
-                    _devices[settings.PortNumber].Open();
+                    _devices[portName].Open();
                 }, 
                     _cancellationSource.Token);
                 Task delayTask = Task.Delay(DefaultOperationTimeout); // this task starts automatically
@@ -81,13 +90,13 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
         }
 
-        public async Task<bool> CloseAsync(int portNumber)
+        public async Task<bool> CloseAsync(string deviceName)
         {
             try
             {
-                if (_devices.ContainsKey(portNumber))
+                if (_devices.ContainsKey(deviceName))
                 {
-                    _devices[portNumber].Close();
+                    _devices[deviceName].Close();
                 }
                 return true;
             }
@@ -98,13 +107,13 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
         }
 
-        public async Task<bool> WriteAsync(int portNumber, byte[] data)
+        public async Task<bool> WriteAsync(string deviceName, byte[] data)
         {
             try
             {
-                if (_devices.ContainsKey(portNumber))
+                if (_devices.ContainsKey(deviceName))
                 {
-                    SerialPort serialDevice = _devices[portNumber];
+                    SerialPort serialDevice = _devices[deviceName];
                     serialDevice.Write(data, 0, data.Length);
                     return true;
                 }
@@ -118,13 +127,13 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
         }
 
-        public async Task<byte[]> ReadAsync(int portNumber)
+        public async Task<byte[]> ReadAsync(string deviceName)
         {
             try
             {
-                if (_devices.ContainsKey(portNumber))
+                if (_devices.ContainsKey(deviceName))
                 {
-                    SerialPort serialDevice = _devices[portNumber];
+                    SerialPort serialDevice = _devices[deviceName];
                     byte[] buffer = new byte[4096];
                     int bytesRead = serialDevice.Read(buffer, 0, buffer.Length);
                     Array.Resize(ref buffer, bytesRead);
@@ -142,7 +151,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         private const int DefaultOperationTimeout = 5000;
 
-        private readonly IDictionary<int, SerialPort> _devices = new ConcurrentDictionary<int, SerialPort>();
+        private readonly IDictionary<string, SerialPort> _devices = new ConcurrentDictionary<string, SerialPort>();
 
         private readonly IDictionary<Rs232StopBits, StopBits> _stopBitsMapping = new Dictionary<Rs232StopBits, StopBits>()
             {
@@ -170,5 +179,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
         private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
+        private ILogger<MultiDeviceRs232Manager> _logger;
     }
 }

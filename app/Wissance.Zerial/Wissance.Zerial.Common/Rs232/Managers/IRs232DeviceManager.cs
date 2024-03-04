@@ -5,8 +5,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
     public interface IRs232DeviceManager : IDisposable
     {
         Task<bool> OpenAsync(Rs232Settings settings);
-        Task<bool> CloseAsync(int portNumber);
-        Task<bool> WriteAsync(int portNumber, byte[] data);
-        Task<byte[]> ReadAsync(int portNumber);
+        Task<bool> CloseAsync(string deviceName);
+        Task<bool> WriteAsync(string deviceName, byte[] data);
+        Task<byte[]> ReadAsync(string deviceName);
     }
 }

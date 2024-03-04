@@ -139,9 +139,9 @@
                                 <TreeView Width="190" Height="450" ItemsSource="{Binding DevicesConfigs}"
                                           ScrollViewer.HorizontalScrollBarVisibility="Auto" Name="SerialDevicesTree">
                                     <TreeView.ItemTemplate>
-                                        <TreeDataTemplate ItemsSource="{Binding PortNumber}">
+                                        <TreeDataTemplate ItemsSource="{Binding Id}">
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="{Binding ConnectStateImage, Mode=TwoWay}" ></Image>
+                                                <Image Source="{Binding ConnectStateImage, Mode=TwoWay}"></Image>
                                                 <Image Source="../Assets/Images/Serial_32x32.png"></Image>
                                                 <TextBlock Text="{Binding Configuration}"
                                                            Tapped="OnTreeItemTapped"

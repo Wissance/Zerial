@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,15 +29,11 @@ namespace Wissance.Zerial.Desktop.Models
             Messages = new List<SerialDeviceMessageModel>();
             // device configuration has format - "COM3, 115200 b/s, 8bit, 1 Sb, Even, No FC"
             string[] parts = deviceConfiguration.Split(",");
-            string portStr = parts.FirstOrDefault(p => p.Trim().StartsWith("COM"));
+            string portStr = parts.Any() ? parts[0] : null;
+            Settings.DeviceName = parts[0];
             if (portStr != null)
             {
-                string number = portStr.Remove(0, 3);
-                int portNumber;
-                if (int.TryParse(number, out portNumber))
-                {
-                    Settings.PortNumber = portNumber;
-                }
+                Settings.DeviceName = portStr;
             }
             
             // baud rate
@@ -86,7 +83,7 @@ namespace Wissance.Zerial.Desktop.Models
         public SerialPortShortInfoModel ToShortInfo()
         {
             StringBuilder infoBuilder = new StringBuilder();
-            infoBuilder.Append($"COM{Settings.PortNumber}, ");
+            infoBuilder.Append($"{Settings.DeviceName}, ");
             infoBuilder.Append($"{(int)Settings.BaudRate} b/s, ");
             infoBuilder.Append($"{Settings.ByteLength}bit, ");
 
@@ -143,14 +140,10 @@ namespace Wissance.Zerial.Desktop.Models
                     break;
             }
 
-            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.PortNumber, infoBuilder.ToString());
+            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, infoBuilder.ToString());
             return info;
         }
-
-        public bool Connected { get; set; }
-        public Rs232Settings Settings { get; set; }
-        public IList<SerialDeviceMessageModel> Messages { get; set; }
-
+        
         public string BytesSend
         {
             get
@@ -174,6 +167,10 @@ namespace Wissance.Zerial.Desktop.Models
             totalBytesReceived = sentMessages.Aggregate(0, (t, m) => t + m.RawData.Length);
             return string.Format(template, totalBytesReceived);
         }
+        
+        public bool Connected { get; set; }
+        public Rs232Settings Settings { get; set; }
+        public IList<SerialDeviceMessageModel> Messages { get; set; }
 
         public const string BytesSentTemplate = "Bytes sent: {0}";
         public const string BytesReceivedTemplate = "Bytes received: {0}";

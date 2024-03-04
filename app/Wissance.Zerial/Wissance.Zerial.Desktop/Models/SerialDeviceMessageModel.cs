@@ -23,16 +23,16 @@ namespace Wissance.Zerial.Desktop.Models
             PreFormedMessage = preFormedMsg;
         }
 
-        public string ToString(int portNumber)
+        public string ToString(string deviceName)
         {
             if (MessageType == MessageType.Special)
             {
-                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber, PreFormedMessage);
+                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName, PreFormedMessage);
             }
 
             if (MessageType == MessageType.Connect || MessageType == MessageType.Disconnect)
             {
-                return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
+                return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName,
                     MessageType == MessageType.Connect ? "Connected" : "Disconnected");
             }
 
@@ -47,7 +47,7 @@ namespace Wissance.Zerial.Desktop.Models
                 }
             }
 
-            return string.Format(IoMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), portNumber,
+            return string.Format(IoMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName,
                 MessageType == MessageType.Read ? "Read" : "Write", dataAsStr);
         }
 
@@ -56,8 +56,8 @@ namespace Wissance.Zerial.Desktop.Models
         public MessageType MessageType { get; }
         public byte[] RawData { get; }
 
-        private const string SpecialMessageTemplate = "[{0}] : COM{1} : {2}";
-        private const string StatusMessageTemplate = "[{0}] : COM{1} : {2}";
-        private const string IoMessageTemplate = "[{0}] : COM{1} : {2} : {3}";
+        private const string SpecialMessageTemplate = "[{0}] : {1} : {2}";
+        private const string StatusMessageTemplate = "[{0}] : {1} : {2}";
+        private const string IoMessageTemplate = "[{0}] : {1} : {2} : {3}";
     }
 }
