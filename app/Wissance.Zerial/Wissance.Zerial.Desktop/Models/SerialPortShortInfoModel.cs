@@ -12,6 +12,7 @@ namespace Wissance.Zerial.Desktop.Models
             Connected = connected;
             DeviceName = deviceName;
             Configuration = configuration;
+            Id = Guid.NewGuid();
         }
 
         [JsonIgnore]
@@ -27,6 +28,8 @@ namespace Wissance.Zerial.Desktop.Models
                 return ImageLoaderHelper.LoadFromResource(new Uri("avares://Wissance.Zerial.Desktop/Assets/Images/Device_Is_Off_16x16.png"));
             }
         }
+        [JsonIgnore]
+        public Guid Id { get; }
         public string DeviceName { get; set; }
         public string Configuration { get; set; }
     }

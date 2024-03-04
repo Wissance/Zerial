@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -142,11 +143,7 @@ namespace Wissance.Zerial.Desktop.Models
             SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, infoBuilder.ToString());
             return info;
         }
-
-        public bool Connected { get; set; }
-        public Rs232Settings Settings { get; set; }
-        public IList<SerialDeviceMessageModel> Messages { get; set; }
-
+        
         public string BytesSend
         {
             get
@@ -170,6 +167,10 @@ namespace Wissance.Zerial.Desktop.Models
             totalBytesReceived = sentMessages.Aggregate(0, (t, m) => t + m.RawData.Length);
             return string.Format(template, totalBytesReceived);
         }
+        
+        public bool Connected { get; set; }
+        public Rs232Settings Settings { get; set; }
+        public IList<SerialDeviceMessageModel> Messages { get; set; }
 
         public const string BytesSentTemplate = "Bytes sent: {0}";
         public const string BytesReceivedTemplate = "Bytes received: {0}";
