@@ -91,7 +91,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 // todo(UMV): pass Xon + Xoff bytes as bytes
             };
 
-            SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.PortNumber == deviceSetting.PortNumber);
+            SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => s.Settings.DeviceName == deviceSetting.DeviceName);
             bool isNewDevice = serialDevice == null;
             if (serialDevice == null)
             {
@@ -128,14 +128,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 _serialDevices.Add(serialDevice);
             this.RaisePropertyChanged(nameof(ConnectButtonText));
             // add device to tree
-            if (DevicesConfigs.All(d => d.PortNumber != deviceSetting.PortNumber))
+            if (DevicesConfigs.All(d => d.DeviceName != deviceSetting.DeviceName))
             {
                 DevicesConfigs.Add(serialDevice.ToShortInfo());
                 this.RaisePropertyChanged(nameof(DevicesConfigs));
             }
             else
             {
-                SerialPortShortInfoModel info = DevicesConfigs.FirstOrDefault(d => d.PortNumber == deviceSetting.PortNumber);
+                SerialPortShortInfoModel info = DevicesConfigs.FirstOrDefault(d => d.DeviceName == deviceSetting.DeviceName);
                 if (info != null)
                 {
                     int index = DevicesConfigs.IndexOf(info);

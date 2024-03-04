@@ -7,10 +7,10 @@ namespace Wissance.Zerial.Desktop.Models
 {
     public class SerialPortShortInfoModel
     {
-        public SerialPortShortInfoModel(bool connected, int portNumber, string configuration)
+        public SerialPortShortInfoModel(bool connected,string deviceName, string configuration)
         {
             Connected = connected;
-            PortNumber = portNumber;
+            DeviceName = deviceName;
             Configuration = configuration;
         }
 
@@ -27,7 +27,7 @@ namespace Wissance.Zerial.Desktop.Models
                 return ImageLoaderHelper.LoadFromResource(new Uri("avares://Wissance.Zerial.Desktop/Assets/Images/Device_Is_Off_16x16.png"));
             }
         }
-        public int PortNumber { get; set; }
+        public string DeviceName { get; set; }
         public string Configuration { get; set; }
     }
     
