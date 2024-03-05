@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -14,9 +15,23 @@ namespace Wissance.Zerial.Desktop.Managers
     {
         public DeviceConfigurationManager(string configFile)
         {
-            if (!File.Exists(configFile))
-                File.Create(configFile).Dispose();
-            _configFile = Path.GetFullPath(configFile);
+            try
+            {
+                if (!File.Exists(configFile))
+                    File.Create(configFile).Dispose();
+                _configFile = Path.GetFullPath(configFile);
+            }
+            catch (Exception e)
+            {
+                if (OperatingSystem.IsLinux())
+                {
+                    string deviceConfigFile = Path.Combine(Environment.SpecialFolder.Personal.ToString(), configFile);
+                    if (!File.Exists(configFile))
+                        File.Create(configFile).Dispose();
+                    _configFile = Path.GetFullPath(configFile);
+                }
+            }
+            
         }
 
         public ObservableCollection<SerialPortShortInfoModel> Load()
