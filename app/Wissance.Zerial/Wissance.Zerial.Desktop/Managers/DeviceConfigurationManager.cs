@@ -46,8 +46,11 @@ namespace Wissance.Zerial.Desktop.Managers
 
         public void Save(ObservableCollection<SerialPortShortInfoModel> devicesConfigs)
         {
-            string content = JsonSerializer.Serialize(devicesConfigs);
-            File.WriteAllText(_configFile, content);
+            if (!string.IsNullOrEmpty(_configFile))
+            {
+                string content = JsonSerializer.Serialize(devicesConfigs);
+                File.WriteAllText(_configFile, content);
+            }
         }
 
         private bool PrepareDevConfigDirectory(string file)

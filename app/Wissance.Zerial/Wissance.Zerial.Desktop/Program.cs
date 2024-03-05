@@ -13,8 +13,9 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
-        Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
+        // string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
+        // Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
+        Environment = SnapEnvironmentKey;
 
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
