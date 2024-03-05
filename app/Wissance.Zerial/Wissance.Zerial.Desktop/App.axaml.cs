@@ -14,8 +14,8 @@ namespace Wissance.Zerial.Desktop
         static App()
         {
             // appsettings is optional due to we don't actually know install dir i.e. in Snap, but we could execute from any working dir
-            IConfigurationBuilder builder;
-            try
+            IConfigurationBuilder builder = new ConfigurationBuilder();
+            /*try
             {
                 builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
@@ -24,7 +24,7 @@ namespace Wissance.Zerial.Desktop
             catch (Exception e)
             {
                 builder = new ConfigurationBuilder();
-            }
+            }*/
             
             Configuration = builder.Build();
 
