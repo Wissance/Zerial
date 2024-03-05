@@ -29,7 +29,7 @@ namespace Wissance.Zerial.Desktop
             Configuration = builder.Build();
 
             ServiceCollection services = new ServiceCollection();
-            services.AddLogging();
+            // services.AddLogging();
 
             ServiceProvider = services.BuildServiceProvider();
         }
