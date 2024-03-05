@@ -39,4 +39,5 @@ apps:
       - desktop
       - desktop-legacy
       - x11
+      - serial-port
     command: ./Wissance.Zerial.Desktop --snap
