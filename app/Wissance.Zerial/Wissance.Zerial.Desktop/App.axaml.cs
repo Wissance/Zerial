@@ -14,10 +14,18 @@ namespace Wissance.Zerial.Desktop
         static App()
         {
             // appsettings is optional due to we don't actually know install dir i.e. in Snap, but we could execute from any working dir
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(AppSettingsFile, optional: true, reloadOnChange: true);
-
+            IConfigurationBuilder builder;
+            try
+            {
+                builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(AppSettingsFile, optional: true, reloadOnChange: false);
+            }
+            catch (Exception e)
+            {
+                builder = new ConfigurationBuilder();
+            }
+            
             Configuration = builder.Build();
 
             ServiceCollection services = new ServiceCollection();
