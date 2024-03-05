@@ -38,4 +38,5 @@ apps:
     plugs:
       - desktop
       - desktop-legacy
+      - x11
     command: ./Wissance.Zerial.Desktop --snap
