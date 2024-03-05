@@ -15,16 +15,23 @@ namespace Wissance.Zerial.Desktop.Managers
     {
         public DeviceConfigurationManager(string configFile)
         {
-            bool result = PrepareDevConfigDirectory(configFile);
-            if (!result)
+            try
             {
-                // probably we here in snap ...
-                string home = Environment.GetEnvironmentVariable("HOME");
-                if (home != null)
+                bool result = PrepareDevConfigDirectory(configFile);
+                if (!result)
                 {
-                    string deviceConfigFile = Path.Combine(home, configFile);
-                    PrepareDevConfigDirectory(deviceConfigFile);
+                    // probably we here in snap ...
+                    string home = Environment.GetEnvironmentVariable("HOME");
+                    if (home != null)
+                    {
+                        string deviceConfigFile = Path.Combine(home, configFile);
+                        PrepareDevConfigDirectory(deviceConfigFile);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                // SNAP ASSHOLE!!!
             }
         }
 
