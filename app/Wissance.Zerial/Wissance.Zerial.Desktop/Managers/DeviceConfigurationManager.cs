@@ -26,9 +26,9 @@ namespace Wissance.Zerial.Desktop.Managers
                 if (OperatingSystem.IsLinux())
                 {
                     string deviceConfigFile = Path.Combine(Environment.SpecialFolder.Personal.ToString(), configFile);
-                    if (!File.Exists(configFile))
-                        File.Create(configFile).Dispose();
-                    _configFile = Path.GetFullPath(configFile);
+                    if (!File.Exists(deviceConfigFile))
+                        File.Create(deviceConfigFile).Dispose();
+                    _configFile = Path.GetFullPath(deviceConfigFile);
                 }
             }
             
