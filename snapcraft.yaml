@@ -41,3 +41,6 @@ apps:
       - x11
       - serial-port
     command: ./Wissance.Zerial.Desktop --snap
+plugs:
+   serial-foo:
+      interface: serial-port
