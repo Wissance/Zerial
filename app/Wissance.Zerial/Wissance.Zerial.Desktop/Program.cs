@@ -13,16 +13,8 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        string env = args.FirstOrDefault(a => a.Contains(EnvironmentKey));
-        Environment = OtherEnvironmentKey;
-        if (env != null)
-        {
-            string[] parts = env.Split("=");
-            if (parts.Length == 2)
-            {
-                Environment = parts[1].ToLower() == SnapEnvironmentKey ? SnapEnvironmentKey : OtherEnvironmentKey;
-            }
-        }
+        string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
+        Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
 
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
@@ -39,5 +31,5 @@ class Program
 
     public const string SnapEnvironmentKey = "snap";
     public const string OtherEnvironmentKey = "other";
-    private const string EnvironmentKey = "environment";
+    //private const string EnvironmentKey = "environment";
 }

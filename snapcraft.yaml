@@ -7,6 +7,10 @@ description: |
 
 base: core22
 
+architectures:
+  - build-on: [amd64]
+    build-for: [amd64]
+
 confinement: strict
 
 parts:
@@ -34,4 +38,4 @@ apps:
     plugs:
       - desktop
       - desktop-legacy
-    command: ./Wissance.Zerial.Desktop --environment=snap
+    command: ./Wissance.Zerial.Desktop --snap
