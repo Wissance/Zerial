@@ -11,11 +11,11 @@ namespace Wissance.Zerial.Desktop
 {
     public class App : Application
     {
-        static App()
+        /*static App()
         {
             // appsettings is optional due to we don't actually know install dir i.e. in Snap, but we could execute from any working dir
             IConfigurationBuilder builder = new ConfigurationBuilder();
-            /*try
+            try
             {
                 builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
@@ -24,7 +24,7 @@ namespace Wissance.Zerial.Desktop
             catch (Exception e)
             {
                 builder = new ConfigurationBuilder();
-            }*/
+            }
             
             Configuration = builder.Build();
 
@@ -32,7 +32,7 @@ namespace Wissance.Zerial.Desktop
             // services.AddLogging();
 
             ServiceProvider = services.BuildServiceProvider();
-        }
+        }*/
 
         public override void Initialize()
         {
@@ -49,9 +49,9 @@ namespace Wissance.Zerial.Desktop
             base.OnFrameworkInitializationCompleted();
         }
         
-        public static IServiceProvider ServiceProvider { get; private set; }
-        public static IConfiguration Configuration { get; private set; }
+        //public static IServiceProvider ServiceProvider { get; private set; }
+        //public static IConfiguration Configuration { get; private set; }
 
-        private const string AppSettingsFile = "appsettings.json";
+        //private const string AppSettingsFile = "appsettings.json";
     }
 }
