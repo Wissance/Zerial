@@ -13,9 +13,9 @@ namespace Wissance.Zerial.Desktop.Managers
 {
     public class DeviceConfigurationManager
     {
-        public DeviceConfigurationManager(string configFile)
+        public DeviceConfigurationManager(string env, string configFile)
         {
-            try
+            if (env != Program.SnapEnvironmentKey)
             {
                 bool result = PrepareDevConfigDirectory(configFile);
                 if (!result)
@@ -28,10 +28,6 @@ namespace Wissance.Zerial.Desktop.Managers
                         PrepareDevConfigDirectory(deviceConfigFile);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                // SNAP ASSHOLE!!!
             }
         }
 

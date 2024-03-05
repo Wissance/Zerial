@@ -36,7 +36,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
             _serialDevices = new List<SerialDeviceModel>();
-            _configurationManager = new DeviceConfigurationManager("devices.json");
+            _configurationManager = new DeviceConfigurationManager(Program.Environment, "devices.json");
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)

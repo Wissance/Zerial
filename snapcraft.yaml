@@ -34,4 +34,4 @@ apps:
     plugs:
       - desktop
       - desktop-legacy
-    command: ./Wissance.Zerial.Desktop
+    command: ./Wissance.Zerial.Desktop --environment=snap
