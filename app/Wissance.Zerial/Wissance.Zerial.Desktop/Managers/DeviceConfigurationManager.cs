@@ -15,27 +15,19 @@ namespace Wissance.Zerial.Desktop.Managers
     {
         public DeviceConfigurationManager(string configFile)
         {
-            try
+            bool result = PrepareDevConfigDirectory(configFile);
+            if (!result)
             {
-                if (!File.Exists(configFile))
-                    File.Create(configFile).Dispose();
-                _configFile = Path.GetFullPath(configFile);
+                // probably we here in snap ...
+                string deviceConfigFile = Path.Combine(Environment.GetEnvironmentVariable("SNAP_USER_DATA"), configFile);
+                PrepareDevConfigDirectory(deviceConfigFile);
             }
-            catch (Exception e)
-            {
-                if (OperatingSystem.IsLinux())
-                {
-                    string deviceConfigFile = Path.Combine(Environment.SpecialFolder.UserProfile.ToString(), configFile);
-                    if (!File.Exists(deviceConfigFile))
-                        File.Create(deviceConfigFile).Dispose();
-                    _configFile = Path.GetFullPath(deviceConfigFile);
-                }
-            }
-            
         }
 
         public ObservableCollection<SerialPortShortInfoModel> Load()
         {
+            if (string.IsNullOrEmpty(_configFile))
+                return new ObservableCollection<SerialPortShortInfoModel>();
             string content = File.ReadAllText(_configFile);
             ObservableCollection<SerialPortShortInfoModel> devicesConfigs = new ObservableCollection<SerialPortShortInfoModel>();
             if (string.IsNullOrEmpty(content))
@@ -51,6 +43,21 @@ namespace Wissance.Zerial.Desktop.Managers
             File.WriteAllText(_configFile, content);
         }
 
-        private readonly string _configFile;
+        private bool PrepareDevConfigDirectory(string file)
+        {
+            try
+            {
+                if (!File.Exists(file))
+                    File.Create(file).Dispose();
+                _configFile = Path.GetFullPath(file);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        private string _configFile;
     }
 }
