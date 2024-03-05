@@ -19,7 +19,7 @@ namespace Wissance.Zerial.Desktop.Managers
             if (!result)
             {
                 // probably we here in snap ...
-                string deviceConfigFile = Path.Combine(Environment.GetEnvironmentVariable("SNAP_USER_DATA"), configFile);
+                string deviceConfigFile = Path.Combine(Environment.GetEnvironmentVariable("HOME"), configFile);
                 PrepareDevConfigDirectory(deviceConfigFile);
             }
         }
