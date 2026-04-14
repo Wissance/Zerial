@@ -37,7 +37,9 @@
                         <TextBlock Text="{l:Localize Zerial_Designed_By}"/>
                         <TextBlock Foreground="BlueViolet" PointerPressed="OnWissanceClick"
                                    PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" >
-                            <Underline>Wissance LLC (ООО Висанс)</Underline>
+                            <Underline>
+                                <TextBlock Text="{l:Localize Zerial_Owner}"></TextBlock>
+                            </Underline>
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
@@ -52,7 +54,7 @@
                         <TextBlock Text="{Binding Model.Version}"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                        <TextBlock Text="Support Us: "></TextBlock>
+                        <TextBlock Text="{l:Localize Zerial_Support_Us}"></TextBlock>
                         <TextBlock Foreground="BlueViolet" PointerPressed="OnSupportClick"
                                    PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" >
                             <Underline>See ways ...</Underline>
