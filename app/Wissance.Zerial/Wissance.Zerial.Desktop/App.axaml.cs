@@ -11,29 +11,6 @@ namespace Wissance.Zerial.Desktop
 {
     public class App : Application
     {
-        /*static App()
-        {
-            // appsettings is optional due to we don't actually know install dir i.e. in Snap, but we could execute from any working dir
-            IConfigurationBuilder builder = new ConfigurationBuilder();
-            try
-            {
-                builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(AppSettingsFile, optional: true, reloadOnChange: false);
-            }
-            catch (Exception e)
-            {
-                builder = new ConfigurationBuilder();
-            }
-            
-            Configuration = builder.Build();
-
-            ServiceCollection services = new ServiceCollection();
-            // services.AddLogging();
-
-            ServiceProvider = services.BuildServiceProvider();
-        }*/
-
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -48,10 +25,7 @@ namespace Wissance.Zerial.Desktop
 
             base.OnFrameworkInitializationCompleted();
         }
-        
-        //public static IServiceProvider ServiceProvider { get; private set; }
-        //public static IConfiguration Configuration { get; private set; }
 
-        //private const string AppSettingsFile = "appsettings.json";
+        private const string LocalizationJsonDir = "./Assets/Languges";
     }
 }
