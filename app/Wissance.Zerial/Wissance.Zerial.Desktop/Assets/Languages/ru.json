@@ -1,7 +1,13 @@
 {
+  "Zerial_Version_Label": "Версия:",
   "Zerial_Version": "1.0.6",
+  "Zerial_Authors_Label": "Авторы:",
   "Zerial_Authors": "М.В.Ушаков",
-  "Zerial_Owner": "ООО Висанс",
+  "Zerial_Owner_Label": "Владелец:",
+  "Zerial_Owner": "ООО \"Висанс\"",
+  "Zerial_Owner_Website_Label": "Сайт владельца:",
   "Zerial_Owner_Website": "https://wissance.com",
-  "Zerial_Product_Url": "https://github.com/Wissance/Zerial"
+  "Zerial_Product_Url_Label": "Сайт проекта:",
+  "Zerial_Product_Url": "https://github.com/Wissance/Zerial",
+  "Zerial_About_Title": "О программе Zerial комьюнити версии"
 }

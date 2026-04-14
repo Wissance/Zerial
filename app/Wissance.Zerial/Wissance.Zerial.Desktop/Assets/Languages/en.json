@@ -1,7 +1,13 @@
 {
+  "Zerial_Version_Label": "Version:",
   "Zerial_Version": "1.0.6",
+  "Zerial_Authors_Label": "Authors:",
   "Zerial_Authors": "M.V.Ushakov",
+  "Zerial_Owner_Label": "Owner:",
   "Zerial_Owner": "Wissance LLC",
+  "Zerial_Owner_Website_Label": "Owner website:",
   "Zerial_Owner_Website": "https://wissance.com/en",
-  "Zerial_Product_Url": "https://github.com/Wissance/Zerial"
+  "Zerial_Product_Url_Label": "Product website:",
+  "Zerial_Product_Url": "https://github.com/Wissance/Zerial",
+  "Zerial_About_Title": "About Zerial community version software"
 }
