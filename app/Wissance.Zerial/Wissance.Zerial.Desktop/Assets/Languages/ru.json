@@ -30,5 +30,17 @@
   "Zerial_Connect_Button_Connect": "Открыть",
   "Zerial_Connect_Button_Disconnect": "Закрыть",
   "Zerial_Send_Button": "Отправить",
-  "Zerial_Clear_Button": "Очистить"
+  "Zerial_Clear_Button": "Очистить",
+  "Zerial_No_Stop_Bits": "Нет",
+  "Zerial_One_Stop_Bits": "Один",
+  "Zerial_One_And_Half_Stop_Bits": "Полтора",
+  "Zerial_Two_Stop_Bits": "Два",
+  "Zerial_No_Parity": "Нет",
+  "Zerial_Mark_Parity": "Марк",
+  "Zerial_Space_Parity": "Спэйс",
+  "Zerial_Even_Parity": "Четн",
+  "Zerial_Odd_Parity": "Нечетн",
+  "Zerial_No_Flow_Control": "Нет",
+  "Zerial_RTS_CTS_Flow_Control": "RTS/CTS",
+  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff"
 }

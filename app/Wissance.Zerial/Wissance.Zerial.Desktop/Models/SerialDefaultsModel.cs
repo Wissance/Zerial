@@ -54,26 +54,36 @@ namespace Wissance.Zerial.Desktop.Models
 
         private readonly IDictionary<string, Rs232Parity> _parities = new Dictionary<string, Rs232Parity>()
         {
-            {"No parity", Rs232Parity.NoParity},
-            {"Mark", Rs232Parity.Mark},
-            {"Space", Rs232Parity.Space},
-            {"Even", Rs232Parity.Even},
-            {"Odd", Rs232Parity.Odd}
+            {Localizer.Get(NoParityKey), Rs232Parity.NoParity},
+            {Localizer.Get(MarkParityKey), Rs232Parity.Mark},
+            {Localizer.Get(SpaceParityKey), Rs232Parity.Space},
+            {Localizer.Get(EvenParityKey), Rs232Parity.Even},
+            {Localizer.Get(OddParityKey), Rs232Parity.Odd}
         };
 
         private readonly IDictionary<string, Rs232FlowControl> _flowControls = new Dictionary<string, Rs232FlowControl>()
         {
-            {"No", Rs232FlowControl.NoControl},
-            {"RTS/CTS", Rs232FlowControl.RtsCts},
-            {"Xon/Xoff", Rs232FlowControl.XonXoff}
+            {Localizer.Get(NoFlowControlKey), Rs232FlowControl.NoControl},
+            {Localizer.Get(CtsRtsFlowControlKey), Rs232FlowControl.RtsCts},
+            {Localizer.Get(XonXoffFlowControlKey), Rs232FlowControl.XonXoff}
         };
-
-        public const string DefaultXon = "Ox11";
-        public const string DefaultXoff = "Ox13";
 
         private const string NoStopBitsKey = "Zerial_No_Stop_Bits";
         private const string OneStopBitsKey = "Zerial_One_Stop_Bits";
         private const string OneAndHalfStopBitsKey = "Zerial_One_And_Half_Stop_Bits";
         private const string TwoStopBitsKey = "Zerial_Two_Stop_Bits";
+        
+        private const string NoParityKey = "Zerial_No_Parity";
+        private const string MarkParityKey = "Zerial_Mark_Parity";
+        private const string SpaceParityKey = "Zerial_Space_Parity";
+        private const string EvenParityKey = "Zerial_Even_Parity";
+        private const string OddParityKey = "Zerial_Odd_Parity";
+        
+        private const string NoFlowControlKey = "Zerial_No_Flow_Control";
+        private const string CtsRtsFlowControlKey = "Zerial_RTS_CTS_Flow_Control";
+        private const string XonXoffFlowControlKey = "Zerial_Xon_Xoff_Flow_Control";
+        
+        public const string DefaultXon = "Ox11";
+        public const string DefaultXoff = "Ox13";
     }
 }

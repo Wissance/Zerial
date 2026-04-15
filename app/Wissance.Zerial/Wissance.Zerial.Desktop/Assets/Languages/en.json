@@ -33,5 +33,13 @@
   "Zerial_No_Stop_Bits": "None",
   "Zerial_One_Stop_Bits": "One",
   "Zerial_One_And_Half_Stop_Bits": "One and half",
-  "Zerial_Two_Stop_Bits": "Two"
+  "Zerial_Two_Stop_Bits": "Two",
+  "Zerial_No_Parity": "No parity",
+  "Zerial_Mark_Parity": "Mark",
+  "Zerial_Space_Parity": "Space",
+  "Zerial_Even_Parity": "Even",
+  "Zerial_Odd_Parity": "Odd",
+  "Zerial_No_Flow_Control": "No",
+  "Zerial_RTS_CTS_Flow_Control": "RTS/CTS",
+  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff"
 }
