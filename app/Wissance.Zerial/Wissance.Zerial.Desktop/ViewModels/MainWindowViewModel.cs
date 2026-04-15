@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using DynamicData;
 using DynamicData.Binding;
+using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232;
@@ -52,7 +53,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             XonSymbol = SerialDefaultsModel.DefaultXon;
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
-            ConnectButtonText = Globals.ConnectButtonConnectText;
+            ConnectButtonText = Localizer.Get(ConnectButtonConnectTextKey);
 
             SerialDeviceMessages = new ObservableCollection<string>();
             // StatusBar
@@ -108,7 +109,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 serialDevice.Connected = openResult;
                 if (openResult)
                 {
-                    ConnectButtonText = Globals.ConnectButtonDisconnectText;
+                    ConnectButtonText = Localizer.Get(ConnectButtonDisconnectTextKey);
                     SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
                     serialDevice.Messages.Add(msg);
                     SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
@@ -118,7 +119,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             {
                 await _deviceManager.CloseAsync(deviceSetting.DeviceName);
                 serialDevice.Connected = false;
-                ConnectButtonText = Globals.ConnectButtonConnectText;
+                ConnectButtonText = Localizer.Get(ConnectButtonConnectTextKey);
                 SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
                 serialDevice.Messages.Add(msg);
                 SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
@@ -384,6 +385,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
         private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
+        private const string ConnectButtonConnectTextKey = "Zerial_Connect_Button_Connect";
+        private const string ConnectButtonDisconnectTextKey = "Zerial_Connect_Button_Disconnect";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

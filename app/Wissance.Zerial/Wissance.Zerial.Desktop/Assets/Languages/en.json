@@ -26,5 +26,8 @@
   "Zerial_Byte_Length_Label": "Byte length:",
   "Zerial_Stop_Bits_Label": "Stop bits:",
   "Zerial_Parity_Label": "Parity:",
-  "Zerial_Flow_Control_Label": "Flow control:"
+  "Zerial_Flow_Control_Label": "Flow control:",
+  "Zerial_Connect_Button_Connect": "Connect",
+  "Zerial_Send_Button": "Send",
+  "Zerial_Clear_Button": "Clear"
 }

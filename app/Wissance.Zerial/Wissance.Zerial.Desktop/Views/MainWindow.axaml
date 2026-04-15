@@ -171,13 +171,15 @@
                                         
                                         <StackPanel HorizontalAlignment="Center">
                                             <Button Height="30" Command="{Binding ExecuteMessageSendAsync}"
-                                                    Click="OnSendMessageClick">Send</Button>
+                                                    Content="{l:Localize Zerial_Send_Button}"
+                                                    Click="OnSendMessageClick"/>
                                         </StackPanel>
                                         <!-- VerticalAlignment = Center/Bottom is not working here ... -->
                                         <StackPanel Margin="0 40 0 0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                                             <Button VerticalAlignment="Stretch"
                                                     Command="{Binding ExecuteClearMessageAsync}"
-                                                    Height="30" Click="OnSendMessageClear">Clear</Button>
+                                                    Content="{l:Localize Zerial_Clear_Button}"
+                                                    Height="30" Click="OnSendMessageClear"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>

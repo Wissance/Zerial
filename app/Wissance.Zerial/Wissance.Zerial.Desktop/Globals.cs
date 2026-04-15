@@ -7,7 +7,7 @@ namespace Wissance.Zerial.Desktop
     {
         static Globals()
         {
-            AppVersion = new AppVersionModel()
+            CurrentAppVersion = new AppVersionModel()
             {
                 Version = Localizer.Get(VersionKey),
                 CompanyWebSite = Localizer.Get(CompanyWebsiteKey),
@@ -17,23 +17,12 @@ namespace Wissance.Zerial.Desktop
         }
 
         // todo(UMV): place Links Here
-        public static AppVersionModel CurrentAppVersion
-        {
-            get
-            {
-                return AppVersion;
-            }
-        }
-
-        private static readonly AppVersionModel AppVersion;
+        public static AppVersionModel CurrentAppVersion { get; }
 
         private const string VersionKey = "Zerial_Version";
         private const string CompanyKey = "Zerial_Owner";
         private const string AuthorKey = "Zerial_Authors";
         private const string CompanyWebsiteKey = "Zerial_Owner_Website";
-        
-        public const string ConnectButtonConnectText = "Connect";
-        public const string ConnectButtonDisconnectText = "Disconnect";
 
         // public const string AppVersion = "1.0";
         public const string WissanceWebSiteUrl = "https://wissance.com/en"; //todo(use from model)
