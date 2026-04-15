@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Jeek.Avalonia.Localization;
 using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Settings;
 
@@ -37,10 +38,10 @@ namespace Wissance.Zerial.Desktop.Models
 
         private readonly IDictionary<string, Rs232StopBits> _stopBits = new Dictionary<string, Rs232StopBits>()
         {
-            {"None", Rs232StopBits.None},
-            {"One", Rs232StopBits.One},
-            {"One and half", Rs232StopBits.OneAndHalf},
-            {"Two", Rs232StopBits.Two}
+            {Localizer.Get(NoStopBitsKey), Rs232StopBits.None},
+            {Localizer.Get(OneStopBitsKey), Rs232StopBits.One},
+            {Localizer.Get(OneAndHalfStopBitsKey), Rs232StopBits.OneAndHalf},
+            {Localizer.Get(TwoStopBitsKey), Rs232StopBits.Two}
         };
         
         private readonly IDictionary<string, int> _byteLengthBits = new Dictionary<string, int>()
@@ -69,5 +70,10 @@ namespace Wissance.Zerial.Desktop.Models
 
         public const string DefaultXon = "Ox11";
         public const string DefaultXoff = "Ox13";
+
+        private const string NoStopBitsKey = "Zerial_No_Stop_Bits";
+        private const string OneStopBitsKey = "Zerial_One_Stop_Bits";
+        private const string OneAndHalfStopBitsKey = "Zerial_One_And_Half_Stop_Bits";
+        private const string TwoStopBitsKey = "Zerial_Two_Stop_Bits";
     }
 }

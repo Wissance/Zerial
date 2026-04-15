@@ -29,5 +29,9 @@
   "Zerial_Flow_Control_Label": "Flow control:",
   "Zerial_Connect_Button_Connect": "Connect",
   "Zerial_Send_Button": "Send",
-  "Zerial_Clear_Button": "Clear"
+  "Zerial_Clear_Button": "Clear",
+  "Zerial_No_Stop_Bits": "None",
+  "Zerial_One_Stop_Bits": "One",
+  "Zerial_One_And_Half_Stop_Bits": "One and half",
+  "Zerial_Two_Stop_Bits": "Two"
 }
