@@ -28,6 +28,7 @@
   "Zerial_Parity_Label": "Parity:",
   "Zerial_Flow_Control_Label": "Flow control:",
   "Zerial_Connect_Button_Connect": "Connect",
+  "Zerial_Connect_Button_Disconnect": "Disconnect",
   "Zerial_Send_Button": "Send",
   "Zerial_Clear_Button": "Clear",
   "Zerial_No_Stop_Bits": "None",
@@ -41,5 +42,10 @@
   "Zerial_Odd_Parity": "Odd",
   "Zerial_No_Flow_Control": "No",
   "Zerial_RTS_CTS_Flow_Control": "RTS/CTS",
-  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff"
+  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff",
+  "Zerial_Device_Connected_State": "Connected",
+  "Zerial_Device_Disconnected_State": "Disconnected",
+  "Zerial_Device_Not_Exist": "Device does not exists",
+  "Zerial_Selected_Port_Status_Bar": "Selected Port: {0}",
+  "Zerial_Device_Status_In_Status_Bar": "Status: {0}"
 }

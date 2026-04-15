@@ -57,8 +57,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
             SerialDeviceMessages = new ObservableCollection<string>();
             // StatusBar
-            Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "Application started");
-            Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, string.Empty);
+            Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), "Application started");
+            Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), string.Empty);
             Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
             Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
         }
@@ -354,10 +354,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             if (device != null)
             {
-                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, SelectedPortNumber);
+                Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), SelectedPortNumber);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
-                string strStatus = device.Connected ? "Connected" : "Disconnected";
-                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, strStatus);
+                string strStatus = device.Connected ? Localizer.Get(ConnectedDeviceStateKey) : Localizer.Get(DisconnectedDeviceStateKey);
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), strStatus);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
                 Rs232SelectedDeviceBytesReceived = device.BytesReceived;
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
@@ -366,9 +366,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
             else
             {
-                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, "Device does not exists");
+                Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), Localizer.Get(DeviceDoesNotExistsKey));
                 this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
-                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "???");
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), "???");
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
                 Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
@@ -383,10 +383,13 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string Rs232SelectedDeviceBytesReceived { get; set; }
         #endregion
 
-        private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
-        private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
+        private const string SelectedDeviceStatusInStatusBarKey = "Zerial_Device_Status_In_Status_Bar";
+        private const string SelectedDeviceStatusBarKey = "Zerial_Selected_Port_Status_Bar";
         private const string ConnectButtonConnectTextKey = "Zerial_Connect_Button_Connect";
         private const string ConnectButtonDisconnectTextKey = "Zerial_Connect_Button_Disconnect";
+        private const string ConnectedDeviceStateKey = "Zerial_Device_Connected_State";
+        private const string DisconnectedDeviceStateKey = "Zerial_Device_Disconnected_State";
+        private const string DeviceDoesNotExistsKey = "Zerial_Device_Not_Exist";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

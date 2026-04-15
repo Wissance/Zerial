@@ -42,5 +42,10 @@
   "Zerial_Odd_Parity": "Нечетн",
   "Zerial_No_Flow_Control": "Нет",
   "Zerial_RTS_CTS_Flow_Control": "RTS/CTS",
-  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff"
+  "Zerial_Xon_Xoff_Flow_Control": "Xon/Xoff",
+  "Zerial_Device_Connected_State": "Подключено",
+  "Zerial_Device_Disconnected_State": "Отключено",
+  "Zerial_Device_Not_Exist": "Устройство отсутсвует в системе",
+  "Zerial_Selected_Port_Status_Bar": "Выбранное устройство: {0}",
+  "Zerial_Device_Status_In_Status_Bar": "Статус: {0}"
 }
