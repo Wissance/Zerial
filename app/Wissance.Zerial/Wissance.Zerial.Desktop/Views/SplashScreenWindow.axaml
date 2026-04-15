@@ -46,7 +46,9 @@
                         <TextBlock Text="{l:Localize Zerial_Authors_Label}"></TextBlock>
                         <TextBlock Foreground="BlueViolet" PointerPressed="OnMVUClick"
                                    PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" >
-                            <Underline>M.V.Ushakov</Underline>
+                            <Underline>
+                                <TextBlock Text="{l:Localize Zerial_Authors}"></TextBlock>
+                            </Underline>
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
@@ -57,7 +59,9 @@
                         <TextBlock Text="{l:Localize Zerial_Support_Us}"></TextBlock>
                         <TextBlock Foreground="BlueViolet" PointerPressed="OnSupportClick"
                                    PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" >
-                            <Underline>See ways ...</Underline>
+                            <Underline>
+                                <TextBlock Text="{l:Localize Zerial_See_Support_Ways}"></TextBlock>
+                            </Underline>
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
@@ -65,7 +69,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 7 0 0">
                         <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding SecondsToStart}"></TextBlock> 
-                        <TextBlock FontSize="18" FontWeight="Bold" Text=" seconds to start ..."></TextBlock> 
+                        <TextBlock FontSize="18" FontWeight="Bold" Text="{l:Localize Zerial_Seсonds_To_Start}"></TextBlock> 
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
