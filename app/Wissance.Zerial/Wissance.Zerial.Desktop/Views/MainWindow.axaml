@@ -3,6 +3,7 @@
         xmlns:vm="using:Wissance.Zerial.Desktop.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="using:Jeek.Avalonia.Localization"
         xmlns:AvalonEdit="using:AvaloniaEdit"
         mc:Ignorable="d" d:DesignWidth="880" d:DesignHeight="660"
         x:Class="Wissance.Zerial.Desktop.Views.MainWindow"
@@ -29,12 +30,12 @@
             <StackPanel>
                 <Menu>
                     <!-- TODO(UMV): Add Menu action handler-->
-                    <MenuItem Header="_File">
-                        <MenuItem Header="Coming soon ..."></MenuItem>
+                    <MenuItem Header="{l:Localize Zerial_File_Menu_Header}">
+                        <MenuItem Header="{l:Localize Zerial_File_Sub_Menu_Header}"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="_Help">
-                        <MenuItem Header="_About" Command="{Binding ExecuteStartAboutWindowCommandAsync}"></MenuItem>
-                        <MenuItem Header="_Support" Command="{Binding ExecuteNavigateToSupportPageAsync}"></MenuItem>
+                    <MenuItem Header="{l:Localize Zerial_Help_Menu_Header}">
+                        <MenuItem Header="{l:Localize Zerial_Help_About_Sub_Menu_Header}" Command="{Binding ExecuteStartAboutWindowCommandAsync}"></MenuItem>
+                        <MenuItem Header="{l:Localize Zerial_Help_Support_Sub_Menu_Header}" Command="{Binding ExecuteNavigateToSupportPageAsync}"></MenuItem>
                     </MenuItem>
                 </Menu>
             </StackPanel>

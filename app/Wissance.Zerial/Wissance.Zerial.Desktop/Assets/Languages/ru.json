@@ -13,5 +13,10 @@
   "Zerial_Designed_By": "Программное обеспечение разработано:",
   "Zerial_Support_Us": "Поддержать нас:",
   "Zerial_See_Support_Ways": "Смотреть способы...",
-  "Zerial_Seсonds_To_Start": " секунд(ы) до старта ..."
+  "Zerial_Seсonds_To_Start": " секунд(ы) до старта ...",
+  "Zerial_File_Menu_Header": "_Файл",
+  "Zerial_File_Sub_Menu_Header": "Ожидается в скором времени ...",
+  "Zerial_Help_Menu_Header": "_Помощь",
+  "Zerial_Help_About_Sub_Menu_Header": "_О Прогамме",
+  "Zerial_Help_Support_Sub_Menu_Header": "_Поддержка"
 }
