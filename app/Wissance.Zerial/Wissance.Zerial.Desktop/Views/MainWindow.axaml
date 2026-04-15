@@ -11,7 +11,7 @@
         Icon="/Assets/Images/Zerial_64x64.png"
         FontFamily="{StaticResource RobotoFonts}"
         Resized="OnWindowResized"
-        Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility"
+        Title="{l:Localize Zerial_Main_Title}"
         Closing="OnWindowClose"
         Height="660" Width="880" MinHeight="660" MinWidth="880">
 
@@ -49,7 +49,7 @@
                             <Border Classes="ConnOptGroupBorder">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                        <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Port:"/>
+                                        <Label Name="PortsListLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Port_Label}"/>
                                         <ComboBox Name="PortsListSelect" 
                                                   ItemsSource="{Binding Path=Ports, Mode=OneWay}"
                                                   SelectedItem="{Binding SelectedPortNumber, Mode=TwoWay}"
@@ -57,7 +57,7 @@
                                                   Classes="ConnOptCombo" Margin="5 0 0 0" Width="100"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                        <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Baud rate:"/>
+                                        <Label Name="BaudRateLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Baud_Rate_Label}"/>
                                         <ComboBox Name="BaudRatesList" ItemsSource="{Binding Path=SerialOptions.BaudRatesOptions}" 
                                                   SelectedItem="{Binding SelectedBaudRate}"
                                                   Margin="5 0 0 0" Width="100"/>
@@ -71,13 +71,13 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
                                                 VerticalAlignment="Bottom" >
-                                        <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Byte length:"/>
+                                        <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Byte_Length_Label}"/>
                                         <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
                                                   SelectedItem="{Binding SelectedByteLength}"
                                                   Margin="5 0 0 0" Width="80"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                        <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Stop bits:"/>
+                                        <Label Name="StopBitsLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Stop_Bits_Label}"/>
                                         <ComboBox Name="StopBitsList" ItemsSource="{Binding Path=SerialOptions.StopBitsOptions}"
                                                   SelectedItem="{Binding SelectedStopBits}"
                                                   Margin="5 0 0 0" Width="80"/>
@@ -91,13 +91,13 @@
                                 <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceParityAndFlowControlOptionsPanel">
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                            <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Parity:"/>
+                                            <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Parity_Label}"/>
                                             <ComboBox Name="ParityList" ItemsSource="{Binding Path=SerialOptions.ParitiesOptions}"
                                                       SelectedItem="{Binding SelectedParity}"
                                                       Margin="5 0 0 0" Width="100"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Top">
-                                            <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="Flow control:"/>
+                                            <Label Name="FlowControlLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Flow_Control_Label}"/>
                                             <ComboBox Name="FlowControlList" ItemsSource="{Binding Path=SerialOptions.FlowControlsOptions}"
                                                       SelectedItem="{Binding SelectedFlowControl}"
                                                       Margin="5 0 0 0" Width="100"/>

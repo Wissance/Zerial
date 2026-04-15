@@ -10,7 +10,7 @@
         Icon="/Assets/Images/Zerial_64x64.png"
         WindowStartupLocation="CenterScreen" SystemDecorations="None" Topmost="True"
         x:CompileBindings="False"
-        Title="Zerial (Community Edition) - serial (RS232/COM) device communications utility>"
+        Title="{l:Localize Zerial_Splash_Title}"
         Height="200" Width="500" MinHeight="200" MinWidth="500" MaxHeight="200" MaxWidth="500">
     
     <Design.DataContext>
