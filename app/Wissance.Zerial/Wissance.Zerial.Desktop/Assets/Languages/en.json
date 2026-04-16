@@ -53,5 +53,12 @@
   "Zerial_Data_Not_Send_Error_Message": "Data wasn't send to device",
   "Zerial_Date_Time_Format": "yyyy-MM-dd HH:mm:ss",
   "Zerial_Data_Read_Message_Prefix": "Read",
-  "Zerial_Data_Write_Message_Prefix": "Write"
+  "Zerial_Data_Write_Message_Prefix": "Write",
+  "Zerial_Bit_Unit": "bit",
+  "Zerial_Bit_Per_Sec_Unit": "b/s",
+  "Zerial_Stop_Bit_Designation" : "Sb",
+  "Zerial_No_Parity_Designation" : "No P",
+  "Zerial_No_Flow_Control_Designation" : "No FC",
+  "Zerial_Bytes_Sent_Stats_Template" : "Bytes sent: {0}",
+  "Zerial_Bytes_Received_Stats_Template" : "Bytes received: {0}"
 }

@@ -53,5 +53,12 @@
   "Zerial_Data_Not_Send_Error_Message": "Данные не были отправлены в устройство",
   "Zerial_Date_Time_Format": "yyyy-MM-dd HH:mm:ss",
   "Zerial_Data_Read_Message_Prefix": "Чтение",
-  "Zerial_Data_Write_Message_Prefix": "Запись"
+  "Zerial_Data_Write_Message_Prefix": "Запись",
+  "Zerial_Bit_Unit": "бит",
+  "Zerial_Bit_Per_Sec_Unit": "б/с",
+  "Zerial_Stop_Bit_Designation" : "Сб",
+  "Zerial_No_Parity_Designation" : "Б/ч",
+  "Zerial_No_Flow_Control_Designation" : "Б/упр",
+  "Zerial_Bytes_Sent_Stats_Template" : "Байт отправлено: {0}",
+  "Zerial_Bytes_Received_Stats_Template" : "Байт получено: {0}"
 }

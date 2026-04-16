@@ -50,8 +50,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // StatusBar
             Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), Localizer.Get(ApplicationStartedMessageKey));
             Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), string.Empty);
-            Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
-            Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
+            Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
+            Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
         }
 
         #region WindowAndDialogManagement
@@ -362,9 +362,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
                 Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), "???");
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
-                Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
+                Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
-                Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
+                Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
             }
         }
@@ -387,6 +387,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private const string ApplicationStartedMessageKey = "Zerial_Device_Application_Status_Message";
         private const string DataConversionToBytesErrorMessageKey = "Zerial_Data_Conversion_Error_Message";
         private const string DataNotSendErrorMessageKey = "Zerial_Data_Not_Send_Error_Message";
+        
+        private const string BytesSentStatsTemplateKey = "Zerial_Bytes_Sent_Stats_Template";
+        private const string BytesReceivedStatsTemplateKey = "Zerial_Bytes_Received_Stats_Template";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

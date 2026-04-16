@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Jeek.Avalonia.Localization;
 using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Settings;
 
@@ -37,7 +38,7 @@ namespace Wissance.Zerial.Desktop.Models
             }
             
             // baud rate
-            string baudRateStr = parts.FirstOrDefault(p => p.Contains("b/s"));
+            string baudRateStr = parts.FirstOrDefault(p => p.Contains(Localizer.Get(BitPerSecondUnitKey)));
             if (baudRateStr != null)
             {
                 string[] baudRateParts = baudRateStr.Trim().Split(' ');
@@ -48,7 +49,7 @@ namespace Wissance.Zerial.Desktop.Models
                 }
             }
             // byte len
-            string byteLengthStr = parts.FirstOrDefault(p => p.Contains("bit"));
+            string byteLengthStr = parts.FirstOrDefault(p => p.Contains(Localizer.Get(BitUnitKey)));
             if (byteLengthStr != null)
             {
                 string byteLengthValueStr = byteLengthStr.Trim().Substring(0, 1);
@@ -59,7 +60,7 @@ namespace Wissance.Zerial.Desktop.Models
                 }
             }
             // stop bits
-            string stopBitsStr = parts.FirstOrDefault(p => p.Contains("Sb"));
+            string stopBitsStr = parts.FirstOrDefault(p => p.Contains($"{StopBitDesignationKey}"));
             if (stopBitsStr != null)
             {
                 stopBitsStr = stopBitsStr.Trim();
@@ -84,23 +85,23 @@ namespace Wissance.Zerial.Desktop.Models
         {
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.Append($"{Settings.DeviceName}, ");
-            infoBuilder.Append($"{(int)Settings.BaudRate} b/s, ");
-            infoBuilder.Append($"{Settings.ByteLength}bit, ");
+            infoBuilder.Append($"{(int)Settings.BaudRate} {Localizer.Get(BitPerSecondUnitKey)}, ");
+            infoBuilder.Append($"{Settings.ByteLength}{Localizer.Get(BitUnitKey)}, ");
 
             // todo(UMV): use dictionary
             switch (Settings.StopBits)
             {
                 case Rs232StopBits.None:
-                    infoBuilder.Append("No Sb");
+                    infoBuilder.Append($"No {StopBitDesignationKey}");
                     break;
                 case Rs232StopBits.One:
-                    infoBuilder.Append("1 Sb");
+                    infoBuilder.Append($"1 {StopBitDesignationKey}");
                     break;
                 case Rs232StopBits.OneAndHalf:
-                    infoBuilder.Append("1.5 Sb");
+                    infoBuilder.Append($"1.5 {StopBitDesignationKey}");
                     break;
                 case Rs232StopBits.Two:
-                    infoBuilder.Append("2 Sb");
+                    infoBuilder.Append($"2 {StopBitDesignationKey}");
                     break;
             }
             infoBuilder.Append(", ");
@@ -109,19 +110,19 @@ namespace Wissance.Zerial.Desktop.Models
             switch (Settings.Parity)
             {
                 case Rs232Parity.NoParity:
-                    infoBuilder.Append("No P");
+                    infoBuilder.Append(Localizer.Get(NoParityKey));
                     break;
                 case Rs232Parity.Mark:
-                    infoBuilder.Append("Mark");
+                    infoBuilder.Append(Localizer.Get(MarkParityKey));
                     break;
                 case Rs232Parity.Space:
-                    infoBuilder.Append("Space");
+                    infoBuilder.Append(Localizer.Get(SpaceParityKey));
                     break;
                 case Rs232Parity.Even:
-                    infoBuilder.Append("Even");
+                    infoBuilder.Append(Localizer.Get(EvenParityKey));
                     break;
                 case Rs232Parity.Odd:
-                    infoBuilder.Append("Odd");
+                    infoBuilder.Append(Localizer.Get(OddParityKey));
                     break;
             }
             infoBuilder.Append(", ");
@@ -130,13 +131,13 @@ namespace Wissance.Zerial.Desktop.Models
             switch (Settings.FlowControl)
             {
                 case Rs232FlowControl.NoControl:
-                    infoBuilder.Append("No FC");
+                    infoBuilder.Append(Localizer.Get(NoFlowControlKey));
                     break;
                 case Rs232FlowControl.XonXoff:
-                    infoBuilder.Append("Xon/Xoff");
+                    infoBuilder.Append(Localizer.Get(XonXoffFlowControlKey));
                     break;
                 case Rs232FlowControl.RtsCts:
-                    infoBuilder.Append("Rts/Cts");
+                    infoBuilder.Append(Localizer.Get(CtsRtsFlowControlKey));
                     break;
             }
 
@@ -148,7 +149,7 @@ namespace Wissance.Zerial.Desktop.Models
         {
             get
             {
-                return GetNumberOfBytesMessage(MessageType.Write, BytesSentTemplate);
+                return GetNumberOfBytesMessage(MessageType.Write, Localizer.Get(BytesSentStatsTemplateKey));
             }
         }
 
@@ -156,7 +157,7 @@ namespace Wissance.Zerial.Desktop.Models
         {
             get
             {
-                return GetNumberOfBytesMessage(MessageType.Read, BytesReceivedTemplate);
+                return GetNumberOfBytesMessage(MessageType.Read, Localizer.Get(BytesReceivedStatsTemplateKey));
             }
         }
 
@@ -172,31 +173,48 @@ namespace Wissance.Zerial.Desktop.Models
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
 
-        public const string BytesSentTemplate = "Bytes sent: {0}";
-        public const string BytesReceivedTemplate = "Bytes received: {0}";
+        //public const string BytesSentTemplate = "Bytes sent: {0}";
+        //public const string BytesReceivedTemplate = "Bytes received: {0}";
 
         private readonly IDictionary<string, Rs232StopBits> _stopBitsOptions = new Dictionary<string, Rs232StopBits>()
         {
-            {"No Sb", Rs232StopBits.None},
-            {"1 Sb", Rs232StopBits.One},
-            {"1.5 Sb", Rs232StopBits.OneAndHalf},
-            {"2 Sb", Rs232StopBits.Two}
+            {$"No {StopBitDesignationKey}", Rs232StopBits.None},
+            {$"1 {StopBitDesignationKey}", Rs232StopBits.One},
+            {$"1.5 {StopBitDesignationKey}", Rs232StopBits.OneAndHalf},
+            {$"2 {StopBitDesignationKey}", Rs232StopBits.Two}
         };
 
         private readonly IDictionary<string, Rs232Parity> _parityOptions = new Dictionary<string, Rs232Parity>()
         {
-            {"No P", Rs232Parity.NoParity},
-            {"Mark", Rs232Parity.Mark},
-            {"Space", Rs232Parity.Space},
-            {"Even", Rs232Parity.Even},
-            {"Odd", Rs232Parity.Odd}
+            {Localizer.Get(NoParityKey), Rs232Parity.NoParity},
+            {Localizer.Get(MarkParityKey), Rs232Parity.Mark},
+            {Localizer.Get(SpaceParityKey), Rs232Parity.Space},
+            {Localizer.Get(EvenParityKey), Rs232Parity.Even},
+            {Localizer.Get(OddParityKey), Rs232Parity.Odd}
         };
 
         private readonly IDictionary<string, Rs232FlowControl> _flowControlOptions = new Dictionary<string, Rs232FlowControl>()
         {
-            {"No FC", Rs232FlowControl.NoControl},
-            {"Xon/Xoff", Rs232FlowControl.XonXoff},
-            {"Rts/Cts", Rs232FlowControl.RtsCts}
+            {Localizer.Get(NoFlowControlKey), Rs232FlowControl.NoControl},
+            {Localizer.Get(XonXoffFlowControlKey), Rs232FlowControl.XonXoff},
+            {Localizer.Get(CtsRtsFlowControlKey), Rs232FlowControl.RtsCts}
         };
+
+        private const string BitUnitKey = "Zerial_Bit_Unit";
+        private const string BitPerSecondUnitKey = "Zerial_Bit_Per_Sec_Unit";
+        private const string StopBitDesignationKey = "Zerial_Stop_Bit_Designation";
+        
+        private const string NoParityKey = "Zerial_No_Parity_Designation";
+        private const string MarkParityKey = "Zerial_Mark_Parity";
+        private const string SpaceParityKey = "Zerial_Space_Parity";
+        private const string EvenParityKey = "Zerial_Even_Parity";
+        private const string OddParityKey = "Zerial_Odd_Parity";
+        
+        private const string NoFlowControlKey = "Zerial_No_Flow_Control_Designation";
+        private const string CtsRtsFlowControlKey = "Zerial_RTS_CTS_Flow_Control";
+        private const string XonXoffFlowControlKey = "Zerial_Xon_Xoff_Flow_Control";
+        
+        private const string BytesSentStatsTemplateKey = "Zerial_Bytes_Sent_Stats_Template";
+        private const string BytesReceivedStatsTemplateKey = "Zerial_Bytes_Received_Stats_Template";
     }
 }
