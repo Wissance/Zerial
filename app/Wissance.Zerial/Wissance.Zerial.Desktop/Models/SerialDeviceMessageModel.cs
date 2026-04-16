@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Jeek.Avalonia.Localization;
 
 namespace Wissance.Zerial.Desktop.Models
 {
@@ -27,13 +28,13 @@ namespace Wissance.Zerial.Desktop.Models
         {
             if (MessageType == MessageType.Special)
             {
-                return string.Format(SpecialMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName, PreFormedMessage);
+                return string.Format(SpecialMessageTemplate, Time.ToString(Localizer.Get(DateTimeFormatKey)), deviceName, PreFormedMessage);
             }
 
             if (MessageType == MessageType.Connect || MessageType == MessageType.Disconnect)
             {
-                return string.Format(StatusMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName,
-                    MessageType == MessageType.Connect ? "Connected" : "Disconnected");
+                return string.Format(StatusMessageTemplate, Time.ToString(Localizer.Get(DateTimeFormatKey)), deviceName,
+                    MessageType == MessageType.Connect ? Localizer.Get(ConnectedDeviceStateKey) : Localizer.Get(DisconnectedDeviceStateKey));
             }
 
             StringBuilder dataAsStr = new StringBuilder();
@@ -43,12 +44,12 @@ namespace Wissance.Zerial.Desktop.Models
                 {
                     if (dataAsStr.Length > 0)
                         dataAsStr.Append(" ");
-                    dataAsStr.Append(string.Format("0x{0}", b.ToString("X")));
+                    dataAsStr.Append($"0x{b:X}");
                 }
             }
 
-            return string.Format(IoMessageTemplate, Time.ToString("yyyy-MM-dd HH:mm:ss"), deviceName,
-                MessageType == MessageType.Read ? "Read" : "Write", dataAsStr);
+            return string.Format(IoMessageTemplate, Time.ToString(Localizer.Get(DateTimeFormatKey)), deviceName,
+                MessageType == MessageType.Read ? Localizer.Get(DataReadMessagePrefixKey) : Localizer.Get(DataWriteMessagePrefixKey), dataAsStr);
         }
 
         public string PreFormedMessage { get; }
@@ -59,5 +60,11 @@ namespace Wissance.Zerial.Desktop.Models
         private const string SpecialMessageTemplate = "[{0}] : {1} : {2}";
         private const string StatusMessageTemplate = "[{0}] : {1} : {2}";
         private const string IoMessageTemplate = "[{0}] : {1} : {2} : {3}";
+        
+        private const string ConnectedDeviceStateKey = "Zerial_Device_Connected_State";
+        private const string DisconnectedDeviceStateKey = "Zerial_Device_Disconnected_State";
+        private const string DateTimeFormatKey = "Zerial_Date_Time_Format";
+        private const string DataReadMessagePrefixKey = "Zerial_Data_Read_Message_Prefix";
+        private const string DataWriteMessagePrefixKey = "Zerial_Data_Write_Message_Prefix";
     }
 }
