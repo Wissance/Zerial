@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Collections;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using DynamicData;
-using DynamicData.Binding;
 using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Managers;
 using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
@@ -37,7 +28,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
             _serialDevices = new List<SerialDeviceModel>();
-            _configurationManager = new DeviceConfigurationManager(Program.Environment, "devices.json");
+            _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
@@ -57,7 +48,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
             SerialDeviceMessages = new ObservableCollection<string>();
             // StatusBar
-            Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), "Application started");
+            Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), Localizer.Get(ApplicationStartedMessageKey));
             Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), string.Empty);
             Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
             Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
@@ -170,9 +161,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 bool res = byte.TryParse(rawByte, NumberStyles.HexNumber, provider, out raw);
                 if (!res)
                 {
-                    // log here
+                    // TODO(umv) : add log here
                     SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                        "Unable to send data to Serial (COM, USB-COM) device, due to it can't be converted into bytes");
+                        Localizer.Get(DataConversionToBytesErrorMessageKey));
                     serialDevice.Messages.Add(msg);
                     SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
                     return;
@@ -193,14 +184,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
             else
             {
                 SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                    "Data wasn't send to device");
+                    Localizer.Get(DataNotSendErrorMessageKey));
                 serialDevice.Messages.Add(msg);
                 SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
                 return;
             }
 
             // todo(umv): append logs either to serial device and to TextEditor
-            SerialDeviceMessageToSend = "";
+            SerialDeviceMessageToSend = string.Empty;
             this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
             UpdateStatusbar(serialDevice);
 
@@ -208,7 +199,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteClearMessageAsync()
         {
-            SerialDeviceMessageToSend = "";
+            SerialDeviceMessageToSend = string.Empty;
             this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
         }
 
@@ -352,6 +343,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private void UpdateStatusbar(SerialDeviceModel device)
         {
+            // TODO(umv): merge if && else blocks
             if (device != null)
             {
                 Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), SelectedPortNumber);
@@ -383,6 +375,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string Rs232SelectedDeviceBytesReceived { get; set; }
         #endregion
 
+        private const string UsingDevicesFile = "devices.json";
+
         private const string SelectedDeviceStatusInStatusBarKey = "Zerial_Device_Status_In_Status_Bar";
         private const string SelectedDeviceStatusBarKey = "Zerial_Selected_Port_Status_Bar";
         private const string ConnectButtonConnectTextKey = "Zerial_Connect_Button_Connect";
@@ -390,6 +384,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private const string ConnectedDeviceStateKey = "Zerial_Device_Connected_State";
         private const string DisconnectedDeviceStateKey = "Zerial_Device_Disconnected_State";
         private const string DeviceDoesNotExistsKey = "Zerial_Device_Not_Exist";
+        private const string ApplicationStartedMessageKey = "Zerial_Device_Application_Status_Message";
+        private const string DataConversionToBytesErrorMessageKey = "Zerial_Data_Conversion_Error_Message";
+        private const string DataNotSendErrorMessageKey = "Zerial_Data_Not_Send_Error_Message";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

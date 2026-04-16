@@ -47,5 +47,8 @@
   "Zerial_Device_Disconnected_State": "Disconnected",
   "Zerial_Device_Not_Exist": "Device does not exists",
   "Zerial_Selected_Port_Status_Bar": "Selected Port: {0}",
-  "Zerial_Device_Status_In_Status_Bar": "Status: {0}"
+  "Zerial_Device_Status_In_Status_Bar": "Status: {0}",
+  "Zerial_Device_Application_Status_Message": "Application started",
+  "Zerial_Data_Conversion_Error_Message": "Unable to send data to Serial (COM, USB-COM) device, due to it can't be converted into bytes",
+  "Zerial_Data_Not_Send_Error_Message": "Data wasn't send to device"
 }

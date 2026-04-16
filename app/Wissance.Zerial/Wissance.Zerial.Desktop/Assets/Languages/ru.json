@@ -47,5 +47,7 @@
   "Zerial_Device_Disconnected_State": "Отключено",
   "Zerial_Device_Not_Exist": "Устройство отсутсвует в системе",
   "Zerial_Selected_Port_Status_Bar": "Выбранное устройство: {0}",
-  "Zerial_Device_Status_In_Status_Bar": "Статус: {0}"
+  "Zerial_Device_Status_In_Status_Bar": "Статус: {0}",
+  "Zerial_Device_Application_Status_Message": "Приложение запущено",
+  "Zerial_Data_Conversion_Error_Message": "Невозможно отправить сообщение в последовательное (COM, USB-COM) устройство, видду того, что данные не могут быть преобразованы в массив байт"
 }
