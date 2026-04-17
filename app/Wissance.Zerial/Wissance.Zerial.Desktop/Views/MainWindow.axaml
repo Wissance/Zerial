@@ -37,6 +37,14 @@
                         <MenuItem Header="{l:Localize Zerial_Help_About_Sub_Menu_Header}" Command="{Binding ExecuteStartAboutWindowCommandAsync}"></MenuItem>
                         <MenuItem Header="{l:Localize Zerial_Help_Support_Sub_Menu_Header}" Command="{Binding ExecuteNavigateToSupportPageAsync}"></MenuItem>
                     </MenuItem>
+                    <MenuItem Header="{l:Localize Zerial_Languages_Menu_Header}" ItemsSource="{Binding Languages}"
+                              Command="{Binding ExecuteLanguageSetAsync}" CommandParameter="{Binding $self}">
+                        <MenuItem.Styles>
+                            <Style Selector="MenuItem:selected">
+                                <Setter Property="Background" Value="Gray" />
+                            </Style>
+                        </MenuItem.Styles>
+                    </MenuItem>
                 </Menu>
             </StackPanel>
             <Rectangle HorizontalAlignment="Stretch" Fill="Plum" Height="1" />

@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.Logging;
@@ -52,9 +54,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), string.Empty);
             Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
             Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
+            // Languages
+            Languages = new ObservableCollection<string>();
+            foreach (string language in Localizer.Languages)
+            {
+                Languages.Add(language);
+            }
         }
 
-        #region WindowAndDialogManagement
+        #region ZerialWindowAndDialogManagement
         public async Task ExecuteStartAboutWindowCommandAsync()
         {
             AboutWindow window = new AboutWindow(Globals.CurrentAppVersion);
@@ -68,7 +76,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         #endregion
 
-        #region HardwareOperationsWithSerialDevices
+        #region ZerialHardwareOperationsWithSerialDevices
 
         public async Task ExecuteConnectActionAsync()
         {
@@ -280,7 +288,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #endregion
 
-        #region RS232DeviceConfiguration
+        #region ZerialDeviceConfiguration
         
         public IList<string> Ports
         {
@@ -333,13 +341,35 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #endregion
 
-        #region RS232Messages
+        #region ZerialMessages
+        
         public ObservableCollection<string> SerialDeviceMessages { get; set; }
         public string SerialDeviceMessageToSend { get; set; }
 
         #endregion
+        
+        #region ZerialMenu
+        
+        public ObservableCollection<string> Languages { get; set; }
+        
+        public async Task ExecuteLanguageSetAsync(object languageItem)
+        {
+            MenuItem item = languageItem as MenuItem;
+            if (item != null)
+            {
+                string selectedLanguage = item.SelectedItem as string;
+                if (selectedLanguage != null && Localizer.Languages.Any(l => Equals(l, selectedLanguage)))
+                {
+                    Localizer.Language = selectedLanguage;
+                    // item.Background = Brushes.Fuchsia;
+                    // this.RaisePropertyChanged()
+                }
+            }
+        }
+        
+        #endregion
 
-        #region Rs232StatusBar
+        #region ZerialStatusBar
 
         private void UpdateStatusbar(SerialDeviceModel device)
         {

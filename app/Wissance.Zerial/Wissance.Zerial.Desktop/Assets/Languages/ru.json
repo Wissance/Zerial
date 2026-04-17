@@ -20,6 +20,7 @@
   "Zerial_Help_Menu_Header": "_Помощь",
   "Zerial_Help_About_Sub_Menu_Header": "_О Прогамме",
   "Zerial_Help_Support_Sub_Menu_Header": "_Поддержка",
+  "Zerial_Languages_Menu_Header": "_Языки",
   "Zerial_Main_Title": "Zerial (Community версия) - утилита для взаимодействия с устройствами с последовательными (RS232/COM) портами",
   "Zerial_Port_Label": "Порт:",
   "Zerial_Baud_Rate_Label": "Скорость:",

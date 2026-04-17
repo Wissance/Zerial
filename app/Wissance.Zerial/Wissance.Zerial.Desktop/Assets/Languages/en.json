@@ -20,6 +20,7 @@
   "Zerial_Help_Menu_Header": "_Help",
   "Zerial_Help_About_Sub_Menu_Header": "_About",
   "Zerial_Help_Support_Sub_Menu_Header": "_Support",
+  "Zerial_Languages_Menu_Header": "_Languages",
   "Zerial_Main_Title": "Zerial (Community Edition) - serial (RS232/COM) device communications utility",
   "Zerial_Port_Label": "Port:",
   "Zerial_Baud_Rate_Label": "Baud rate:",
