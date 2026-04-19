@@ -376,7 +376,10 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         };
                         Languages.Add(appLanguage);
                     }
-                    this.RaisePropertyChanged(nameof(Languages));
+                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, SelectedPortNumber));
+                    if (serialDevice == null)
+                        serialDevice = new SerialDeviceModel();
+                    UpdateStatusbar(serialDevice);
                 }
             }
         }
