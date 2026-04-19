@@ -55,10 +55,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
             Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
             Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
             // Languages
-            Languages = new ObservableCollection<string>();
+            Languages = new ObservableCollection<AppLanguageModel>();
             foreach (string language in Localizer.Languages)
             {
-                Languages.Add(language);
+                AppLanguageModel appLanguage = new AppLanguageModel()
+                {
+                    Language = language,
+                    IsSelected = Localizer.Language == language
+                };
+                Languages.Add(appLanguage);
             }
         }
 
@@ -350,19 +355,23 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #region ZerialMenu
         
-        public ObservableCollection<string> Languages { get; set; }
+        public ObservableCollection<AppLanguageModel> Languages { get; set; }
         
         public async Task ExecuteLanguageSetAsync(object languageItem)
         {
             MenuItem item = languageItem as MenuItem;
             if (item != null)
             {
-                string selectedLanguage = item.SelectedItem as string;
-                if (selectedLanguage != null && Localizer.Languages.Any(l => Equals(l, selectedLanguage)))
+                AppLanguageModel selectedAppLanguage = item.SelectedItem as AppLanguageModel;
+                if (selectedAppLanguage != null && Localizer.Languages.Any(l => Equals(l, selectedAppLanguage.Language)))
                 {
-                    Localizer.Language = selectedLanguage;
-                    // item.Background = Brushes.Fuchsia;
-                    // this.RaisePropertyChanged()
+                    Localizer.Language = selectedAppLanguage.Language;
+                    foreach (AppLanguageModel appLanguage in Languages)
+                    {
+                        appLanguage.IsSelected = appLanguage.Language == selectedAppLanguage.Language;
+                    }
+                    // update somehow
+                    this.RaisePropertyChanged(nameof(Languages));
                 }
             }
         }

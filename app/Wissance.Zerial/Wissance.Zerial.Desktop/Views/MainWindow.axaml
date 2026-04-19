@@ -23,6 +23,9 @@
     
     <Window.Styles>
         <StyleInclude Source="/Styles/Theme.axaml" />
+        <Style Selector="TextBlock.IsSelected">
+            <Setter Property="Background" Value="Orchid"/>
+        </Style>
     </Window.Styles>
     
     <Canvas>
@@ -39,11 +42,11 @@
                     </MenuItem>
                     <MenuItem Header="{l:Localize Zerial_Languages_Menu_Header}" ItemsSource="{Binding Languages}"
                               Command="{Binding ExecuteLanguageSetAsync}" CommandParameter="{Binding $self}">
-                        <MenuItem.Styles>
-                            <Style Selector="MenuItem:selected">
-                                <Setter Property="Background" Value="Gray" />
-                            </Style>
-                        </MenuItem.Styles>
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Language}" Classes.IsSelected="{Binding IsSelected}"/>
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
                     </MenuItem>
                 </Menu>
             </StackPanel>
