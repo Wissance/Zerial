@@ -366,11 +366,16 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 if (selectedAppLanguage != null && Localizer.Languages.Any(l => Equals(l, selectedAppLanguage.Language)))
                 {
                     Localizer.Language = selectedAppLanguage.Language;
-                    foreach (AppLanguageModel appLanguage in Languages)
+                    Languages.Clear();
+                    foreach (string language in Localizer.Languages)
                     {
-                        appLanguage.IsSelected = appLanguage.Language == selectedAppLanguage.Language;
+                        AppLanguageModel appLanguage = new AppLanguageModel()
+                        {
+                            Language = language,
+                            IsSelected = language == Localizer.Language
+                        };
+                        Languages.Add(appLanguage);
                     }
-                    // update somehow
                     this.RaisePropertyChanged(nameof(Languages));
                 }
             }

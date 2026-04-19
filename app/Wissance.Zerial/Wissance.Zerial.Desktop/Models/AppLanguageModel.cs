@@ -7,7 +7,6 @@ namespace Wissance.Zerial.Desktop.Models
     public class AppLanguageModel
     {
         public string Language { get; set; }
-
         public bool IsSelected { get; set; }
     }
 }
