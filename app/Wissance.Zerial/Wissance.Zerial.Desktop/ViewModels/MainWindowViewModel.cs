@@ -65,6 +65,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 };
                 Languages.Add(appLanguage);
             }
+            // todo(umv): think about device configs re-load
         }
 
         #region ZerialWindowAndDialogManagement
@@ -289,6 +290,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         #region RS232TreeConfiguration
+
+        private void ReLoadDeviceConfigs()
+        {
+            DevicesConfigs.Clear();
+            DevicesConfigs = _configurationManager.Load();
+            _serialDevices.Clear();
+            foreach (SerialPortShortInfoModel config in DevicesConfigs)
+            {
+                _serialDevices.Add(new SerialDeviceModel(config.Configuration));
+            }
+            this.RaisePropertyChanged(nameof(DevicesConfigs));
+        }
         public ObservableCollection<SerialPortShortInfoModel> DevicesConfigs { get; set; }
         
         #endregion
@@ -380,6 +393,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     if (serialDevice == null)
                         serialDevice = new SerialDeviceModel();
                     UpdateStatusbar(serialDevice);
+                    ReLoadDeviceConfigs();
                 }
             }
         }

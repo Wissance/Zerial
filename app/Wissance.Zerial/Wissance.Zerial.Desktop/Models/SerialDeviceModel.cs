@@ -14,6 +14,7 @@ namespace Wissance.Zerial.Desktop.Models
         public SerialDeviceModel()
         {
             Messages = new List<SerialDeviceMessageModel>();
+            Settings = new Rs232Settings();
         }
 
         public SerialDeviceModel(bool connected, Rs232Settings settings, IList<SerialDeviceMessageModel> messages)
@@ -26,59 +27,22 @@ namespace Wissance.Zerial.Desktop.Models
         public SerialDeviceModel(string deviceConfiguration)
         {
             // parse back from string to device
-            Settings = new Rs232Settings();            Connected = false;
+            Settings = new Rs232Settings();            
+            Connected = false;
             Messages = new List<SerialDeviceMessageModel>();
-            // device configuration has format - "COM3, 115200 b/s, 8bit, 1 Sb, Even, No FC"
+            // device configuration has format - "COM3, 115200 b/s, 8bit, 1 Sb, Even, No FC" (EN Localization)
             string[] parts = deviceConfiguration.Split(",");
-            string portStr = parts.Any() ? parts[0] : null;
-            Settings.DeviceName = parts[0];
-            if (portStr != null)
-            {
-                Settings.DeviceName = portStr;
-            }
+            string portStr = parts.Any() ? parts[PortIndex] : string.Empty;
+            Settings.DeviceName = parts[PortIndex];
+            if (string.IsNullOrEmpty(portStr))
+                return;
             
-            // baud rate
-            string baudRateStr = parts.FirstOrDefault(p => p.Contains(Localizer.Get(BitPerSecondUnitKey)));
-            if (baudRateStr != null)
-            {
-                string[] baudRateParts = baudRateStr.Trim().Split(' ');
-                int baudRate;
-                if (int.TryParse(baudRateParts[0].Trim(), out baudRate))
-                {
-                    Settings.BaudRate = (Rs232BaudRate)baudRate;
-                }
-            }
-            // byte len
-            string byteLengthStr = parts.FirstOrDefault(p => p.Contains(Localizer.Get(BitUnitKey)));
-            if (byteLengthStr != null)
-            {
-                string byteLengthValueStr = byteLengthStr.Trim().Substring(0, 1);
-                int byteLength;
-                if (int.TryParse(byteLengthValueStr, out byteLength))
-                {
-                    Settings.ByteLength = byteLength;
-                }
-            }
-            // stop bits
-            string stopBitsStr = parts.FirstOrDefault(p => p.Contains($"{StopBitDesignationKey}"));
-            if (stopBitsStr != null)
-            {
-                stopBitsStr = stopBitsStr.Trim();
-                if (_stopBitsOptions.ContainsKey(stopBitsStr))
-                    Settings.StopBits = _stopBitsOptions[stopBitsStr];
-            }
-            // parity
-            string parityStr = parts.FirstOrDefault(p => _parityOptions.Keys.Contains(p.Trim()));
-            if (parityStr != null)
-            {
-                Settings.Parity = _parityOptions[parityStr.Trim()];
-            }
-            // flow control
-            string flowControlStr = parts.FirstOrDefault(p => _flowControlOptions.Keys.Contains(p.Trim()));
-            if (flowControlStr != null)
-            {
-                Settings.FlowControl = _flowControlOptions[flowControlStr.Trim()];
-            }
+            Settings.DeviceName = portStr;
+            Settings.BaudRate = (Rs232BaudRate)GetSettingsValueFromParsedString<int>(parts, BaudRateIndex);
+            Settings.ByteLength = GetSettingsValueFromParsedString<int>(parts, ByteLengthIndex);
+            Settings.StopBits = (Rs232StopBits)GetSettingsValueFromParsedString<int>(parts, StopBitIndex);
+            Settings.Parity = (Rs232Parity)GetSettingsValueFromParsedString<int>(parts, ParityIndex);
+            Settings.FlowControl = (Rs232FlowControl)GetSettingsValueFromParsedString<int>(parts, FlowControlIndex);
         }
         
         public SerialPortShortInfoModel ToShortInfo()
@@ -87,59 +51,14 @@ namespace Wissance.Zerial.Desktop.Models
             infoBuilder.Append($"{Settings.DeviceName}, ");
             infoBuilder.Append($"{(int)Settings.BaudRate} {Localizer.Get(BitPerSecondUnitKey)}, ");
             infoBuilder.Append($"{Settings.ByteLength}{Localizer.Get(BitUnitKey)}, ");
-
-            // todo(UMV): use dictionary
-            switch (Settings.StopBits)
-            {
-                case Rs232StopBits.None:
-                    infoBuilder.Append($"No {StopBitDesignationKey}");
-                    break;
-                case Rs232StopBits.One:
-                    infoBuilder.Append($"1 {StopBitDesignationKey}");
-                    break;
-                case Rs232StopBits.OneAndHalf:
-                    infoBuilder.Append($"1.5 {StopBitDesignationKey}");
-                    break;
-                case Rs232StopBits.Two:
-                    infoBuilder.Append($"2 {StopBitDesignationKey}");
-                    break;
-            }
+            
+            infoBuilder.Append(_stopBitsOptions[Settings.StopBits]);
             infoBuilder.Append(", ");
 
-            // todo(UMV): use dictionary
-            switch (Settings.Parity)
-            {
-                case Rs232Parity.NoParity:
-                    infoBuilder.Append(Localizer.Get(NoParityKey));
-                    break;
-                case Rs232Parity.Mark:
-                    infoBuilder.Append(Localizer.Get(MarkParityKey));
-                    break;
-                case Rs232Parity.Space:
-                    infoBuilder.Append(Localizer.Get(SpaceParityKey));
-                    break;
-                case Rs232Parity.Even:
-                    infoBuilder.Append(Localizer.Get(EvenParityKey));
-                    break;
-                case Rs232Parity.Odd:
-                    infoBuilder.Append(Localizer.Get(OddParityKey));
-                    break;
-            }
+            infoBuilder.Append(_parityOptions[Settings.Parity]);
             infoBuilder.Append(", ");
 
-            // todo(UMV): use dictionary
-            switch (Settings.FlowControl)
-            {
-                case Rs232FlowControl.NoControl:
-                    infoBuilder.Append(Localizer.Get(NoFlowControlKey));
-                    break;
-                case Rs232FlowControl.XonXoff:
-                    infoBuilder.Append(Localizer.Get(XonXoffFlowControlKey));
-                    break;
-                case Rs232FlowControl.RtsCts:
-                    infoBuilder.Append(Localizer.Get(CtsRtsFlowControlKey));
-                    break;
-            }
+            infoBuilder.Append(_flowControlOptions[Settings.FlowControl]);
 
             SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, infoBuilder.ToString());
             return info;
@@ -168,37 +87,60 @@ namespace Wissance.Zerial.Desktop.Models
             totalBytesReceived = sentMessages.Aggregate(0, (t, m) => t + m.RawData.Length);
             return string.Format(template, totalBytesReceived);
         }
+
+        private T GetSettingsValueFromParsedString<T>(string[] parsedStr, int settingsPropertyIndex)
+        {
+            try
+            {
+                if (parsedStr.Length <= settingsPropertyIndex)
+                    return default(T);
+                string stopBitStr = parsedStr[settingsPropertyIndex];
+                string[] stopBitParts =  stopBitStr.Trim().Split(' ');
+                string rawValue = stopBitParts[0].Trim();
+                return (T)Convert.ChangeType(rawValue, typeof(T));
+            }
+            catch (Exception e)
+            {
+                return default(T);
+            }
+            
+        }
         
         public bool Connected { get; set; }
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
 
-        //public const string BytesSentTemplate = "Bytes sent: {0}";
-        //public const string BytesReceivedTemplate = "Bytes received: {0}";
-
-        private readonly IDictionary<string, Rs232StopBits> _stopBitsOptions = new Dictionary<string, Rs232StopBits>()
+        private readonly IDictionary<Rs232StopBits, string> _stopBitsOptions = new Dictionary<Rs232StopBits, string>()
         {
-            {$"No {StopBitDesignationKey}", Rs232StopBits.None},
-            {$"1 {StopBitDesignationKey}", Rs232StopBits.One},
-            {$"1.5 {StopBitDesignationKey}", Rs232StopBits.OneAndHalf},
-            {$"2 {StopBitDesignationKey}", Rs232StopBits.Two}
+            {Rs232StopBits.None, $"No {Localizer.Get(StopBitDesignationKey)}"},
+            {Rs232StopBits.One, $"1 {Localizer.Get(StopBitDesignationKey)}"},
+            {Rs232StopBits.OneAndHalf, $"1.5 {Localizer.Get(StopBitDesignationKey)}"},
+            {Rs232StopBits.Two, $"2 {Localizer.Get(StopBitDesignationKey)}"}
         };
 
-        private readonly IDictionary<string, Rs232Parity> _parityOptions = new Dictionary<string, Rs232Parity>()
+        private readonly IDictionary<Rs232Parity, string> _parityOptions = new Dictionary<Rs232Parity, string>()
         {
-            {Localizer.Get(NoParityKey), Rs232Parity.NoParity},
-            {Localizer.Get(MarkParityKey), Rs232Parity.Mark},
-            {Localizer.Get(SpaceParityKey), Rs232Parity.Space},
-            {Localizer.Get(EvenParityKey), Rs232Parity.Even},
-            {Localizer.Get(OddParityKey), Rs232Parity.Odd}
+            {Rs232Parity.NoParity, Localizer.Get(NoParityKey)},
+            {Rs232Parity.Mark, Localizer.Get(MarkParityKey)},
+            {Rs232Parity.Space, Localizer.Get(SpaceParityKey)},
+            {Rs232Parity.Even, Localizer.Get(EvenParityKey)},
+            {Rs232Parity.Odd, Localizer.Get(OddParityKey)}
         };
 
-        private readonly IDictionary<string, Rs232FlowControl> _flowControlOptions = new Dictionary<string, Rs232FlowControl>()
+        private readonly IDictionary<Rs232FlowControl, string> _flowControlOptions = new Dictionary<Rs232FlowControl, string>()
         {
-            {Localizer.Get(NoFlowControlKey), Rs232FlowControl.NoControl},
-            {Localizer.Get(XonXoffFlowControlKey), Rs232FlowControl.XonXoff},
-            {Localizer.Get(CtsRtsFlowControlKey), Rs232FlowControl.RtsCts}
+            {Rs232FlowControl.NoControl, Localizer.Get(NoFlowControlKey)},
+            {Rs232FlowControl.XonXoff, Localizer.Get(XonXoffFlowControlKey)},
+            {Rs232FlowControl.RtsCts, Localizer.Get(CtsRtsFlowControlKey)}
         };
+
+        // Configuration storing as follows - "COM3, 115200 b/s, 8 bit, 1 Sb, Even, No FC" (En Localization)
+        private const int PortIndex = 0;
+        private const int BaudRateIndex = 1;
+        private const int ByteLengthIndex = 2;
+        private const int StopBitIndex = 3;
+        private const int ParityIndex = 4;
+        private const int FlowControlIndex = 5;
 
         private const string BitUnitKey = "Zerial_Bit_Unit";
         private const string BitPerSecondUnitKey = "Zerial_Bit_Per_Sec_Unit";
