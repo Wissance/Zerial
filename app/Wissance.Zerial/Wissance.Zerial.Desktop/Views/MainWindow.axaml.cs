@@ -54,9 +54,17 @@ namespace Wissance.Zerial.Desktop.Views
         }
         private void OnTreeItemTapped(object? sender, TappedEventArgs e)
         {
-            // sender is a TextBlock with Text like = COM4, 9600 b/s, 8b, 1 Sb, Even, No FC
-            // todo(UMV): Load Setting from tapped item to the controls
-            TextBlock treeLineText = sender as TextBlock;
+            ExecuteUpdate(sender as TextBlock);
+        }
+
+        private void OnTreeItemPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            ExecuteUpdate(sender as TextBlock);
+        }
+
+        private void ExecuteUpdate(TextBlock sender)
+        {
+            TextBlock treeLineText = sender;
             if (treeLineText != null)
             {
                 string deviceName = GetPortNumberFromTreeItemText(treeLineText.Text);

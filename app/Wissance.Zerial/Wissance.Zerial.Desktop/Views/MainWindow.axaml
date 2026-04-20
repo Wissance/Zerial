@@ -157,6 +157,7 @@
                                                 <Image Source="../Assets/Images/Serial_32x32.png"></Image>
                                                 <TextBlock Text="{Binding Configuration}"
                                                            Tapped="OnTreeItemTapped"
+                                                           PointerPressed="OnTreeItemPointerPressed"
                                                            FontSize="10" Margin="3 10 0 0"/>
                                             </StackPanel>
                                         </TreeDataTemplate>
