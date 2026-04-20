@@ -398,15 +398,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         Languages.Add(appLanguage);
                     }
                     SerialOptions.ReloadOptions();
-                    // todo(umv): update conditionally
-                    _selectedFlowControl = SerialOptions.FlowControlsOptions[0];
-                    SelectedStopBits = SerialOptions.StopBitsOptions[1];
-                    SelectedParity = SerialOptions.ParitiesOptions[3];
-                    this.RaisePropertyChanged(nameof(SerialOptions));
-                    this.RaisePropertyChanged(nameof(SelectedFlowControl));
-                    this.RaisePropertyChanged(nameof(SelectedStopBits));
-                    this.RaisePropertyChanged(nameof(SelectedParity));
                     SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName,  SelectedPortNumber));
+                    UpdateSelectedOptions(serialDevice);
                     if (serialDevice == null)
                         serialDevice = new SerialDeviceModel();
                     UpdateStatusbar(serialDevice);
@@ -415,11 +408,32 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
         }
         
-        
-        
         #endregion
 
         #region ZerialStatusBar
+
+        private void UpdateSelectedOptions(SerialDeviceModel serialDevice)
+        {
+            const int defaultParityOptionIndex = 3;
+            const int defaultStopBitsIndex = 1;
+            const int defaultFlowControlIndex = 0;
+            string selectedParity = SerialOptions.ParitiesOptions[defaultParityOptionIndex];
+            string selectedStopBits = SerialOptions.StopBitsOptions[defaultStopBitsIndex];
+            string selectedFlowControl = SerialOptions.FlowControlsOptions[defaultFlowControlIndex];
+            if (serialDevice != null)
+            {
+                selectedParity = SerialOptions.Parities.FirstOrDefault(p => p.Value == serialDevice.Settings.Parity).Key;
+                selectedStopBits = SerialOptions.StopBits.FirstOrDefault(sb => sb.Value == serialDevice.Settings.StopBits).Key;
+                selectedFlowControl = SerialOptions.FlowControls.FirstOrDefault(fc => fc.Value == serialDevice.Settings.FlowControl).Key;
+            }
+
+            _selectedFlowControl = selectedFlowControl;
+            SelectedStopBits = selectedStopBits;
+            SelectedParity = selectedParity;
+            this.RaisePropertyChanged(nameof(SelectedFlowControl));
+            this.RaisePropertyChanged(nameof(SelectedStopBits));
+            this.RaisePropertyChanged(nameof(SelectedParity));
+        }
 
         private void UpdateStatusbar(SerialDeviceModel device)
         {
