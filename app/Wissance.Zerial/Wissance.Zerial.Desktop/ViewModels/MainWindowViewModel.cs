@@ -37,12 +37,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             {
                 _serialDevices.Add(new SerialDeviceModel(config.Configuration));
             }
-            
-            SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
-            SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
-            SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
-            SelectedFlowControl = SerialOptions.FlowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
-            SelectedParity = SerialOptions.Parities.First(p => p.Value == Rs232Parity.Even).Key;
+            // these are defaults values
+            SetDefaultSelectedOptions();
             XonSymbol = SerialDefaultsModel.DefaultXon;
             XoffSymbol = SerialDefaultsModel.DefaultXoff;
 
@@ -66,6 +62,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 Languages.Add(appLanguage);
             }
             // todo(umv): think about device configs re-load
+        }
+
+        private void SetDefaultSelectedOptions()
+        {
+            SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
+            SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
+            SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
+            SelectedFlowControl = SerialOptions.FlowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
+            SelectedParity = SerialOptions.Parities.First(p => p.Value == Rs232Parity.Even).Key;
         }
 
         #region ZerialWindowAndDialogManagement
@@ -320,7 +325,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public string ConnectButtonText { get; set; }
 
-        public SerialDefaultsModel SerialOptions { get; }
+        public SerialDefaultsModel SerialOptions { get; private set; }
 
         public string SelectedPortNumber
         {
@@ -344,10 +349,13 @@ namespace Wissance.Zerial.Desktop.ViewModels
             get { return _selectedFlowControl;}
             set
             {
-                _selectedFlowControl = value;
-                IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
-                // this DO TRICK with props changes apply on View (2Way Binding)
-                this.RaisePropertyChanged(nameof(IsProgrammableFlowControl));
+                if (value != null)
+                {
+                    _selectedFlowControl = value;
+                    IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
+                    // this DO TRICK with props changes apply on View (2Way Binding)
+                    this.RaisePropertyChanged(nameof(IsProgrammableFlowControl));
+                }
             }
         }
 
@@ -389,7 +397,16 @@ namespace Wissance.Zerial.Desktop.ViewModels
                         };
                         Languages.Add(appLanguage);
                     }
-                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, SelectedPortNumber));
+                    SerialOptions.ReloadOptions();
+                    // todo(umv): update conditionally
+                    _selectedFlowControl = SerialOptions.FlowControlsOptions[0];
+                    SelectedStopBits = SerialOptions.StopBitsOptions[1];
+                    SelectedParity = SerialOptions.ParitiesOptions[3];
+                    this.RaisePropertyChanged(nameof(SerialOptions));
+                    this.RaisePropertyChanged(nameof(SelectedFlowControl));
+                    this.RaisePropertyChanged(nameof(SelectedStopBits));
+                    this.RaisePropertyChanged(nameof(SelectedParity));
+                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName,  SelectedPortNumber));
                     if (serialDevice == null)
                         serialDevice = new SerialDeviceModel();
                     UpdateStatusbar(serialDevice);
@@ -397,6 +414,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 }
             }
         }
+        
+        
         
         #endregion
 
