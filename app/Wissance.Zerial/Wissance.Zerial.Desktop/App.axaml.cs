@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -32,9 +33,22 @@ namespace Wissance.Zerial.Desktop
 
         private void SetDefaultLanguage()
         {
-            Localizer.Language = "en";
+            string countryCode = DefaultCountryCode;
+            try
+            {
+                string currentCulture = CultureInfo.CurrentUICulture.Name;
+                string[] parts = currentCulture.Split("-");
+                if (Localizer.Languages.Contains(parts[0].ToLower()))
+                {
+                    countryCode = parts[0].ToLower();
+                }
+            }
+            catch (Exception e) {  }
+
+            Localizer.Language = countryCode;
         }
 
+        private const string DefaultCountryCode = "en";
         private const string LocalizationJsonDir = "./Assets/Languages";
     }
 }
