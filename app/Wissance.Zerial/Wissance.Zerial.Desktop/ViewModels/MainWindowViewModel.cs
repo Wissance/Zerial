@@ -402,6 +402,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     UpdateSelectedOptions(serialDevice);
                     if (serialDevice == null)
                         serialDevice = new SerialDeviceModel();
+                    ConnectButtonText = serialDevice.Connected ? Localizer.Get(ConnectButtonDisconnectTextKey) : Localizer.Get(ConnectButtonConnectTextKey);
+                    this.RaisePropertyChanged(nameof(ConnectButtonText));
                     UpdateStatusbar(serialDevice);
                     ReLoadDeviceConfigs();
                 }

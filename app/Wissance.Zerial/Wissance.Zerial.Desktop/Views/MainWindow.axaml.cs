@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
@@ -56,6 +59,24 @@ namespace Wissance.Zerial.Desktop.Views
         {
             ExecuteUpdate(sender as TextBlock);
         }
+
+        /*private void OnConnectButtonTextChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (SerialDeviceBtnConnOptionsPanel != null && TextEditorContainerPanel != null)
+            {
+                // Set equal resize by edit Right as Width - Margin
+                if (SerialDeviceBtnConnOptionsPanel.Bounds != null && SerialDeviceBtnConnOptionsPanel.Bounds.Right > 0)
+                {
+                    double newWidth = Width - 20 - SerialDeviceBtnConnOptionsPanel.Bounds.Left;
+                    SerialDeviceBtnConnOptionsPanel.Width = newWidth;
+                    SerialDeviceBtnConnOptionsPanel.
+                }
+                // double newWidth = SerialDeviceBtnConnOptionsPanel.Bounds.Right - TextEditorContainerPanel.Bounds.Left;
+                // double newWidth = TextEditorContainerPanel.Bounds.Right - SerialDeviceBtnConnOptionsPanel.Bounds.Left;
+                // SerialDeviceBtnConnOptionsPanel.Width = newWidth;
+                // TextEditorContainerPanel.Width = newWidth;
+            }
+        }*/
 
         private void OnTreeItemPointerPressed(object? sender, PointerPressedEventArgs e)
         {

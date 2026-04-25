@@ -13,7 +13,7 @@
         Resized="OnWindowResized"
         Title="{l:Localize Zerial_Main_Title}"
         Closing="OnWindowClose"
-        Height="660" Width="880" MinHeight="660" MinWidth="880">
+        Height="660" Width="940" MinHeight="660" MinWidth="940">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -79,9 +79,9 @@
                         <!-- RS232 Settings selection: Byte Length && Stop Bits -->
                         <StackPanel Orientation="Vertical" Margin="0, 0,0,0" Name="SerialDeviceByteLengthAndStopBitsOptionsPanel">
                             <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                                <StackPanel>
+                                <StackPanel MinWidth="200">
                                     <StackPanel Orientation="Horizontal" Margin="10"  HorizontalAlignment="Right" 
-                                                VerticalAlignment="Bottom" >
+                                                VerticalAlignment="Bottom">
                                         <Label Name="ByteLengthLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Byte_Length_Label}"/>
                                         <ComboBox Name="ByteLengthList" ItemsSource="{Binding Path=SerialOptions.ByteLengthOptions}"
                                                   SelectedItem="{Binding SelectedByteLength}"
@@ -99,7 +99,8 @@
                         <!-- RS232 Settings selection: Parity && Flow Control -->
                         <StackPanel>
                             <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                                <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceParityAndFlowControlOptionsPanel">
+                                <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceParityAndFlowControlOptionsPanel"
+                                            MinWidth="320">
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
                                             <Label Name="ParityLabel" Classes="ConnOptLabel" VerticalAlignment="Center" Content="{l:Localize Zerial_Parity_Label}"/>
@@ -129,7 +130,7 @@
                         <!-- Connect && Disconnect button -->
                         <StackPanel Orientation="Horizontal" Margin="0, 0,0,0" Name="SerialDeviceBtnConnOptionsPanel">
                             <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
-                                <StackPanel Orientation="Vertical" Margin="10" Width="100" Name="SerialDeviceBtnConnOptionsBtnContainerPanel">
+                                <StackPanel Orientation="Vertical" Margin="10" MinWidth="132" Name="SerialDeviceBtnConnOptionsBtnContainerPanel">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Button Width = "100" HorizontalContentAlignment="Center"
                                                 HorizontalAlignment="Stretch"
@@ -165,7 +166,7 @@
                                 </TreeView>
                             </StackPanel>
                         </Border>
-                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0">
+                        <Border Classes="ConnOptGroupBorder" Margin="2 0 0 0" >
                             <StackPanel Orientation="Vertical" Width="633" Name="TextEditorContainerPanel">
                                 <StackPanel Margin="10" Orientation="Horizontal" >
                                     <AvalonEdit:TextEditor Name="SerialDevicesMessageViewer" FontFamily="Cascadia Code,Consolas,Menlo,Monospace" 
