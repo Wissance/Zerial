@@ -12,6 +12,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
+using Jeek.Avalonia.Localization;
 using Wissance.Zerial.Desktop.ViewModels;
 
 namespace Wissance.Zerial.Desktop.Views
@@ -59,24 +60,6 @@ namespace Wissance.Zerial.Desktop.Views
         {
             ExecuteUpdate(sender as TextBlock);
         }
-
-        /*private void OnConnectButtonTextChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (SerialDeviceBtnConnOptionsPanel != null && TextEditorContainerPanel != null)
-            {
-                // Set equal resize by edit Right as Width - Margin
-                if (SerialDeviceBtnConnOptionsPanel.Bounds != null && SerialDeviceBtnConnOptionsPanel.Bounds.Right > 0)
-                {
-                    double newWidth = Width - 20 - SerialDeviceBtnConnOptionsPanel.Bounds.Left;
-                    SerialDeviceBtnConnOptionsPanel.Width = newWidth;
-                    SerialDeviceBtnConnOptionsPanel.
-                }
-                // double newWidth = SerialDeviceBtnConnOptionsPanel.Bounds.Right - TextEditorContainerPanel.Bounds.Left;
-                // double newWidth = TextEditorContainerPanel.Bounds.Right - SerialDeviceBtnConnOptionsPanel.Bounds.Left;
-                // SerialDeviceBtnConnOptionsPanel.Width = newWidth;
-                // TextEditorContainerPanel.Width = newWidth;
-            }
-        }*/
 
         private void OnTreeItemPointerPressed(object? sender, PointerPressedEventArgs e)
         {
@@ -191,7 +174,7 @@ namespace Wissance.Zerial.Desktop.Views
             _textEditor.Options.ShowBoxForControlCharacters = true;
             _textEditor.Options.ColumnRulerPositions = new List<int>() { 80, 100 };
             _textEditor.TextArea.RightClickMovesCaret = true;
-            _textEditor.Document = new TextDocument("Application started!");
+            _textEditor.Document = new TextDocument(Localizer.Get(ApplicationStartedMessageKey));
         }
         
         private void OnWindowResized(object? sender, WindowResizedEventArgs e)
@@ -244,6 +227,7 @@ namespace Wissance.Zerial.Desktop.Views
         };
 
         private const int LinesPerEditorViewMin = 16;
+        private const string ApplicationStartedMessageKey = "Zerial_Device_Application_Status_Message";
         
         private readonly MainWindowViewModel _context;
         private TextEditor _textEditor; 
