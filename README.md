@@ -1,15 +1,18 @@
 ## Zerial is a RS232 (COM Port Devices) Exchange software
 
+Zerial is a cross-platform GUI utility for interact with `COM` (`RS232`) devices. 
+
 ### 1. Key Feautes
-Zerial is:
-1. Fast like a lighting and a low resources consumption utility:
+`Zerial` is:
+1. Fast like a lighting and a low resources consumption RS232 exchange `GUI` utility:
   * fast start, warm start < `3s`
   * **low memory consumption** < `100 Mb`
   * close to 0 `CPU` consumption (with a **properly working COM devices**) 
 2. Convenient:
   * Exchange data with devices **in a binary format** in Hex mode
   * Support **multiple device at same time** (not really tested)
-  * Support **multiple platforms** where Net6 could be installed (Avalonia is a Cross-Platform WPF)
+  * Support **multiple platforms** where `Net6` could be installed (`Avalonia` is a Cross-Platform WPF)
+  * Support multiple localizations that could be added without re-compilation (see folder `./Assets/Languages`)
 
 ![Main window](img/MainWindow.png)
 
