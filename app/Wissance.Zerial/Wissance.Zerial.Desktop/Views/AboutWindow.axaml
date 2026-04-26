@@ -2,11 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="using:Jeek.Avalonia.Localization"
         xmlns:viewModels="clr-namespace:Wissance.Zerial.Desktop.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="300"
         x:Class="Wissance.Zerial.Desktop.Views.AboutWindow"
         x:CompileBindings="False"
-        Title="About Zerial community version software"
+        Title="{l:Localize Zerial_About_Title}"
         FontFamily="{StaticResource RobotoFonts}"
         Icon="/Assets/Images/Zerial_64x64.png"
         Height="300" Width="500" MinHeight="300" MinWidth="500" MaxHeight="300" MaxWidth="500">
@@ -27,20 +28,35 @@
         <StackPanel>
             <StackPanel Orientation="Vertical" Margin="60 50 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Version:"></Label>
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="{l:Localize Zerial_Version_Label}"></Label>
                     <TextBlock VerticalAlignment="Center" Text="{Binding Model.Version}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Authors:"></Label>
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="{l:Localize Zerial_Authors_Label}"></Label>
                     <TextBlock VerticalAlignment="Center" Text="{Binding Model.Author}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="Owner:"></Label>
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Model.Company}"/> 
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="{l:Localize Zerial_Owner_Label}"></Label>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Model.Company}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="{l:Localize Zerial_Product_Url_Label}"></Label>
+                    <TextBlock VerticalAlignment="Center" FontStyle="Normal" Foreground="BlueViolet" 
+                               Name="WissanceZerialWebSiteTextBlock" PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" 
+                               PointerPressed="OnClick">
+                        <Underline Name="WissanceZerialWebSiteUrlUnderline">
+                            <TextBlock Text="{l:Localize Zerial_Product_Url}"/>
+                        </Underline>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                    <Label VerticalAlignment="Center" FontWeight="Bold" Content="{l:Localize Zerial_Owner_Website_Label}"></Label>
                     <TextBlock VerticalAlignment="Center" FontStyle="Normal" Foreground="BlueViolet" 
                                Name="WissanceWebSiteTextBlock" PointerEntered="OnMouseOver" PointerExited="OnMouseLeave" 
                                PointerPressed="OnClick">
-                        <Underline Name="WissanceWebSiteUrlUnderline">https://wissance.com/en</Underline>
+                        <Underline Name="WissanceWebSiteUrlUnderline">
+                            <TextBlock Text="{l:Localize Zerial_Owner_Website}"/>
+                        </Underline>
                     </TextBlock>
                 </StackPanel>
             </StackPanel>

@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Wissance.Zerial.Desktop.Views;
@@ -11,29 +13,6 @@ namespace Wissance.Zerial.Desktop
 {
     public class App : Application
     {
-        /*static App()
-        {
-            // appsettings is optional due to we don't actually know install dir i.e. in Snap, but we could execute from any working dir
-            IConfigurationBuilder builder = new ConfigurationBuilder();
-            try
-            {
-                builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(AppSettingsFile, optional: true, reloadOnChange: false);
-            }
-            catch (Exception e)
-            {
-                builder = new ConfigurationBuilder();
-            }
-            
-            Configuration = builder.Build();
-
-            ServiceCollection services = new ServiceCollection();
-            // services.AddLogging();
-
-            ServiceProvider = services.BuildServiceProvider();
-        }*/
-
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -41,6 +20,9 @@ namespace Wissance.Zerial.Desktop
 
         public override void OnFrameworkInitializationCompleted()
         {
+            Localizer.SetLocalizer(new JsonLocalizer(LocalizationJsonDir));
+            SetDefaultLanguage();
+            
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new SplashScreenWindow();
@@ -48,10 +30,25 @@ namespace Wissance.Zerial.Desktop
 
             base.OnFrameworkInitializationCompleted();
         }
-        
-        //public static IServiceProvider ServiceProvider { get; private set; }
-        //public static IConfiguration Configuration { get; private set; }
 
-        //private const string AppSettingsFile = "appsettings.json";
+        private void SetDefaultLanguage()
+        {
+            string countryCode = DefaultCountryCode;
+            try
+            {
+                string currentCulture = CultureInfo.CurrentUICulture.Name;
+                string[] parts = currentCulture.Split("-");
+                if (Localizer.Languages.Contains(parts[0].ToLower()))
+                {
+                    countryCode = parts[0].ToLower();
+                }
+            }
+            catch (Exception e) {  }
+
+            Localizer.Language = countryCode;
+        }
+
+        private const string DefaultCountryCode = "en";
+        private const string LocalizationJsonDir = "./Assets/Languages";
     }
 }

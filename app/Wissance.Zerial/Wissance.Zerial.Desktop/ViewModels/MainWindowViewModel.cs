@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Collections;
-using Avalonia.Interactivity;
+using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
-using DynamicData;
-using DynamicData.Binding;
+using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Managers;
 using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
@@ -36,33 +30,52 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
             _serialDevices = new List<SerialDeviceModel>();
-            _configurationManager = new DeviceConfigurationManager(Program.Environment, "devices.json");
+            _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                _serialDevices.Add(new SerialDeviceModel(config.Configuration));
+                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                config.DisplayConfiguration = model.GetDisplayInfo();
+                _serialDevices.Add(model);
             }
-            
+            // these are defaults values
+            SetDefaultSelectedOptions();
+            XonSymbol = SerialDefaultsModel.DefaultXon;
+            XoffSymbol = SerialDefaultsModel.DefaultXoff;
+
+            ConnectButtonText = Localizer.Get(ConnectButtonConnectTextKey);
+
+            SerialDeviceMessages = new ObservableCollection<string>();
+            // StatusBar
+            Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), Localizer.Get(ApplicationStartedMessageKey));
+            Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), string.Empty);
+            Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
+            Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
+            // Languages
+            Languages = new ObservableCollection<AppLanguageModel>();
+            foreach (string language in Localizer.Languages)
+            {
+                AppLanguageModel appLanguage = new AppLanguageModel()
+                {
+                    Language = language,
+                    IsSelected = Localizer.Language == language
+                };
+                Languages.Add(appLanguage);
+            }
+            // todo(umv): think about device configs re-load
+        }
+
+        private void SetDefaultSelectedOptions()
+        {
             SelectedBaudRate = SerialOptions.BaudRates.First(b => b.Value == Rs232BaudRate.BaudMode9600).Key;
             SelectedByteLength = SerialOptions.ByteLength.First(bl => bl.Value == 8).Key;
             SelectedStopBits = SerialOptions.StopBits.First(sb => sb.Value == Rs232StopBits.One).Key;
             SelectedFlowControl = SerialOptions.FlowControls.First(fc => fc.Value == Rs232FlowControl.NoControl).Key;
             SelectedParity = SerialOptions.Parities.First(p => p.Value == Rs232Parity.Even).Key;
-            XonSymbol = SerialDefaultsModel.DefaultXon;
-            XoffSymbol = SerialDefaultsModel.DefaultXoff;
-
-            ConnectButtonText = Globals.ConnectButtonConnectText;
-
-            SerialDeviceMessages = new ObservableCollection<string>();
-            // StatusBar
-            Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "Application started");
-            Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, string.Empty);
-            Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
-            Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
         }
 
-        #region WindowAndDialogManagement
+        #region ZerialWindowAndDialogManagement
         public async Task ExecuteStartAboutWindowCommandAsync()
         {
             AboutWindow window = new AboutWindow(Globals.CurrentAppVersion);
@@ -71,12 +84,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteNavigateToSupportPageAsync()
         {
-            LinkNavigator.Navigate(Globals.SupportUrl);
+            LinkNavigator.Navigate(Localizer.Get(ZerialSupportUrlKey));
         }
 
         #endregion
 
-        #region HardwareOperationsWithSerialDevices
+        #region ZerialHardwareOperationsWithSerialDevices
 
         public async Task ExecuteConnectActionAsync()
         {
@@ -108,7 +121,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 serialDevice.Connected = openResult;
                 if (openResult)
                 {
-                    ConnectButtonText = Globals.ConnectButtonDisconnectText;
+                    ConnectButtonText = Localizer.Get(ConnectButtonDisconnectTextKey);
                     SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Connect, DateTime.Now, null);
                     serialDevice.Messages.Add(msg);
                     SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
@@ -118,7 +131,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             {
                 await _deviceManager.CloseAsync(deviceSetting.DeviceName);
                 serialDevice.Connected = false;
-                ConnectButtonText = Globals.ConnectButtonConnectText;
+                ConnectButtonText = Localizer.Get(ConnectButtonConnectTextKey);
                 SerialDeviceMessageModel msg =  new SerialDeviceMessageModel(MessageType.Disconnect, DateTime.Now, null);
                 serialDevice.Messages.Add(msg);
                 SerialDeviceMessages.Add(msg.ToString(serialDevice.Settings.DeviceName));
@@ -130,7 +143,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // add device to tree
             if (DevicesConfigs.All(d => d.DeviceName != deviceSetting.DeviceName))
             {
-                DevicesConfigs.Add(serialDevice.ToShortInfo());
+                DevicesConfigs.Add(new SerialPortShortInfoModel(serialDevice.Connected, serialDevice.Settings.DeviceName,
+                    serialDevice.Configuration, serialDevice.GetDisplayInfo()));
                 this.RaisePropertyChanged(nameof(DevicesConfigs));
             }
             else
@@ -141,7 +155,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     int index = DevicesConfigs.IndexOf(info);
                     DevicesConfigs.RemoveAt(index);
                     info.Connected = serialDevice.Connected;
-                    info.Configuration = serialDevice.ToShortInfo().Configuration;
+                    info.Configuration = serialDevice.Configuration;
+                    info.DisplayConfiguration = serialDevice.GetDisplayInfo();
                     DevicesConfigs.Insert(index, info);
                     this.RaisePropertyChanged(nameof(DevicesConfigs));
                 } 
@@ -169,9 +184,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
                 bool res = byte.TryParse(rawByte, NumberStyles.HexNumber, provider, out raw);
                 if (!res)
                 {
-                    // log here
+                    // TODO(umv) : add log here
                     SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                        "Unable to send data to Serial (COM, USB-COM) device, due to it can't be converted into bytes");
+                        Localizer.Get(DataConversionToBytesErrorMessageKey));
                     serialDevice.Messages.Add(msg);
                     SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
                     return;
@@ -192,14 +207,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
             else
             {
                 SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Special, DateTime.Now, null,
-                    "Data wasn't send to device");
+                    Localizer.Get(DataNotSendErrorMessageKey));
                 serialDevice.Messages.Add(msg);
                 SerialDeviceMessages.Add(msg.ToString(SelectedPortNumber));
                 return;
             }
 
             // todo(umv): append logs either to serial device and to TextEditor
-            SerialDeviceMessageToSend = "";
+            SerialDeviceMessageToSend = string.Empty;
             this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
             UpdateStatusbar(serialDevice);
 
@@ -207,7 +222,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteClearMessageAsync()
         {
-            SerialDeviceMessageToSend = "";
+            SerialDeviceMessageToSend = string.Empty;
             this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
         }
 
@@ -284,11 +299,22 @@ namespace Wissance.Zerial.Desktop.ViewModels
         }
 
         #region RS232TreeConfiguration
+
+        private void ReLoadDeviceConfigs()
+        {
+            foreach (SerialPortShortInfoModel config in DevicesConfigs)
+            {
+                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                _serialDevices.Add(model);
+                config.DisplayConfiguration = model.GetDisplayInfo();
+            }
+            this.RaisePropertyChanged(nameof(DevicesConfigs));
+        }
         public ObservableCollection<SerialPortShortInfoModel> DevicesConfigs { get; set; }
         
         #endregion
 
-        #region RS232DeviceConfiguration
+        #region ZerialDeviceConfiguration
         
         public IList<string> Ports
         {
@@ -302,7 +328,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public string ConnectButtonText { get; set; }
 
-        public SerialDefaultsModel SerialOptions { get; }
+        public SerialDefaultsModel SerialOptions { get; private set; }
 
         public string SelectedPortNumber
         {
@@ -326,10 +352,13 @@ namespace Wissance.Zerial.Desktop.ViewModels
             get { return _selectedFlowControl;}
             set
             {
-                _selectedFlowControl = value;
-                IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
-                // this DO TRICK with props changes apply on View (2Way Binding)
-                this.RaisePropertyChanged(nameof(IsProgrammableFlowControl));
+                if (value != null)
+                {
+                    _selectedFlowControl = value;
+                    IsProgrammableFlowControl = SerialOptions.FlowControls[_selectedFlowControl] == Rs232FlowControl.XonXoff;
+                    // this DO TRICK with props changes apply on View (2Way Binding)
+                    this.RaisePropertyChanged(nameof(IsProgrammableFlowControl));
+                }
             }
         }
 
@@ -341,22 +370,85 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         #endregion
 
-        #region RS232Messages
+        #region ZerialMessages
+        
         public ObservableCollection<string> SerialDeviceMessages { get; set; }
         public string SerialDeviceMessageToSend { get; set; }
 
         #endregion
+        
+        #region ZerialMenu
+        
+        public ObservableCollection<AppLanguageModel> Languages { get; set; }
+        
+        public async Task ExecuteLanguageSetAsync(object languageItem)
+        {
+            MenuItem item = languageItem as MenuItem;
+            if (item != null)
+            {
+                AppLanguageModel selectedAppLanguage = item.SelectedItem as AppLanguageModel;
+                if (selectedAppLanguage != null && Localizer.Languages.Any(l => Equals(l, selectedAppLanguage.Language)))
+                {
+                    Localizer.Language = selectedAppLanguage.Language;
+                    Languages.Clear();
+                    foreach (string language in Localizer.Languages)
+                    {
+                        AppLanguageModel appLanguage = new AppLanguageModel()
+                        {
+                            Language = language,
+                            IsSelected = language == Localizer.Language
+                        };
+                        Languages.Add(appLanguage);
+                    }
+                    SerialOptions.ReloadOptions();
+                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName,  SelectedPortNumber));
+                    UpdateSelectedOptions(serialDevice);
+                    if (serialDevice == null)
+                        serialDevice = new SerialDeviceModel();
+                    ConnectButtonText = serialDevice.Connected ? Localizer.Get(ConnectButtonDisconnectTextKey) : Localizer.Get(ConnectButtonConnectTextKey);
+                    this.RaisePropertyChanged(nameof(ConnectButtonText));
+                    UpdateStatusbar(serialDevice);
+                    ReLoadDeviceConfigs();
+                }
+            }
+        }
+        
+        #endregion
 
-        #region Rs232StatusBar
+        #region ZerialStatusBar
+
+        private void UpdateSelectedOptions(SerialDeviceModel serialDevice)
+        {
+            const int defaultParityOptionIndex = 3;
+            const int defaultStopBitsIndex = 1;
+            const int defaultFlowControlIndex = 0;
+            string selectedParity = SerialOptions.ParitiesOptions[defaultParityOptionIndex];
+            string selectedStopBits = SerialOptions.StopBitsOptions[defaultStopBitsIndex];
+            string selectedFlowControl = SerialOptions.FlowControlsOptions[defaultFlowControlIndex];
+            if (serialDevice != null)
+            {
+                selectedParity = SerialOptions.Parities.FirstOrDefault(p => p.Value == serialDevice.Settings.Parity).Key;
+                selectedStopBits = SerialOptions.StopBits.FirstOrDefault(sb => sb.Value == serialDevice.Settings.StopBits).Key;
+                selectedFlowControl = SerialOptions.FlowControls.FirstOrDefault(fc => fc.Value == serialDevice.Settings.FlowControl).Key;
+            }
+
+            _selectedFlowControl = selectedFlowControl;
+            SelectedStopBits = selectedStopBits;
+            SelectedParity = selectedParity;
+            this.RaisePropertyChanged(nameof(SelectedFlowControl));
+            this.RaisePropertyChanged(nameof(SelectedStopBits));
+            this.RaisePropertyChanged(nameof(SelectedParity));
+        }
 
         private void UpdateStatusbar(SerialDeviceModel device)
         {
+            // TODO(umv): merge if && else blocks
             if (device != null)
             {
-                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, SelectedPortNumber);
+                Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), SelectedPortNumber);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
-                string strStatus = device.Connected ? "Connected" : "Disconnected";
-                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, strStatus);
+                string strStatus = device.Connected ? Localizer.Get(ConnectedDeviceStateKey) : Localizer.Get(DisconnectedDeviceStateKey);
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), strStatus);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
                 Rs232SelectedDeviceBytesReceived = device.BytesReceived;
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
@@ -365,13 +457,13 @@ namespace Wissance.Zerial.Desktop.ViewModels
             }
             else
             {
-                Rs232SelectedDevicePort = string.Format(Rs232SelectedPortStatusBarMessageTemplate, "Device does not exists");
+                Rs232SelectedDevicePort = string.Format(Localizer.Get(SelectedDeviceStatusBarKey), Localizer.Get(DeviceDoesNotExistsKey));
                 this.RaisePropertyChanged(nameof(Rs232SelectedDevicePort));
-                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Rs232SelectedDeviceStatusStatusBarMessageTemplate, "???");
+                Rs232SelectedDeviceStatus = Rs232SelectedDeviceStatus = string.Format(Localizer.Get(SelectedDeviceStatusInStatusBarKey), "???");
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceStatus));
-                Rs232SelectedDeviceBytesReceived = string.Format(SerialDeviceModel.BytesReceivedTemplate, 0);
+                Rs232SelectedDeviceBytesReceived = string.Format(Localizer.Get(BytesReceivedStatsTemplateKey), 0);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesReceived));
-                Rs232SelectedDeviceBytesSent = string.Format(SerialDeviceModel.BytesSentTemplate, 0);
+                Rs232SelectedDeviceBytesSent = string.Format(Localizer.Get(BytesSentStatsTemplateKey), 0);
                 this.RaisePropertyChanged(nameof(Rs232SelectedDeviceBytesSent));
             }
         }
@@ -382,8 +474,23 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public string Rs232SelectedDeviceBytesReceived { get; set; }
         #endregion
 
-        private const string Rs232SelectedPortStatusBarMessageTemplate = "Selected Port: {0}";
-        private const string Rs232SelectedDeviceStatusStatusBarMessageTemplate = "Status: {0}";
+        private const string UsingDevicesFile = "devices.json";
+
+        private const string SelectedDeviceStatusInStatusBarKey = "Zerial_Device_Status_In_Status_Bar";
+        private const string SelectedDeviceStatusBarKey = "Zerial_Selected_Port_Status_Bar";
+        private const string ConnectButtonConnectTextKey = "Zerial_Connect_Button_Connect";
+        private const string ConnectButtonDisconnectTextKey = "Zerial_Connect_Button_Disconnect";
+        private const string ConnectedDeviceStateKey = "Zerial_Device_Connected_State";
+        private const string DisconnectedDeviceStateKey = "Zerial_Device_Disconnected_State";
+        private const string DeviceDoesNotExistsKey = "Zerial_Device_Not_Exist";
+        private const string ApplicationStartedMessageKey = "Zerial_Device_Application_Status_Message";
+        private const string DataConversionToBytesErrorMessageKey = "Zerial_Data_Conversion_Error_Message";
+        private const string DataNotSendErrorMessageKey = "Zerial_Data_Not_Send_Error_Message";
+        
+        private const string BytesSentStatsTemplateKey = "Zerial_Bytes_Sent_Stats_Template";
+        private const string BytesReceivedStatsTemplateKey = "Zerial_Bytes_Received_Stats_Template";
+        
+        private const string ZerialSupportUrlKey = "Zerial_Support_Url";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;

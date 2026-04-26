@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
+using Jeek.Avalonia.Localization;
 using Wissance.Zerial.Desktop.ViewModels;
 
 namespace Wissance.Zerial.Desktop.Views
@@ -54,9 +58,17 @@ namespace Wissance.Zerial.Desktop.Views
         }
         private void OnTreeItemTapped(object? sender, TappedEventArgs e)
         {
-            // sender is a TextBlock with Text like = COM4, 9600 b/s, 8b, 1 Sb, Even, No FC
-            // todo(UMV): Load Setting from tapped item to the controls
-            TextBlock treeLineText = sender as TextBlock;
+            ExecuteUpdate(sender as TextBlock);
+        }
+
+        private void OnTreeItemPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            ExecuteUpdate(sender as TextBlock);
+        }
+
+        private void ExecuteUpdate(TextBlock sender)
+        {
+            TextBlock treeLineText = sender;
             if (treeLineText != null)
             {
                 string deviceName = GetPortNumberFromTreeItemText(treeLineText.Text);
@@ -162,7 +174,7 @@ namespace Wissance.Zerial.Desktop.Views
             _textEditor.Options.ShowBoxForControlCharacters = true;
             _textEditor.Options.ColumnRulerPositions = new List<int>() { 80, 100 };
             _textEditor.TextArea.RightClickMovesCaret = true;
-            _textEditor.Document = new TextDocument("Application started!");
+            _textEditor.Document = new TextDocument(Localizer.Get(ApplicationStartedMessageKey));
         }
         
         private void OnWindowResized(object? sender, WindowResizedEventArgs e)
@@ -215,6 +227,7 @@ namespace Wissance.Zerial.Desktop.Views
         };
 
         private const int LinesPerEditorViewMin = 16;
+        private const string ApplicationStartedMessageKey = "Zerial_Device_Application_Status_Message";
         
         private readonly MainWindowViewModel _context;
         private TextEditor _textEditor; 
