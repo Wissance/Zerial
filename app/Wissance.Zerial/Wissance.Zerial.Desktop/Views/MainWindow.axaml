@@ -156,7 +156,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="{Binding ConnectStateImage, Mode=TwoWay}"></Image>
                                                 <Image Source="../Assets/Images/Serial_32x32.png"></Image>
-                                                <TextBlock Text="{Binding Configuration}"
+                                                <TextBlock Text="{Binding DisplayConfiguration}"
                                                            Tapped="OnTreeItemTapped"
                                                            PointerPressed="OnTreeItemPointerPressed"
                                                            FontSize="10" Margin="3 10 0 0"/>

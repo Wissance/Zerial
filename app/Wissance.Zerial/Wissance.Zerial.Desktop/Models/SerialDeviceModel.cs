@@ -47,7 +47,7 @@ namespace Wissance.Zerial.Desktop.Models
             Configuration = deviceConfiguration;
         }
         
-        public SerialPortShortInfoModel ToShortInfo()
+        public string GetDisplayInfo()
         {
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.Append($"{Settings.DeviceName}, ");
@@ -62,9 +62,9 @@ namespace Wissance.Zerial.Desktop.Models
 
             infoBuilder.Append(_flowControlOptions[Settings.FlowControl]);
 
-            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, Configuration,
-                infoBuilder.ToString());
-            return info;
+            // SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, Configuration,
+            //    infoBuilder.ToString());
+            return infoBuilder.ToString();
         }
         
         public string BytesSend
@@ -113,7 +113,7 @@ namespace Wissance.Zerial.Desktop.Models
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
         
-        private string Configuration { get; set; }
+        public string Configuration { get; private set; }
 
         private readonly IDictionary<Rs232StopBits, string> _stopBitsOptions = new Dictionary<Rs232StopBits, string>()
         {

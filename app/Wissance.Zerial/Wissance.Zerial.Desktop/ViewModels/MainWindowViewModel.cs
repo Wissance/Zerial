@@ -35,7 +35,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                _serialDevices.Add(new SerialDeviceModel(config.Configuration));
+                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                config.DisplayConfiguration = model.GetDisplayInfo();
+                _serialDevices.Add(model);
             }
             // these are defaults values
             SetDefaultSelectedOptions();
@@ -141,7 +143,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // add device to tree
             if (DevicesConfigs.All(d => d.DeviceName != deviceSetting.DeviceName))
             {
-                DevicesConfigs.Add(serialDevice.ToShortInfo());
+                DevicesConfigs.Add(new SerialPortShortInfoModel(serialDevice.Connected, serialDevice.Settings.DeviceName,
+                    serialDevice.Configuration, serialDevice.GetDisplayInfo()));
                 this.RaisePropertyChanged(nameof(DevicesConfigs));
             }
             else
@@ -152,7 +155,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     int index = DevicesConfigs.IndexOf(info);
                     DevicesConfigs.RemoveAt(index);
                     info.Connected = serialDevice.Connected;
-                    info.Configuration = serialDevice.ToShortInfo().Configuration;
+                    info.Configuration = serialDevice.Configuration;
+                    info.DisplayConfiguration = serialDevice.GetDisplayInfo();
                     DevicesConfigs.Insert(index, info);
                     this.RaisePropertyChanged(nameof(DevicesConfigs));
                 } 
