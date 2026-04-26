@@ -298,9 +298,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         private void ReLoadDeviceConfigs()
         {
-            DevicesConfigs.Clear();
-            DevicesConfigs = _configurationManager.Load();
-            _serialDevices.Clear();
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
                 _serialDevices.Add(new SerialDeviceModel(config.Configuration));
