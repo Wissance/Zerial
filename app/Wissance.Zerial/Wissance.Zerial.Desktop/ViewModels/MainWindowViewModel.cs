@@ -84,7 +84,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
 
         public async Task ExecuteNavigateToSupportPageAsync()
         {
-            LinkNavigator.Navigate(Globals.SupportUrl);
+            LinkNavigator.Navigate(Localizer.Get(ZerialSupportUrlKey));
         }
 
         #endregion
@@ -489,6 +489,8 @@ namespace Wissance.Zerial.Desktop.ViewModels
         
         private const string BytesSentStatsTemplateKey = "Zerial_Bytes_Sent_Stats_Template";
         private const string BytesReceivedStatsTemplateKey = "Zerial_Bytes_Received_Stats_Template";
+        
+        private const string ZerialSupportUrlKey = "Zerial_Support_Url";
         
         private IList<string> _ports;
         private readonly IList<SerialDeviceModel> _serialDevices;
