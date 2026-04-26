@@ -43,6 +43,8 @@ namespace Wissance.Zerial.Desktop.Models
             Settings.StopBits = (Rs232StopBits)GetSettingsValueFromParsedString<int>(parts, StopBitIndex);
             Settings.Parity = (Rs232Parity)GetSettingsValueFromParsedString<int>(parts, ParityIndex);
             Settings.FlowControl = (Rs232FlowControl)GetSettingsValueFromParsedString<int>(parts, FlowControlIndex);
+            
+            Configuration = deviceConfiguration;
         }
         
         public SerialPortShortInfoModel ToShortInfo()
@@ -60,7 +62,8 @@ namespace Wissance.Zerial.Desktop.Models
 
             infoBuilder.Append(_flowControlOptions[Settings.FlowControl]);
 
-            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, infoBuilder.ToString());
+            SerialPortShortInfoModel info = new SerialPortShortInfoModel(Connected, Settings.DeviceName, Configuration,
+                infoBuilder.ToString());
             return info;
         }
         
@@ -109,6 +112,8 @@ namespace Wissance.Zerial.Desktop.Models
         public bool Connected { get; set; }
         public Rs232Settings Settings { get; set; }
         public IList<SerialDeviceMessageModel> Messages { get; set; }
+        
+        private string Configuration { get; set; }
 
         private readonly IDictionary<Rs232StopBits, string> _stopBitsOptions = new Dictionary<Rs232StopBits, string>()
         {

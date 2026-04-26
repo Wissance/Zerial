@@ -7,11 +7,12 @@ namespace Wissance.Zerial.Desktop.Models
 {
     public class SerialPortShortInfoModel
     {
-        public SerialPortShortInfoModel(bool connected,string deviceName, string configuration)
+        public SerialPortShortInfoModel(bool connected,string deviceName, string configuration, string displayConfiguration)
         {
             Connected = connected;
             DeviceName = deviceName;
             Configuration = configuration;
+            DisplayConfiguration = displayConfiguration;
             Id = Guid.NewGuid();
         }
 
@@ -32,6 +33,9 @@ namespace Wissance.Zerial.Desktop.Models
         public Guid Id { get; }
         public string DeviceName { get; set; }
         public string Configuration { get; set; }
+        
+        [JsonIgnore]
+        public string DisplayConfiguration { get; set; }
     }
     
 }
