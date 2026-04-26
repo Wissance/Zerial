@@ -304,7 +304,9 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                _serialDevices.Add(new SerialDeviceModel(config.Configuration));
+                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                _serialDevices.Add(model);
+                config.DisplayConfiguration = model.GetDisplayInfo();
             }
             this.RaisePropertyChanged(nameof(DevicesConfigs));
         }
