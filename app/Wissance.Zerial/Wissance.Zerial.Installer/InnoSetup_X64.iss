@@ -13,10 +13,10 @@ AppPublisher=Wissance LLC (ООО Висанс)
 AppPublisherURL=https://wissance.com
 AppSupportURL=https://wissance.com
 AppUpdatesURL=https://wissance.com
-DefaultDirName={#GetEnv("SYSTEMDRIVE")}\Wissance\Zerial
+DefaultDirName=..\..\Wissance\Zerial
 DefaultGroupName=Wissance.Zerial
-LicenseFile=C:\Users\michael\Projects\Wissance\Zerial\LICENSE
-OutputDir=C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Installer\Windows
+LicenseFile=..\..\..\LICENSE
+OutputDir=Wissance.Zerial.Installer\Windows
 OutputBaseFilename=Wissance.Zerial.Win.X64
 Compression=lzma
 SolidCompression=yes
@@ -26,13 +26,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Desktop.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\av_libglesv2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\libHarfBuzzSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\libSkiaSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Common.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Desktop.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x64\Wissance.Zerial.Desktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\Wissance.Zerial.Desktop.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\av_libglesv2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\libHarfBuzzSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\libSkiaSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\Wissance.Zerial.Common.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\bin\Release\net6.0\win-x64\publish\Wissance.Zerial.Desktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: "..\Wissance.Zerial.Desktop\Assets\Images\Zerial_64x64.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Wissance.Zerial.Desktop\Assets\*"; DestDir: "{app}\Assets"; Flags: recursesubdirs createallsubdirs
