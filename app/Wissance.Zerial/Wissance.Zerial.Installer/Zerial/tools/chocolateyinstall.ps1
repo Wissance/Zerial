@@ -2,7 +2,6 @@
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url        = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.WinInstaller.Bootstrap.X86.exe' # download url, HTTPS preferred
 $url64      = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.WinInstaller.Bootstrap.X64.exe' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
-$dotnetPath = $Env:SystemDrive + "\'Program Files'\dotnet\"
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -21,10 +20,10 @@ $packageArgs = @{
   silentArgs    = "/SILENT /qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`"" # ALLUSERS=1 DISABLEDESKTOPSHORTCUT=1 ADDDESKTOPICON=0 ADDSTARTMENU=0
   validExitCodes= @(0, 3010, 1641)
 }
+# skip dotnet install if there is a newer version
+$dotnetVersion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\dotnet\Setup\InstalledVersions\x64" -Name "MostRecentVersion" -ErrorAction SilentlyContinue).MostRecentVersion
+if ($dotnetVersion -and [version]$dotnetVersion -ge [version]"6.0.0") {
+    Write-Host ".NET $dotnetVersion was already installed"
+    $installDotnet = $false
 
-Set-ExecutionPolicy Bypass -Scope Process
-Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile "dotnet-install.ps1"
-powershell ".\dotnet-install.ps1 -InstallDir $dotnetPath -Runtime dotnet -Version 6.0.27"
-
-$env:Path += '$dotnetPath' 
 Install-ChocolateyPackage @packageArgs
