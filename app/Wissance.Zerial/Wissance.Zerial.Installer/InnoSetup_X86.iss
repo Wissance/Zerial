@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{2078FF0C-F910-4184-8778-D134B255DB73}
 AppName=Wissance.Zerial
-AppVersion=1.0
+AppVersion=1.1.0
 ;AppVerName=Wissance.Zerial 1.0
 AppPublisher=Wissance LLC (ООО Висанс)
 AppPublisherURL=https://wissance.com
@@ -35,6 +35,7 @@ Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.
 Source: "C:\Users\michael\Projects\Wissance\Zerial\app\Wissance.Zerial\Wissance.Zerial.Desktop\bin\Release\net6.0\win_x86\Wissance.Zerial.Desktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: "..\Wissance.Zerial.Desktop\Assets\Images\Zerial_64x64.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Wissance.Zerial.Desktop\Assets\*"; DestDir: "{app}\Assets"; Flags: recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\Wissance.Zerial"; Filename: "{app}\Wissance.Zerial.Desktop.exe"; IconFilename: "{app}\Zerial_64x64.ico"; IconIndex: 0
