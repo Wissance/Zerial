@@ -1,9 +1,9 @@
 ﻿$ErrorActionPreference = 'Stop'; # stop on all errors
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  softwareName  = 'Zerial'
+  softwareName  = 'Wissance.Zerial'
   fileType      = 'EXE_MSI_OR_MSU'
-  silentArgs    = "/qn /norestart"
+  silentArgs    = "/qn /norestart /SILENT /NORESTART"
   validExitCodes= @(0, 3010, 1605, 1614, 1641)
 
 }
