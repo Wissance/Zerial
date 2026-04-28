@@ -17,7 +17,7 @@ DefaultDirName=..\..\Wissance\Zerial
 DefaultGroupName=Wissance.Zerial
 LicenseFile=..\..\..\LICENSE
 OutputDir=Windows
-OutputBaseFilename=Wissance.Zerial.Win.X64
+OutputBaseFilename=Wissance.Zerial.Win.X86
 Compression=lzma
 SolidCompression=yes
 
