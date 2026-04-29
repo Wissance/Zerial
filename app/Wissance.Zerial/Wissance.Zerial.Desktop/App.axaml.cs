@@ -20,7 +20,10 @@ namespace Wissance.Zerial.Desktop
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Localizer.SetLocalizer(new JsonLocalizer(LocalizationJsonDir));
+            string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string assemblyDir = Path.GetDirectoryName(assemblyLocation);
+            string localizationDir = Path.Combine(assemblyDir, LocalizationJsonDir);
+            Localizer.SetLocalizer(new JsonLocalizer(localizationDir));
             SetDefaultLanguage();
             
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -49,6 +52,6 @@ namespace Wissance.Zerial.Desktop
         }
 
         private const string DefaultCountryCode = "en";
-        private const string LocalizationJsonDir = "./Assets/Languages";
+        private const string LocalizationJsonDir = "Assets/Languages";
     }
 }
