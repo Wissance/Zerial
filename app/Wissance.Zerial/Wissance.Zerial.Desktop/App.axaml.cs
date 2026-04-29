@@ -20,9 +20,18 @@ namespace Wissance.Zerial.Desktop
 
         public override void OnFrameworkInitializationCompleted()
         {
-            string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string assemblyDir = Path.GetDirectoryName(assemblyLocation);
-            string localizationDir = Path.Combine(assemblyDir, LocalizationJsonDir);
+            string localizationDir = "";
+            if (!IsSnapApp)
+            {
+                string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                string assemblyDir = Path.GetDirectoryName(assemblyLocation);
+                localizationDir = Path.Combine(assemblyDir, LocalizationJsonDir);
+            }
+            else
+            {
+                localizationDir = Path.Combine(SnapBaseDir, LocalizationJsonDir);
+            }
+
             Localizer.SetLocalizer(new JsonLocalizer(localizationDir));
             SetDefaultLanguage();
             
@@ -53,5 +62,9 @@ namespace Wissance.Zerial.Desktop
 
         private const string DefaultCountryCode = "en";
         private const string LocalizationJsonDir = "Assets/Languages";
+        private const string ZerialSnapPackageName = "wissance-zerial";
+        private const string SnapBaseDir = $"/snap/{ZerialSnapPackageName}/current";
+        
+        public static bool IsSnapApp { get; set; }
     }
 }

@@ -16,12 +16,13 @@ namespace Wissance.Zerial.Desktop
             string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
             Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
             Console.WriteLine($"Current environment is: {snapEnv}");
-
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            bool isSnapRunning = snapEnv != null;
+            App.IsSnapApp = isSnapRunning;
+            BuildAvaloniaApp(isSnapRunning).StartWithClassicDesktopLifetime(args);
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
+        public static AppBuilder BuildAvaloniaApp(bool fromSnap)
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
