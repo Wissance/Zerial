@@ -14,6 +14,11 @@ architectures:
 confinement: strict
 
 parts:
+  wissance-assets:
+    plugin: dump
+    source: ./app/Wissance.Zerial/Wissance.Zerial.Desktop/Assets
+    organize:
+      '*': 'Assets/'
   wissance-zerial:
     plugin: dotnet
     dotnet-build-configuration: Release
