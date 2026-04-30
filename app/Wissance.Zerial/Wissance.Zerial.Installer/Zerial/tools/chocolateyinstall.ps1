@@ -25,5 +25,5 @@ $dotnetVersion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\dotnet\Setup\InstalledV
 if ($dotnetVersion -and [version]$dotnetVersion -ge [version]"6.0.0") {
     Write-Host ".NET $dotnetVersion was already installed"
     $installDotnet = $false
-
+}
 Install-ChocolateyPackage @packageArgs
