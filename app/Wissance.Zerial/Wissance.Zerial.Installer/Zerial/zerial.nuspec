@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>zerial-rs232</id>
-    <version>1.0</version>
+    <id>wissance-zerial</id>
+    <version>1.1</version>
     <packageSourceUrl>https://github.com/Wissance/Zerial</packageSourceUrl>
     <title>Zerial (Comunity Edition)</title>
     <authors>M.V.Ushakov (EvilLord666)</authors>
     <projectUrl>https://wissance.github.io/Zerial/</projectUrl>
     <iconUrl>https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Desktop/Assets/Images/Zerial_Big.png</iconUrl>
-    <copyright>2023-2024 Wissance LLC (ООО Висанс)</copyright>
+    <copyright>2023-2026 Wissance LLC (ООО Висанс)</copyright>
     <licenseUrl>https://github.com/Wissance/Zerial/raw/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/Wissance/Zerial</projectSourceUrl>
     <tags>Zerial RS-232 RS232 COM Hardware</tags>
     <summary>Zerial is a utility that allows to interact with multiple RS232 (COM) devices in binary mode</summary>
-    <description>Zerial is a utility that allows to develop test hardware and interact with it from our general software in binary mode. Zerial was built with Avalonia and Net6 and published as a self-contained application; therefore, it doesn't need dotnet to be installed. Due to that, it has a size of around 100 MB. But unlike of Electron and Python applications, it utilizes resources carefully. </description>
-    <releaseNotes>https://github.com/Wissance/Zerial/releases/tag/v1.0</releaseNotes>
+    <description>Zerial is a utility that allows engineers to develop and test hardware and to interact with it in binary (hexadecimal) mode. Zerial was built with Avalonia and .NET 6 as a cross-platform application; unlike modern Electron or Python applications, it utilizes consuming resources carefully. </description>
+    <releaseNotes>https://github.com/Wissance/Zerial/releases/tag/v1.1.0</releaseNotes>
+    <dependencies>
+      <dependency id="dotnet-6.0-desktopruntime" version="6.0.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

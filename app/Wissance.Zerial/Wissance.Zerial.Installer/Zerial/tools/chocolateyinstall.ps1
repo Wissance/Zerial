@@ -2,7 +2,6 @@
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url        = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.WinInstaller.Bootstrap.X86.exe' # download url, HTTPS preferred
 $url64      = 'https://github.com/Wissance/Zerial/raw/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows/Wissance.Zerial.WinInstaller.Bootstrap.X64.exe' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
-$dotnetPath = $Env:SystemDrive + "\'Program Files'\dotnet\"
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -13,18 +12,18 @@ $packageArgs = @{
 
   softwareName  = 'Wissance.Zerial'
 
-  checksum      = 'C1E2E9A5B7EEF3C64894B8247E539B6E5F6DE0EE47B4C18DC1A9B6BB032F8B18'
+  checksum      = '3CD7AB506E2ECA55DD226656016DFDCD5E7A035E2650ED331E090F19C6B02C86'
   checksumType  = 'sha256'
-  checksum64    = '3EA0AB7BBCA0A19A885316306D2A95EC7A6DC3416E40188C637A07D72908E8FC'
+  checksum64    = '8152D1295F0841432EE0754131826EB489F013C865A287F1AE4730FE5292D4FC'
   checksumType64= 'sha256'
 
   silentArgs    = "/SILENT /qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`"" # ALLUSERS=1 DISABLEDESKTOPSHORTCUT=1 ADDDESKTOPICON=0 ADDSTARTMENU=0
   validExitCodes= @(0, 3010, 1641)
 }
-
-Set-ExecutionPolicy Bypass -Scope Process
-Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile "dotnet-install.ps1"
-powershell ".\dotnet-install.ps1 -InstallDir $dotnetPath -Runtime dotnet -Version 6.0.27"
-
-$env:Path += '$dotnetPath' 
+# skip dotnet install if there is a newer version
+$dotnetVersion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\dotnet\Setup\InstalledVersions\x64" -Name "MostRecentVersion" -ErrorAction SilentlyContinue).MostRecentVersion
+if ($dotnetVersion -and [version]$dotnetVersion -ge [version]"6.0.0") {
+    Write-Host ".NET $dotnetVersion was already installed"
+    $installDotnet = $false
+}
 Install-ChocolateyPackage @packageArgs
