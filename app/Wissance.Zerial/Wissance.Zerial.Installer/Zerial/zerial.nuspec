@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>wissance-zerial</id>
-    <version>1.1</version>
+    <version>1.1.0</version>
     <packageSourceUrl>https://github.com/Wissance/Zerial</packageSourceUrl>
     <title>Zerial (Comunity Edition)</title>
     <authors>M.V.Ushakov (EvilLord666)</authors>
