@@ -25,6 +25,11 @@ namespace Wissance.Zerial.Desktop
             {
                 string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string assemblyDir = Path.GetDirectoryName(assemblyLocation);
+                // assemblyDir could be null, i found so for the chocolatey, however assemblyDir could be null, to fix this set it just to the .
+                if (string.IsNullOrEmpty(assemblyDir))
+                {
+                    assemblyDir = ".";
+                }
                 localizationDir = Path.Combine(assemblyDir, LocalizationJsonDir);
             }
             else
