@@ -23,7 +23,7 @@ You could find **why and how to support us** [here](Support.md)
 
 #### 3.1 Windows
 
-![Chocolatey App Version](https://img.shields.io/chocolatey/v/wissance-zerial)
+[![Chocolatey App Version](https://img.shields.io/chocolatey/v/wissance-zerial)](https://community.chocolatey.org/packages/wissance-zerial/1.1.0)
 
 #### 3.2 Linux
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/wissance-zerial)
