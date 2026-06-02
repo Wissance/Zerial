@@ -35,9 +35,12 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
-                config.DisplayConfiguration = model.GetDisplayInfo();
-                _serialDevices.Add(model);
+                if (config.Configuration != null)
+                {
+                    SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                    config.DisplayConfiguration = model.GetDisplayInfo();
+                    _serialDevices.Add(model);
+                }
             }
             // these are defaults values
             SetDefaultSelectedOptions();
