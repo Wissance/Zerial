@@ -35,12 +35,16 @@ namespace Wissance.Zerial.Desktop.ViewModels
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                if (config.Configuration != null)
+                // TODO(UMV): this is strange thing and could occur when device.config file was corrupted
+                if (config.Configuration == null)
                 {
-                    SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
-                    config.DisplayConfiguration = model.GetDisplayInfo();
-                    _serialDevices.Add(model);
+                    // config looks the following manner: "COM3, 115200 b/s, 8 bit, 1 Sb, 4, 1"
+                    config.Configuration = $"{config.DeviceName}, 115200 b/s, 8 bit, 1 Sb, 4, 1";
                 }
+
+                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                config.DisplayConfiguration = model.GetDisplayInfo();
+                _serialDevices.Add(model);
             }
             // these are defaults values
             SetDefaultSelectedOptions();
