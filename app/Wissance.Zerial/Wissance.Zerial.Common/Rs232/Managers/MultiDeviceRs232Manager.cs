@@ -47,8 +47,13 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                         StopBits = _stopBitsMapping[settings.StopBits],
                         DataBits = settings.ByteLength,
                         Parity = _parityMapping[settings.Parity],
-                        ReadBufferSize = 64,
-                        WriteBufferSize = 64,
+                        // todo(UMV): make an default settings in appsettings.json
+                        // some USB-COM chips are buggy like CP2102, increase the buffer (however this is not solving the issue entirely)
+                        ReadBufferSize = 4096,
+                        WriteBufferSize = 4096,
+                        ReceivedBytesThreshold = 4,
+                        ReadTimeout = 200, 
+                        WriteTimeout = 200,
                         Handshake = _flowControlMapping[settings.FlowControl]
                     };
                     
@@ -66,12 +71,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 {
                     _devices[portName].ReadTimeout = 100;
                     _devices[portName].WriteTimeout = 100;
-                    // some USB-COM chips are buggy like CP2102, increase the buffer
-                    _devices[portName].WriteBufferSize = 4096;
-                    _devices[portName].ReadBufferSize = 4096;
-                    _devices[portName].ReceivedBytesThreshold = 4;
-                    _devices[portName].DtrEnable = false;
-                    _devices[portName].RtsEnable = false;
                     _devices[portName].Open();
                     _devices[portName].DiscardInBuffer();
                     _devices[portName].DiscardOutBuffer();
