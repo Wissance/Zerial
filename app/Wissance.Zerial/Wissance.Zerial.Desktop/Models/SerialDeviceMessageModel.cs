@@ -37,15 +37,15 @@ namespace Wissance.Zerial.Desktop.Models
                     MessageType == MessageType.Connect ? Localizer.Get(ConnectedDeviceStateKey) : Localizer.Get(DisconnectedDeviceStateKey));
             }
 
+            if (RawData == null || RawData.Length == 0)
+                return string.Empty;
+
             StringBuilder dataAsStr = new StringBuilder();
-            if (RawData != null && RawData.Any())
+            foreach (byte b in RawData)
             {
-                foreach (byte b in RawData)
-                {
-                    if (dataAsStr.Length > 0)
-                        dataAsStr.Append(" ");
-                    dataAsStr.Append($"0x{b:X}");
-                }
+                if (dataAsStr.Length > 0)
+                    dataAsStr.Append(" ");
+                dataAsStr.Append($"0x{b:X}");
             }
 
             return string.Format(IoMessageTemplate, Time.ToString(Localizer.Get(DateTimeFormatKey)), deviceName,

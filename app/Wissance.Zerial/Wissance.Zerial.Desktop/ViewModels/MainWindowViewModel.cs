@@ -243,15 +243,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     Task<byte[]> readResTask = _deviceManager.ReadAsync(p.PortName);
                     readResTask.Wait();
                     byte[] receivedData = readResTask.Result;
-                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
-                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
-                    serialDevice.Messages.Add(msg);
-                    string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
-                    _ = Task.Run(() =>
+                    if (receivedData.Any())
                     {
-                        UpdateMessagesFromAnotherThread(boxMsg);
-                        UpdateStatusbar(serialDevice);
-                    });
+                        SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
+                        serialDevice.Messages.Add(msg);
+                        string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
+                        _ = Task.Run(() =>
+                        {
+                            UpdateMessagesFromAnotherThread(boxMsg);
+                            UpdateStatusbar(serialDevice);
+                        });
+                    }
                 }
             }
         }
