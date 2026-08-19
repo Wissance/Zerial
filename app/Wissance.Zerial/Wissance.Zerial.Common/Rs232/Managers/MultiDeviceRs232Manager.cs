@@ -9,10 +9,19 @@ namespace Wissance.Zerial.Common.Rs232.Managers
     public class MultiDeviceRs232Manager : IRs232DeviceManager
     {
         
-        public MultiDeviceRs232Manager(SerialDataReceivedEventHandler onDataReceivedHandler, ILoggerFactory loggerFactory)
+        public MultiDeviceRs232Manager(//SerialDataReceivedEventHandler onDataReceivedHandler, 
+                                       Action<string, byte[]> receivedDataHandler,
+                                       ILoggerFactory loggerFactory)
         {
-            _onDataReceivedHandler = onDataReceivedHandler;
+            //_onDataReceivedHandler = onDataReceivedHandler;
+            _receivedDataHandler = receivedDataHandler;
             _logger = loggerFactory.CreateLogger<MultiDeviceRs232Manager>();
+            Task serialDeviceDataCheckTask = new Task(async _ =>
+            {
+                await CheckSerialDevices();
+            }, _cancellationSource.Token);
+            
+            serialDeviceDataCheckTask.Start();
         }
 
         public void Dispose()
@@ -69,8 +78,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 Task openTask = new Task(async _ =>
                 {
-                    _devices[portName].ReadTimeout = 100;
-                    _devices[portName].WriteTimeout = 100;
+                    _devices[portName].ReadTimeout = 1000;
+                    _devices[portName].WriteTimeout = 1000;
                     _devices[portName].Open();
                     _devices[portName].DiscardInBuffer();
                     _devices[portName].DiscardOutBuffer();
@@ -87,7 +96,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     // todo(UMV): log exception
                 }
 
-                serialPort.DataReceived += _onDataReceivedHandler;
+                // serialPort.DataReceived += _onDataReceivedHandler;
                 return true;
             }
             catch (Exception e)
@@ -162,17 +171,34 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
         }
 
+        private async Task CheckSerialDevices()
+        {
+            while (!_cancellationSource.IsCancellationRequested)
+            {
+                foreach (KeyValuePair<string, SerialPort> device in _devices)
+                {
+                    if (_cancellationSource.IsCancellationRequested)
+                        return;
+                    byte[] data = await ReadAsync(device.Key);
+                    if (data != null && data.Any())
+                    {
+                        _receivedDataHandler(device.Key, data);
+                    }
+                }
+            }
+        }
+
         private const int DefaultOperationTimeout = 5000;
 
         private readonly IDictionary<string, SerialPort> _devices = new ConcurrentDictionary<string, SerialPort>();
 
         private readonly IDictionary<Rs232StopBits, StopBits> _stopBitsMapping = new Dictionary<Rs232StopBits, StopBits>()
-            {
-                { Rs232StopBits.None, StopBits.None },
-                { Rs232StopBits.One, StopBits.One },
-                { Rs232StopBits.OneAndHalf, StopBits.OnePointFive },
-                { Rs232StopBits.Two, StopBits.Two }
-            };
+        {
+            {Rs232StopBits.None, StopBits.None},
+            {Rs232StopBits.One, StopBits.One},
+            {Rs232StopBits.OneAndHalf, StopBits.OnePointFive},
+            {Rs232StopBits.Two, StopBits.Two}
+        };
 
         private readonly IDictionary<Rs232Parity, Parity> _parityMapping = new Dictionary<Rs232Parity, Parity>()
         {
@@ -189,9 +215,10 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             { Rs232FlowControl.XonXoff , Handshake.XOnXOff },
             { Rs232FlowControl.RtsCts , Handshake.RequestToSend }
         };
-
+        
         private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
-        private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
+        //private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
+        private readonly Action<string, byte[]> _receivedDataHandler;
         private ILogger<MultiDeviceRs232Manager> _logger;
     }
 }

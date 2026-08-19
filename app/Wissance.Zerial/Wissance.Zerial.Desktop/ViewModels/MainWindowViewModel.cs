@@ -28,7 +28,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
-            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
+            _deviceManager = new MultiDeviceRs232Manager(/*OnSerialDeviceDataReceived*/ OnDataReceived, new LoggerFactory());
             _serialDevices = new List<SerialDeviceModel>();
             _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
@@ -233,6 +233,20 @@ namespace Wissance.Zerial.Desktop.ViewModels
             this.RaisePropertyChanged(nameof(SerialDeviceMessageToSend));
         }
 
+        private void OnDataReceived(string device, byte[] data)
+        {
+            SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, device));
+            SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, data);
+            serialDevice.Messages.Add(msg);
+            string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
+            _ = Task.Run(() =>
+            {
+                UpdateMessagesFromAnotherThread(boxMsg);
+                UpdateStatusbar(serialDevice);
+            });
+        }
+
+        // TODO(umv): remove ...
         private void OnSerialDeviceDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             if (e.EventType == SerialData.Chars)
