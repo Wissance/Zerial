@@ -64,9 +64,18 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 Task openTask = new Task(async _ =>
                 {
+                    _devices[portName].ReadTimeout = 100;
+                    _devices[portName].WriteTimeout = 100;
+                    // some USB-COM chips are buggy like CP2102, increase the buffer
+                    _devices[portName].WriteBufferSize = 4096;
+                    _devices[portName].ReadBufferSize = 4096;
+                    _devices[portName].ReceivedBytesThreshold = 4;
+                    _devices[portName].DtrEnable = false;
+                    _devices[portName].RtsEnable = false;
                     _devices[portName].Open();
-                }, 
-                    _cancellationSource.Token);
+                    _devices[portName].DiscardInBuffer();
+                    _devices[portName].DiscardOutBuffer();
+                }, _cancellationSource.Token);
                 Task delayTask = Task.Delay(DefaultOperationTimeout); // this task starts automatically
                 
                 openTask.Start(); // we should start it manually
@@ -80,7 +89,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 }
 
                 serialPort.DataReceived += _onDataReceivedHandler;
-                    
                 return true;
             }
             catch (Exception e)
@@ -96,7 +104,12 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             {
                 if (_devices.ContainsKey(deviceName))
                 {
-                    _devices[deviceName].Close();
+                    if (_devices[deviceName] != null && _devices[deviceName].IsOpen)
+                    {
+                        _devices[deviceName].DiscardInBuffer();
+                        _devices[deviceName].DiscardOutBuffer();
+                        _devices[deviceName].Close();
+                    }
                 }
                 return true;
             }
@@ -115,6 +128,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 {
                     SerialPort serialDevice = _devices[deviceName];
                     serialDevice.Write(data, 0, data.Length);
+                    await serialDevice.BaseStream.FlushAsync();
                     return true;
                 }
 
