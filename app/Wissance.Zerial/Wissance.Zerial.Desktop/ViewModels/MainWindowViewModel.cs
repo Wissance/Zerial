@@ -243,7 +243,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     Task<byte[]> readResTask = _deviceManager.ReadAsync(p.PortName);
                     readResTask.Wait();
                     byte[] receivedData = readResTask.Result;
-                    if (receivedData.Any())
+                    if (receivedData != null && receivedData.Any())
                     {
                         SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
                         SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
