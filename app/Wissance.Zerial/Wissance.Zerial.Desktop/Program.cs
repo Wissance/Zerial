@@ -2,6 +2,10 @@
 using Avalonia.ReactiveUI;
 using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Wissance.Zerial.Desktop.Extensions;
+using Wissance.Zerial.Desktop.Logging;
 
 namespace Wissance.Zerial.Desktop
 {
@@ -13,6 +17,7 @@ namespace Wissance.Zerial.Desktop
         [STAThread]
         public static void Main(string[] args)
         {
+            Services = new ServiceCollection();
             string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
             Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
             Console.WriteLine($"Current environment is: {snapEnv}");
@@ -23,11 +28,34 @@ namespace Wissance.Zerial.Desktop
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp(bool fromSnap)
-            => AppBuilder.Configure<App>()
+        {
+            /*ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            {
+                // todo(UMV): use level from config
+                builder.SetMinimumLevel(LogLevel.Debug)
+                    .AddConsole()
+                    .AddDebug(); 
+            });*/
+            
+            Services.AddLogging(builder =>
+            {
+                builder.AddConsole(); // Logs to console window
+                builder.AddDebug();   // Logs to IDE Output window
+            });
+            
+            Services.AddSingleton<AvaloniaLoggerSink>();
+            ServiceProvider sp = Services.BuildServiceProvider();
+            
+            AppBuilder builder =AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace()
-                .UseReactiveUI();
+                .UseReactiveUI()
+                .UseMicrosoftLogging(sp.GetRequiredService<ILoggerFactory>());
+            return builder;
+        }
+        
+        public static ServiceCollection Services { get; internal set; }
 
         public static string Environment { get; set; }
 
@@ -35,5 +63,6 @@ namespace Wissance.Zerial.Desktop
 
         public const string OtherEnvironmentKey = "other";
         //private const string EnvironmentKey = "environment";
+        
     }
 }

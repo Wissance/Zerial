@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Jeek.Avalonia.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232.Managers;
@@ -16,6 +17,7 @@ using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Managers;
 using Wissance.Zerial.Desktop.Models;
+using Wissance.Zerial.Desktop.Services;
 using Wissance.Zerial.Desktop.Utils;
 using Wissance.Zerial.Desktop.Views;
 
@@ -25,10 +27,11 @@ namespace Wissance.Zerial.Desktop.ViewModels
     {
         public MainWindowViewModel()
         {
+            _serviceProvider = ServiceLocator.Locate();
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
-            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
+            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, _serviceProvider.GetRequiredService<ILoggerFactory>());
             _serialDevices = new List<SerialDeviceModel>();
             _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
@@ -508,5 +511,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private string _selectedFlowControl;
         private string _selectedPortName;
         private readonly DeviceConfigurationManager _configurationManager;
+        private readonly ServiceProvider _serviceProvider;
     }
 }
