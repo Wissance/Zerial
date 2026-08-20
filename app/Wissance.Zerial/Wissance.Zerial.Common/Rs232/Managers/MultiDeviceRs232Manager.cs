@@ -39,7 +39,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 if (serialPort == null)
                 {
-                    // todo(umv): run timeout parallel to open task
                     serialPort = new SerialPort()
                     {
                         PortName = portName,
@@ -79,12 +78,17 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 openTask.Start(); // we should start it manually
                 
-                Task.WaitAny(new Task[] { openTask, delayTask });
+                // Run parallel Tasks
+                Task.WaitAny(new Task[] { openTask, delayTask }, _cancellationSource.Token);
                 
                 // todo(UMV): add OnReceive handler
                 if (openTask.Status != TaskStatus.RanToCompletion || openTask.Exception != null)
                 {
-                    // todo(UMV): log exception
+                    if (openTask.Exception != null)
+                    {
+                        _logger.LogError($"An error occurred during opening \"{portName}\" device, error: {openTask.Exception.Message}");
+                        _logger.LogTrace(openTask.Exception.ToString());
+                    }
                 }
 
                 serialPort.DataReceived += _onDataReceivedHandler;
@@ -92,7 +96,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"OpenAsync\" for the \"{settings.DeviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -114,7 +119,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"CloseAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -135,7 +141,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"WriteAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -157,7 +164,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"ReadAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return null;
             }
         }
@@ -192,6 +200,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
         private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
-        private ILogger<MultiDeviceRs232Manager> _logger;
+        private readonly ILogger<MultiDeviceRs232Manager> _logger;
     }
 }

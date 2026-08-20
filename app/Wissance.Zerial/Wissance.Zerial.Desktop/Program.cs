@@ -29,14 +29,7 @@ namespace Wissance.Zerial.Desktop
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp(bool fromSnap)
         {
-            /*ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-            {
-                // todo(UMV): use level from config
-                builder.SetMinimumLevel(LogLevel.Debug)
-                    .AddConsole()
-                    .AddDebug(); 
-            });*/
-            
+            // todo(UMV): add logging configuration here ...
             Services.AddLogging(builder =>
             {
                 builder.AddConsole(); // Logs to console window
