@@ -68,8 +68,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 Task openTask = new Task(async _ =>
                 {
-                    _devices[portName].ReadTimeout = 100;
-                    _devices[portName].WriteTimeout = 100;
+                    _devices[portName].ReadTimeout = 1000;
+                    _devices[portName].WriteTimeout = 1000;
                     _devices[portName].Open();
                     _devices[portName].DiscardInBuffer();
                     _devices[portName].DiscardOutBuffer();
@@ -160,7 +160,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     return buffer;
                 }
 
-                return null;
+                return new byte[0];
             }
             catch (Exception e)
             {

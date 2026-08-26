@@ -45,7 +45,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     config.Configuration = $"{config.DeviceName}, 115200 b/s, 8 bit, 1 Sb, 4, 1";
                 }
 
-                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                SerialDeviceModel model = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(), config.Configuration);
                 config.DisplayConfiguration = model.GetDisplayInfo();
                 _serialDevices.Add(model);
             }
@@ -118,7 +118,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             bool isNewDevice = serialDevice == null;
             if (serialDevice == null)
             {
-                serialDevice = new SerialDeviceModel(false, deviceSetting, new List<SerialDeviceMessageModel>() { });
+                serialDevice = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(),false, deviceSetting, new List<SerialDeviceMessageModel>() { });
             }
             else
             {
@@ -317,7 +317,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                SerialDeviceModel model = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(), config.Configuration);
                 _serialDevices.Add(model);
                 config.DisplayConfiguration = model.GetDisplayInfo();
             }
@@ -417,7 +417,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName,  SelectedPortNumber));
                     UpdateSelectedOptions(serialDevice);
                     if (serialDevice == null)
-                        serialDevice = new SerialDeviceModel();
+                        serialDevice = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>());
                     ConnectButtonText = serialDevice.Connected ? Localizer.Get(ConnectButtonDisconnectTextKey) : Localizer.Get(ConnectButtonConnectTextKey);
                     this.RaisePropertyChanged(nameof(ConnectButtonText));
                     UpdateStatusbar(serialDevice);
