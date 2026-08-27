@@ -38,6 +38,7 @@ namespace Wissance.Zerial.Desktop
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
             Services.AddLogging(builder =>
             {
