@@ -44,8 +44,8 @@ apps:
       - desktop
       - desktop-legacy
       - x11
-      - serial-port
+      - wissance-serial-port
     command: ./Wissance.Zerial.Desktop --snap
 plugs:
-   serial-foo:
+   wissance-serial-port:
       interface: serial-port
