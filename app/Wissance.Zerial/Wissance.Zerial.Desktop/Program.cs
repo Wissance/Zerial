@@ -2,8 +2,10 @@
 using Avalonia.ReactiveUI;
 using System;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Wissance.Zerial.Desktop.Extensions;
 using Wissance.Zerial.Desktop.Logging;
 
@@ -24,28 +26,42 @@ namespace Wissance.Zerial.Desktop
             bool isSnapRunning = snapEnv != null;
             App.IsSnapApp = isSnapRunning;
             BuildAvaloniaApp(isSnapRunning).StartWithClassicDesktopLifetime(args);
+            
+            Log.Information("Wissance.Zerial application stopped!");
+            Log.CloseAndFlush();
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp(bool fromSnap)
         {
-            // todo(UMV): add logging configuration here ...
+            // todo(UMV): add profile cfg
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment}.json", optional: true, reloadOnChange: true)
+                .Build();
             Services.AddLogging(builder =>
             {
                 builder.AddConsole(); // Logs to console window
                 builder.AddDebug();   // Logs to IDE Output window
             });
             
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+            
             Services.AddSingleton<AvaloniaLoggerSink>();
             ServiceProvider sp = Services.BuildServiceProvider();
             
-            AppBuilder builder =AppBuilder.Configure<App>()
+            Log.Information("Wissance.Zerial application started!");
+            
+            AppBuilder builder = AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace()
                 .UseReactiveUI()
                 .UseMicrosoftLogging(sp.GetRequiredService<ILoggerFactory>());
             return builder;
+            
         }
         
         public static ServiceCollection Services { get; internal set; }
@@ -56,6 +72,5 @@ namespace Wissance.Zerial.Desktop
 
         public const string OtherEnvironmentKey = "other";
         //private const string EnvironmentKey = "environment";
-        
     }
 }

@@ -28,12 +28,14 @@ namespace Wissance.Zerial.Desktop.ViewModels
         public MainWindowViewModel()
         {
             _serviceProvider = ServiceLocator.Locate();
+            _logger = _serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<MainWindowViewModel>();
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
             _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, _serviceProvider.GetRequiredService<ILoggerFactory>());
             _serialDevices = new List<SerialDeviceModel>();
-            _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
+            _configurationManager = new DeviceConfigurationManager(_serviceProvider.GetRequiredService<ILoggerFactory>(),
+                Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
@@ -512,5 +514,6 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private string _selectedPortName;
         private readonly DeviceConfigurationManager _configurationManager;
         private readonly ServiceProvider _serviceProvider;
+        private readonly ILogger<MainWindowViewModel> _logger;
     }
 }
