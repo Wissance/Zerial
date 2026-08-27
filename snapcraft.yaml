@@ -46,7 +46,7 @@ apps:
       - x11
       - wayland
       - wissance-zerial-serial-port
-    command: ./Wissance.Zerial.Desktop --environment=snap
+    command: [Wissance.Zerial.Desktop, --environment, snap]
 plugs:
    wissance-zerial-serial-port:
       interface: serial-port
