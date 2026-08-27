@@ -43,7 +43,14 @@ sudo systemctl restart snapd.service
 sudo snap connect wissance-zerial:serial-port
 ```
 
-### 4. Contributors
+### 4 Run
+
+Application could be run with the selected `Environment` profile that is defines application default configs i.e. `Logging`, by default `Environment` profile is `win-native` it meand that there should be a file with name `appsettings.win-native.json` with required `appsettings.json` in the **same directory** with executable application file. Snapcraft application is running with `snap` environment profile. Environment profile is passing via cmd line as follows:
+```bash
+./Wissance.Zerial.exe --environment=win-native
+```
+
+### 5. Contributors
 
 <a href="https://github.com/Wissance/Zerial/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Wissance/Zerial" />

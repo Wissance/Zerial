@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Jeek.Avalonia.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Wissance.Zerial.Common.Rs232.Managers;
@@ -16,6 +17,7 @@ using Wissance.Zerial.Common.Rs232.Settings;
 using Wissance.Zerial.Common.Rs232.Tools;
 using Wissance.Zerial.Desktop.Managers;
 using Wissance.Zerial.Desktop.Models;
+using Wissance.Zerial.Desktop.Services;
 using Wissance.Zerial.Desktop.Utils;
 using Wissance.Zerial.Desktop.Views;
 
@@ -25,12 +27,15 @@ namespace Wissance.Zerial.Desktop.ViewModels
     {
         public MainWindowViewModel()
         {
+            _serviceProvider = ServiceLocator.Locate();
+            _logger = _serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<MainWindowViewModel>();
             SerialOptions = new SerialDefaultsModel();
             _ports = new List<string>(Rs232PortsEnumerator.GetAvailablePorts().ToList());
             SelectedPortNumber = Ports.Any() ? Ports.First() : null;
-            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, new LoggerFactory());
+            _deviceManager = new MultiDeviceRs232Manager(OnSerialDeviceDataReceived, _serviceProvider.GetRequiredService<ILoggerFactory>());
             _serialDevices = new List<SerialDeviceModel>();
-            _configurationManager = new DeviceConfigurationManager(Program.Environment, UsingDevicesFile);
+            _configurationManager = new DeviceConfigurationManager(_serviceProvider.GetRequiredService<ILoggerFactory>(),
+                Program.Environment, UsingDevicesFile);
             DevicesConfigs = _configurationManager.Load();
             // these init depends on loaded configuration
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
@@ -42,7 +47,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     config.Configuration = $"{config.DeviceName}, 115200 b/s, 8 bit, 1 Sb, 4, 1";
                 }
 
-                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                SerialDeviceModel model = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(), config.Configuration);
                 config.DisplayConfiguration = model.GetDisplayInfo();
                 _serialDevices.Add(model);
             }
@@ -115,7 +120,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
             bool isNewDevice = serialDevice == null;
             if (serialDevice == null)
             {
-                serialDevice = new SerialDeviceModel(false, deviceSetting, new List<SerialDeviceMessageModel>() { });
+                serialDevice = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(),false, deviceSetting, new List<SerialDeviceMessageModel>() { });
             }
             else
             {
@@ -243,15 +248,18 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     Task<byte[]> readResTask = _deviceManager.ReadAsync(p.PortName);
                     readResTask.Wait();
                     byte[] receivedData = readResTask.Result;
-                    SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
-                    SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
-                    serialDevice.Messages.Add(msg);
-                    string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
-                    _ = Task.Run(() =>
+                    if (receivedData != null && receivedData.Any())
                     {
-                        UpdateMessagesFromAnotherThread(boxMsg);
-                        UpdateStatusbar(serialDevice);
-                    });
+                        SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName, p.PortName));
+                        SerialDeviceMessageModel msg = new SerialDeviceMessageModel(MessageType.Read, DateTime.Now, receivedData);
+                        serialDevice.Messages.Add(msg);
+                        string boxMsg = msg.ToString(serialDevice.Settings.DeviceName);
+                        _ = Task.Run(() =>
+                        {
+                            UpdateMessagesFromAnotherThread(boxMsg);
+                            UpdateStatusbar(serialDevice);
+                        });
+                    }
                 }
             }
         }
@@ -311,7 +319,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         {
             foreach (SerialPortShortInfoModel config in DevicesConfigs)
             {
-                SerialDeviceModel model = new SerialDeviceModel(config.Configuration);
+                SerialDeviceModel model = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>(), config.Configuration);
                 _serialDevices.Add(model);
                 config.DisplayConfiguration = model.GetDisplayInfo();
             }
@@ -411,7 +419,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
                     SerialDeviceModel serialDevice = _serialDevices.FirstOrDefault(s => string.Equals(s.Settings.DeviceName,  SelectedPortNumber));
                     UpdateSelectedOptions(serialDevice);
                     if (serialDevice == null)
-                        serialDevice = new SerialDeviceModel();
+                        serialDevice = new SerialDeviceModel(_serviceProvider.GetRequiredService<ILoggerFactory>());
                     ConnectButtonText = serialDevice.Connected ? Localizer.Get(ConnectButtonDisconnectTextKey) : Localizer.Get(ConnectButtonConnectTextKey);
                     this.RaisePropertyChanged(nameof(ConnectButtonText));
                     UpdateStatusbar(serialDevice);
@@ -505,5 +513,7 @@ namespace Wissance.Zerial.Desktop.ViewModels
         private string _selectedFlowControl;
         private string _selectedPortName;
         private readonly DeviceConfigurationManager _configurationManager;
+        private readonly ServiceProvider _serviceProvider;
+        private readonly ILogger<MainWindowViewModel> _logger;
     }
 }

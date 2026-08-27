@@ -39,7 +39,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 if (serialPort == null)
                 {
-                    // todo(umv): run timeout parallel to open task
                     serialPort = new SerialPort()
                     {
                         PortName = portName,
@@ -47,8 +46,13 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                         StopBits = _stopBitsMapping[settings.StopBits],
                         DataBits = settings.ByteLength,
                         Parity = _parityMapping[settings.Parity],
-                        ReadBufferSize = 64,
-                        WriteBufferSize = 64,
+                        // todo(UMV): make an default settings in appsettings.json
+                        // some USB-COM chips are buggy like CP2102, increase the buffer (however this is not solving the issue entirely)
+                        ReadBufferSize = 4096,
+                        WriteBufferSize = 4096,
+                        ReceivedBytesThreshold = 4,
+                        ReadTimeout = 200, 
+                        WriteTimeout = 200,
                         Handshake = _flowControlMapping[settings.FlowControl]
                     };
                     
@@ -64,28 +68,36 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 
                 Task openTask = new Task(async _ =>
                 {
+                    _devices[portName].ReadTimeout = 1000;
+                    _devices[portName].WriteTimeout = 1000;
                     _devices[portName].Open();
-                }, 
-                    _cancellationSource.Token);
+                    _devices[portName].DiscardInBuffer();
+                    _devices[portName].DiscardOutBuffer();
+                }, _cancellationSource.Token);
                 Task delayTask = Task.Delay(DefaultOperationTimeout); // this task starts automatically
                 
                 openTask.Start(); // we should start it manually
                 
-                Task.WaitAny(new Task[] { openTask, delayTask });
+                // Run parallel Tasks
+                Task.WaitAny(new Task[] { openTask, delayTask }, _cancellationSource.Token);
                 
                 // todo(UMV): add OnReceive handler
                 if (openTask.Status != TaskStatus.RanToCompletion || openTask.Exception != null)
                 {
-                    // todo(UMV): log exception
+                    if (openTask.Exception != null)
+                    {
+                        _logger.LogError($"An error occurred during opening \"{portName}\" device, error: {openTask.Exception.Message}");
+                        _logger.LogTrace(openTask.Exception.ToString());
+                    }
                 }
 
                 serialPort.DataReceived += _onDataReceivedHandler;
-                    
                 return true;
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"OpenAsync\" for the \"{settings.DeviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -96,13 +108,19 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             {
                 if (_devices.ContainsKey(deviceName))
                 {
-                    _devices[deviceName].Close();
+                    if (_devices[deviceName] != null && _devices[deviceName].IsOpen)
+                    {
+                        _devices[deviceName].DiscardInBuffer();
+                        _devices[deviceName].DiscardOutBuffer();
+                        _devices[deviceName].Close();
+                    }
                 }
                 return true;
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"CloseAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -115,6 +133,7 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                 {
                     SerialPort serialDevice = _devices[deviceName];
                     serialDevice.Write(data, 0, data.Length);
+                    await serialDevice.BaseStream.FlushAsync();
                     return true;
                 }
 
@@ -122,7 +141,8 @@ namespace Wissance.Zerial.Common.Rs232.Managers
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"WriteAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return false;
             }
         }
@@ -140,11 +160,12 @@ namespace Wissance.Zerial.Common.Rs232.Managers
                     return buffer;
                 }
 
-                return null;
+                return new byte[0];
             }
             catch (Exception e)
             {
-                // todo(umv): add logging
+                _logger.LogError($"An error occurred during call \"ReadAsync\" for the \"{deviceName}\" device, error: {e.Message}");
+                _logger.LogTrace(e.ToString());
                 return null;
             }
         }
@@ -179,6 +200,6 @@ namespace Wissance.Zerial.Common.Rs232.Managers
 
         private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
         private readonly SerialDataReceivedEventHandler _onDataReceivedHandler;
-        private ILogger<MultiDeviceRs232Manager> _logger;
+        private readonly ILogger<MultiDeviceRs232Manager> _logger;
     }
 }

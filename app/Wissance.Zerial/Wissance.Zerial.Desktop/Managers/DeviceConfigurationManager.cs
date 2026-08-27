@@ -7,14 +7,17 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using AvaloniaEdit.Utils;
+using Microsoft.Extensions.Logging;
 using Wissance.Zerial.Desktop.Models;
 
 namespace Wissance.Zerial.Desktop.Managers
 {
     public class DeviceConfigurationManager
     {
-        public DeviceConfigurationManager(string env, string configFile)
+        public DeviceConfigurationManager(ILoggerFactory loggerFactory, string env, string configFile)
         {
+            _logger = loggerFactory.CreateLogger<DeviceConfigurationManager>();
+            
             if (env != Program.SnapEnvironmentKey)
             {
                 bool result = PrepareDevConfigDirectory(configFile);
@@ -64,10 +67,12 @@ namespace Wissance.Zerial.Desktop.Managers
             }
             catch (Exception e)
             {
+                _logger.LogError($"An error occurred during preparing dev config directory for file {_configFile}, error: {e.Message}");
                 return false;
             }
         }
 
         private string _configFile;
+        private readonly ILogger<DeviceConfigurationManager> _logger;
     }
 }

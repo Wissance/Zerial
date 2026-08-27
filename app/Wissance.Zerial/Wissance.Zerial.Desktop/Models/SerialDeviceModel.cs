@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Jeek.Avalonia.Localization;
+using Microsoft.Extensions.Logging;
 using Wissance.Zerial.Common.Rs232;
 using Wissance.Zerial.Common.Rs232.Settings;
 
@@ -11,21 +12,24 @@ namespace Wissance.Zerial.Desktop.Models
 {
     public class SerialDeviceModel
     {
-        public SerialDeviceModel()
+        public SerialDeviceModel(ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<SerialDeviceModel>();
             Messages = new List<SerialDeviceMessageModel>();
             Settings = new Rs232Settings();
         }
 
-        public SerialDeviceModel(bool connected, Rs232Settings settings, IList<SerialDeviceMessageModel> messages)
+        public SerialDeviceModel(ILoggerFactory loggerFactory, bool connected, Rs232Settings settings, IList<SerialDeviceMessageModel> messages)
         {
+            _logger = loggerFactory.CreateLogger<SerialDeviceModel>();
             Connected = connected;
             Settings = settings;
             Messages = messages;
         }
 
-        public SerialDeviceModel(string deviceConfiguration)
+        public SerialDeviceModel(ILoggerFactory loggerFactory, string deviceConfiguration)
         {
+            _logger = loggerFactory.CreateLogger<SerialDeviceModel>();
             // parse back from string to device
             Settings = new Rs232Settings();            
             Connected = false;
@@ -104,6 +108,7 @@ namespace Wissance.Zerial.Desktop.Models
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"An non critical error occurred during parsing device settings for property with index: {settingsPropertyIndex}, error: {e.Message}");
                 return default(T);
             }
             
@@ -163,5 +168,7 @@ namespace Wissance.Zerial.Desktop.Models
         
         private const string BytesSentStatsTemplateKey = "Zerial_Bytes_Sent_Stats_Template";
         private const string BytesReceivedStatsTemplateKey = "Zerial_Bytes_Received_Stats_Template";
+
+        private readonly ILogger<SerialDeviceModel> _logger;
     }
 }

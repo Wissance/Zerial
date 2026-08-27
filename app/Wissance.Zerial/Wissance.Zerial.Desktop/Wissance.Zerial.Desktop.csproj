@@ -1,11 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ApplicationIcon>Assets\Images\Zerial_64x64.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Force the GC to conserve memory over throughput -->
+        <GCLongRunningWackiness>true</GCLongRunningWackiness>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <RetainVM>false</RetainVM>
+
+        <!-- Enable aggressive trimming and AOT compilation -->
+        <!--
+        <PublishAot>true</PublishAot>
+        <TrimMode>full</TrimMode>
+        <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+        -->
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,24 +36,39 @@
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="appsettings.win-native.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.lin-native.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.snap.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.14" />
+        <PackageReference Include="Avalonia" Version="11.3.20" />
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.14" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.14" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.14" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.20" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
         <PackageReference Include="Jeek.Avalonia.Localization" Version="1.3.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.1" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+        <PackageReference Include="NetEnvExtensions" Version="1.0.5" />
         <PackageReference Include="System.IO.Ports" Version="7.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
     </ItemGroup>
 
 
