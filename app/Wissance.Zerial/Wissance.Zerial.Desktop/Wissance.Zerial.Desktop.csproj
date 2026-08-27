@@ -9,6 +9,20 @@
         <ApplicationIcon>Assets\Images\Zerial_64x64.ico</ApplicationIcon>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <!-- Force the GC to conserve memory over throughput -->
+        <GCLongRunningWackiness>true</GCLongRunningWackiness>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <RetainVM>false</RetainVM>
+
+        <!-- Enable aggressive trimming and AOT compilation -->
+        <!--
+        <PublishAot>true</PublishAot>
+        <TrimMode>full</TrimMode>
+        <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+        -->
+    </PropertyGroup>
+
     <ItemGroup>
         <Folder Include="Assets\**" />
         <AvaloniaResource Include="Assets\**" />
