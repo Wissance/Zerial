@@ -45,7 +45,7 @@ apps:
       - desktop-legacy
       - x11
       - wissance-serial-port
-    command: ./Wissance.Zerial.Desktop --snap
+    command: ./Wissance.Zerial.Desktop --environment=snap
 plugs:
    wissance-serial-port:
       interface: serial-port
