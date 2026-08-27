@@ -19,11 +19,17 @@ namespace Wissance.Zerial.Desktop
         [STAThread]
         public static void Main(string[] args)
         {
+            // we are passing environment via --environment={env} snap or WindowsNatively
             Services = new ServiceCollection();
-            string snapEnv = args.FirstOrDefault(a => a.Contains("snap"));
-            Environment = snapEnv != null ? SnapEnvironmentKey : OtherEnvironmentKey;
-            Console.WriteLine($"Current environment is: {snapEnv}");
-            bool isSnapRunning = snapEnv != null;
+            string envKey = args.FirstOrDefault(a => a.Contains(EnvironmentKey));
+            Environment = DefaultEnvironment;
+            string[] envParts = envKey?.Trim().Split("=");
+            if (envParts != null && envParts.Length == 2)
+            {
+                Environment = envParts[1].Trim();
+            }
+            Console.WriteLine($"Current environment is: {Environment}");
+            bool isSnapRunning = string.Equals(Environment, SnapEnvironmentKey);
             App.IsSnapApp = isSnapRunning;
             BuildAvaloniaApp(isSnapRunning).StartWithClassicDesktopLifetime(args);
             
@@ -38,7 +44,7 @@ namespace Wissance.Zerial.Desktop
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
+                //.AddEnvironmentVariables()
                 .Build();
             Services.AddLogging(builder =>
             {
@@ -62,7 +68,6 @@ namespace Wissance.Zerial.Desktop
                 .UseReactiveUI()
                 .UseMicrosoftLogging(sp.GetRequiredService<ILoggerFactory>());
             return builder;
-            
         }
         
         public static ServiceCollection Services { get; internal set; }
@@ -70,8 +75,8 @@ namespace Wissance.Zerial.Desktop
         public static string Environment { get; set; }
 
         public const string SnapEnvironmentKey = "snap";
-
-        public const string OtherEnvironmentKey = "other";
-        //private const string EnvironmentKey = "environment";
+        
+        private const string EnvironmentKey = "environment";
+        private const string DefaultEnvironment = "win-native";
     }
 }
