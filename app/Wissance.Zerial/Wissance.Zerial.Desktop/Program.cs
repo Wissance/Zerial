@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
+using NetEnvExtensions;
 using System;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +45,8 @@ namespace Wissance.Zerial.Desktop
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment}.json", optional: true, reloadOnChange: true)
-                //.AddEnvironmentVariables()
+                .AddEnvironmentVariables()
+                .AddEnvironmentVariableSubstitution()
                 .Build();
             Services.AddLogging(builder =>
             {
