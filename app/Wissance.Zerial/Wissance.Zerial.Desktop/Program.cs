@@ -24,11 +24,16 @@ namespace Wissance.Zerial.Desktop
             Services = new ServiceCollection();
             string envKey = args.FirstOrDefault(a => a.Contains(EnvironmentKey));
             Environment = DefaultEnvironment;
-            string[] envParts = envKey?.Trim().Split("=");
-            if (envParts != null && envParts.Length == 2)
+            if (envKey != null)
             {
-                Environment = envParts[1].Trim();
+                envKey = envKey.Trim();
+                string[] envParts = envKey.Contains("=") ? envKey.Split("=") : envKey.Split(" ");
+                if (envParts != null && envParts.Length == 2)
+                {
+                    Environment = envParts[1].Trim();
+                }
             }
+
             Console.WriteLine($"Current environment is: {Environment}");
             bool isSnapRunning = string.Equals(Environment, SnapEnvironmentKey);
             App.IsSnapApp = isSnapRunning;
