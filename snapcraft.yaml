@@ -56,8 +56,7 @@ apps:
       - desktop-legacy
       - x11
       - wayland
-      - dbus
-      - dbus-notifications
+      - unity7
       - wissance-zerial-serial-port
     command: bin/desktop-wrapper
 plugs:
