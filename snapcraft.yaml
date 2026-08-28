@@ -11,7 +11,7 @@ architectures:
   - build-on: [amd64]
     build-for: [amd64]
 
-confinement: classic
+confinement: strict
 devmode: false
 parts:
   wissance-assets:
