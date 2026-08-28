@@ -56,11 +56,13 @@ apps:
       - desktop-legacy
       - x11
       - wayland
+      - dbus
+      - dbus-notifications
       - wissance-zerial-serial-port
     command: bin/desktop-wrapper
-    environment:
-      SESSION_MANAGER: "local/$HOSTNAME:@/tmp/.ICE-unix/0"
-      DISPLAY: ":0"
+    #environment:
+    #  SESSION_MANAGER: "local/$HOSTNAME:@/tmp/.ICE-unix/0"
+    #  DISPLAY: ":0"
 plugs:
    wissance-zerial-serial-port:
       interface: serial-port
