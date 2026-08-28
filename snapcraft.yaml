@@ -27,6 +27,8 @@ parts:
     build-packages:
       - dotnet-sdk-8.0
     stage-packages:
+      - libgl1-mesa-glx
+      - libgl1-mesa-dri
       - libfontconfig
       - libicu70
       - libx11-6
@@ -56,6 +58,9 @@ apps:
       - wayland
       - wissance-zerial-serial-port
     command: bin/desktop-wrapper
+    environment:
+      SESSION_MANAGER: "local/$HOSTNAME:@/tmp/.ICE-unix/0"
+      DISPLAY: ":0"
 plugs:
    wissance-zerial-serial-port:
       interface: serial-port
