@@ -73,8 +73,8 @@ namespace Wissance.Zerial.Desktop
                 .UsePlatformDetect()
                 .With(new X11PlatformOptions
                 {
-                    // Принудительно отключает аппаратный GLX/EGL рендеринг, обходя ошибки MESA/swrast
-                    RenderingMode = new[] { X11RenderingMode.Software }
+                    RenderingMode = new[] { X11RenderingMode.Software },
+                    OverlayPopups = true
                 })
                 .With(new AvaloniaNativePlatformOptions
                 {
