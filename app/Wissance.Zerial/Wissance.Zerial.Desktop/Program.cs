@@ -2,6 +2,7 @@
 using Avalonia.ReactiveUI;
 using NetEnvExtensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,6 +71,15 @@ namespace Wissance.Zerial.Desktop
             
             AppBuilder builder = AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+                .With(new X11PlatformOptions
+                {
+                    // Принудительно отключает аппаратный GLX/EGL рендеринг, обходя ошибки MESA/swrast
+                    RenderingMode = new[] { X11RenderingMode.Software }
+                })
+                .With(new AvaloniaNativePlatformOptions
+                {
+                    RenderingMode = new List<AvaloniaNativeRenderingMode>(){AvaloniaNativeRenderingMode.Software}
+                })
                 .WithInterFont()
                 .LogToTrace()
                 .UseReactiveUI()
