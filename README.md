@@ -34,6 +34,8 @@ Installation is available via:
 
 #### 3.2 Linux
 
+##### 3.2.1 Via Snapcraft
+
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/wissance-zerial)
 
 To make application work in SNAP:
@@ -41,6 +43,16 @@ To make application work in SNAP:
 sudo snap set system experimental.hotplug=true
 sudo systemctl restart snapd.service
 sudo snap connect wissance-zerial:serial-port
+```
+
+Also in Linux user must be added to the group `dialout` (replace `$USER` with appropriate username):
+```
+sudo usermod -a -G dialout $USER
+```
+
+You could sometimes manually see `snap` slots: `snap interface serial-port` and add slot `snapd:usbserial` manually:
+```
+sudo snap connect wissance-zerial:wissance-zerial-serial-port snapd:usbserial
 ```
 
 ### 4 Run
