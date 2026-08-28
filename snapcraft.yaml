@@ -61,7 +61,10 @@ apps:
       - gsettings
       - opengl
       - wissance-zerial-serial-port
-    command: bin/desktop-wrapper
+    command: snap/command-chain/desktop-launch bin/desktop-wrapper
+    environment:
+      LIBGL_DRIVERS_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}:${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri:${LD_LIBRARY_PATH}
 plugs:
    wissance-zerial-serial-port:
       interface: serial-port
