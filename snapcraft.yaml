@@ -12,7 +12,7 @@ architectures:
     build-for: [amd64]
 
 confinement: strict
-devmode: false
+
 parts:
   wissance-assets:
     plugin: dump
@@ -32,7 +32,7 @@ parts:
       - libfontconfig
       - libicu70
       - libx11-6
-      - libstdc++5
+      - libstdc++6
       - libice6
       - libsm6
     override-build: |
