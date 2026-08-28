@@ -20,7 +20,7 @@ namespace Wissance.Zerial.Desktop
         [STAThread]
         public static void Main(string[] args)
         {
-            // we are passing environment via --environment={env} snap or WindowsNatively
+            // we are passing environment via --environment={env} snap or win-native
             Services = new ServiceCollection();
             string envKey = args.FirstOrDefault(a => a.Contains(EnvironmentKey));
             Environment = DefaultEnvironment;
