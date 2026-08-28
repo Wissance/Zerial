@@ -51,12 +51,15 @@ parts:
 
 apps:
   wissance-zerial:
+    extensions: [ gnome ]
     plugs:
       - desktop
       - desktop-legacy
       - x11
       - wayland
       - unity7
+      - gsettings
+      - opengl
       - wissance-zerial-serial-port
     command: bin/desktop-wrapper
 plugs:
