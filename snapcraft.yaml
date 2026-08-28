@@ -37,6 +37,15 @@ parts:
       dotnet build -c Release
       dotnet publish -r linux-x64 -c Release -p:PublishSingleFile=true -p:PublishReadyToRun=true --self-contained true -o $SNAPCRAFT_PART_INSTALL ./Wissance.Zerial.Desktop/Wissance.Zerial.Desktop.csproj
       chmod 0755 $SNAPCRAFT_PART_INSTALL
+  wrapper-script:
+    plugin: nil
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      cat << 'EOF' > $CRAFT_PART_INSTALL/bin/desktop-wrapper
+      #!/bin/sh
+      exec "$SNAP/Wissance.Zerial.Desktop" --environment=snap "$@"
+      EOF
+      chmod +x $CRAFT_PART_INSTALL/bin/desktop-wrapper
 
 apps:
   wissance-zerial:
@@ -46,7 +55,7 @@ apps:
       - x11
       - wayland
       - wissance-zerial-serial-port
-    command: Wissance.Zerial.Desktop --environment snap
+    command: bin/desktop-wrapper
 plugs:
    wissance-zerial-serial-port:
       interface: serial-port
