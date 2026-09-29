@@ -76,7 +76,7 @@ The Snap version automatically forces the `snap` environment profile. You can ma
 ### 4. Support the Project
 
 You can help us maintain and improve Zerial:
-* **Support us on Boosty:** [![Support on Boosty](https://shields.io)](https://boosty.to/wissance)
+* **Support us on Boosty:** [![Support on Boosty](https://img.shields.io/badge/%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C-Boosty-orange)](https://boosty.to/wissance)
 * **Other ways to contribute:** Read our detailed guide [here](Support.md).
 
 ---
