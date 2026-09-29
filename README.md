@@ -1,6 +1,11 @@
-## Zerial is a RS232 (COM Port Devices) Exchange software
+## Zerial is a RS232 (COM Port Devices) Exchange software (Terminal)
 
-Zerial is a cross-platform GUI utility for interact with `COM` (`RS232`) devices. 
+[![Chocolatey App Version](https://img.shields.io/chocolatey/v/wissance-zerial)](https://community.chocolatey.org/packages/wissance-zerial/1.1.0)
+[![Snapcraft](https://img.shields.io/badge/snapcraft-wissance--zerial-blue?logo=snapcraft)](https://snapcraft.io/wissance-zerial)
+
+A modern, lightweight, and responsive **cross-platform** `GUI` serial port terminal built with `.NET` & `Avalonia UI`. 
+
+
 
 ### 1. Key Features
 `Zerial` is:
@@ -30,9 +35,15 @@ Installation is available via:
 
 #### 3.1 Windows
 
-[![Chocolatey App Version](https://img.shields.io/chocolatey/v/wissance-zerial)](https://community.chocolatey.org/packages/wissance-zerial/1.1.0)
+For Windows `Zerial` is available from chocolatey or raw installer download build with InnoSetup
+
+* [chocolatey](https://community.chocolatey.org/packages/wissance-zerial)
+* [installers](https://github.com/Wissance/Zerial/tree/master/app/Wissance.Zerial/Wissance.Zerial.Installer/Windows)
 
 #### 3.2 Linux
+
+For linux it is possible to get application:
+1. from snapcraft
 
 ##### 3.2.1 Via Snapcraft
 
